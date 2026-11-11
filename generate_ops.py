@@ -677,6 +677,18 @@ def check_handfree_layouts(case, audit):
                 raise RuntimeError(f"{op} input {port} must be ND; actual {inputs[port]['layout']}")
 
 
+def needs_nd_air(case, model):
+    if case["op"] in {"Mul", "LayerNorm", "ReduceSum"}:
+        return True
+    if case["op"] == "Add":
+        output = [d.dim_value for d in model.graph.output[0].type.tensor_type.shape.dim]
+        # Native partial broadcasts over multiple non-singleton dimensions add TransData or fail to load.
+        if any(t["shape"] != output and sum(d > 1 for d in t["shape"]) > 1 for t in case["inputs"]):
+            return True
+    return case["op"] in {"Add", "Activation", "PRelu", "Softmax"} and any(
+        len(t.type.tensor_type.shape.dim) != 4 for t in [*model.graph.input, *model.graph.output])
+
+
 def generate_case(case, base, out, setup=None, runtime=False):
     case = copy.deepcopy(case)
     case["op"] = canonical(case["op"])
@@ -725,7 +737,7 @@ def generate_case(case, base, out, setup=None, runtime=False):
             # Publish only after return code, IMOD parsing, and ONNX integrity all pass.
             temporary_prefix = job / "compiled"
             compile_source, framework = source.resolve(), 5
-            if setup["config"].get("io_layout") == "handfree" and case["op"] in {"Mul", "LayerNorm"}:
+            if setup["config"].get("io_layout") == "handfree" and needs_nd_air(case, model):
                 from ge_nd import build_air
                 compile_source, framework = job / "source.air", 1
                 compile_source.write_bytes(build_air(case, model, setup["schema"]))

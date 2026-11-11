@@ -95,6 +95,25 @@ class AirTests(unittest.TestCase):
         self.assertEqual([list(d.shape.dim) for d in core.input_desc], [[2, 3, 4], [4]])
         self.assertEqual(list(core.output_desc[0].shape.dim), [2, 3, 4])
 
+    def test_reduce_nd_axes_and_keepdims_follow_onnx(self):
+        for axes, keepdims, noop in [([-1], 0, 0), ([0], 1, 0), ([], 1, 0), ([], 1, 1), (None, 1, 0), (None, 1, 1)]:
+            case = dict(op="ReduceSum", dtype="float16", inputs=[dict(name="X", shape=[16,512])],
+                        attributes=dict(axes=axes, keepdims=keepdims, noop_with_empty_axes=noop))
+            model = g.build_model(case)
+            graph = self.Model.FromString(build_air(case, model, self.schema_path)).graph[0]
+            core = next(n for n in graph.op if n.type == "ReduceSum")
+            const = next(n for n in graph.op if n.name == "__nd_axes")
+            expected_axes = [a % 2 for a in (axes or [])] if axes or noop else [0,1]
+            self.assertEqual(list(core.attr["axis"].list.i), expected_axes)
+            self.assertEqual(list(np.frombuffer(const.attr["value"].t.data, dtype=np.int32)), expected_axes)
+            self.assertEqual(core.attr["keep_dims"].b, bool(keepdims))
+            self.assertTrue(all(d.layout == "ND" for d in core.input_desc))
+            self.assertEqual(list(core.output_desc[0].shape.dim), g.describe(model)["outputs"][0]["shape"])
+            if axes is None:
+                payload = build_air(case, model, self.schema_path)
+                case["attributes"].pop("axes")
+                self.assertEqual(payload, build_air(case, g.build_model(case), self.schema_path))
+
     def test_layernorm_per_input_dtype_override_is_preserved(self):
         case = copy.deepcopy(next(c for c in g.load_config(g.HERE / "defaults_handfree.json")[0] if c["op"] == "LayerNorm"))
         for item in case["inputs"]:

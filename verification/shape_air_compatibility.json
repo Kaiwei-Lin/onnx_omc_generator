@@ -1,0 +1,1604 @@
+{
+  "final_builder_sha256": "64bf69253c543767938765d0e7d5e8b85f5bd9b10b1765ee2117f8abfc812477",
+  "final_generator_sha256": "9dab1648021bbdeda7f7b30a4a20eb470297eaf9dbff8e121c80ea74783109ab",
+  "checked": 266,
+  "all_unchanged": true,
+  "cases": [
+    {
+      "run": "results_sweep",
+      "hash": "09472a7c8e7d",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "0d5bfd4b33c2",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "158725c11f2a",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "158b00cd08a8",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "1d0df7deefb3",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "29aca300df79",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3156d386a853",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3221ceb6e889",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3e9d42b1f723",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "4022d8bd1d13",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "4d015a5dc111",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "5ab777615f01",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "5c4410fafe56",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "5d6d42fa8f30",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "6133510a367a",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "668c9fb46a32",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "67b33c8e3dd3",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "7aee56de6b83",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "7c328270c1ec",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "95b5483d771c",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "964dc638cdfc",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "981b85ac3e9d",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "a1502f5c4482",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b51defaf27de",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b94e60f8a886",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "c37b6caaa999",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "cba59cfa3d08",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e06efa836be4",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "eba302d00f37",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "fd2235a5ed02",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "05bd893544ca",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "10bd351d7cff",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "25c0be5da077",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "26e02b26b258",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "2c9bda818e8a",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "327a7fcbb257",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "381f0f08d1a8",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3f6fa30c2f42",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "495314cac28c",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "4c45d56b225b",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "692ba8eb92a9",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "6f0fcde8f678",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "77ed292d0e73",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "80fb7eb25827",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "871c9717a2e8",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "90ac35e208a1",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "990d7412d07b",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "99998269f40b",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "9ef78d75e7a5",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "aa41843c444d",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ab6c122fb596",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ab7781afab14",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b46e9297ec46",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b87810570d30",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "c75d3524f69c",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "d0851e099479",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ddf709979f85",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e375c452c07d",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e83a9d31ba1a",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e91764143947",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "f2be7c153e08",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "fa08708b82fe",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "fbcd0ea92c3b",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "02f4eca3ac56",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "2592b93c287a",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "28c85c00aeb9",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "30ae9c89c47d",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "30e433fbb432",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3ae1f0982fd4",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "4aabacf09b91",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "5082783528b0",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "50a1edbdda2b",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "529f7ae97a02",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "5befe653faef",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "622c9b053fb9",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "643fb60d0082",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "66dd9aa221ee",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "6e19cce59da6",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "7060d2c139bf",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "75c3fc717bdb",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "75fc01cd15a9",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "807e92d6c7ef",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "8c16ee552d24",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "99a12598a86b",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "9d73afbc8640",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "a8e5297dddf8",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "bf818311bc1c",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "c04a149241b6",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "c5f017678cb7",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "c642093fbe96",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "cfbc692a7745",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "d909481a372a",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ddcbbcc7198f",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e1ff6a54c84f",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e7414b4e246b",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ed06792cd11c",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "edb98b53779e",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ee335471d1e6",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ef0718299177",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "fade68bc92c0",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "fbc59bce34e2",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "058fbcf8d6c1",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "0c78fe4b5188",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "123357021bd5",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3392ed468103",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3ce92a36847b",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3e028a6b9812",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3e3cb0062e96",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3eeb1a38fdb8",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "4417aa23bf26",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "8a7ea2e8c46b",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "9425a2533bbd",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "a0215c208d4f",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "a0c5441ec548",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "a1683a8db72b",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b561eac0333f",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b7ccfe16b3ea",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b8c07ca76564",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b928cd646187",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "d1eae9e84193",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "df4e02147d94",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e767357c6a8c",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "f2514436affb",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "fe8fd1a161ef",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "fe93bdff70a2",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "16a42f2c2cb5",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3215f703215d",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "364544fc03a2",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "37ad44b4dfa6",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "3f1f8b64409c",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "549eb79ce03a",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "593c0e00e8ce",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "5c190165c0d5",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "619b91975cd7",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "65d9c65d94a3",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "69f4184554ce",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "6ecbd5feb3c2",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "869c84c53493",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "8df934835db8",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "8f7190ad76dd",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "943bc86b86d1",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "9500d42d18c6",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "a55258b63a08",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ae711068c138",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "b00889e4e792",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ba9cc30d72e0",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "cebba412dff8",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "cf05ceb4ff7b",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "d848d03875e4",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "dbfa0c931c1d",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e0872bfabcea",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e3c1699ab649",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "e6b48321e328",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ecac42c9b7d1",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "ed04d1a4057d",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "f0d11356dd9d",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "f1684b3f33a5",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "f187313d8e65",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep",
+      "hash": "fe715ee8beec",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "0cc77c839131",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "23b4fc4557f9",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "2ce8db6cabed",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "3c85eacf9def",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "4e7e0e6c3cad",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "56b5c3010607",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "6e1eb343e815",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "355740538031",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "6026aa73e4b2",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "0a84d6d41070",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext",
+      "hash": "c94c3ad49ad9",
+      "op": "Mul",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "5047bae36c8a",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "af1ed0fb4533",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "d2b7cd545420",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "f4aa3683a151",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "0818ff21a335",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "09a5c3fe8106",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "1929252aa7e6",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "19654080e577",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "1b9523154f61",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "2282f0721529",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "293290bf3884",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "2c7a60e56038",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "37d648bf3c7f",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "3b6455bae996",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "3f457b926d77",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "41de5beae316",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "53b44bcb9eae",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "59a324df3953",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "8313651ebfa5",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "8b0d9f374424",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "8cab5bb27a31",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "8d0d16840938",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "b41a7ca8901e",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "b47062d3c61e",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "b8bc81c3dd5e",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "c044cd65564c",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "c75ffccae426",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "c91e05d3d4c2",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "cfff85bc9c45",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "d3f7b9a12267",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "d4d433b7d5fe",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "ef3a0d2fe2f5",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "f448eed234a4",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix",
+      "hash": "fd63f3e20239",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix2",
+      "hash": "0908bb53856f",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix2",
+      "hash": "673fdfa5fb55",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix2",
+      "hash": "a2e146e4a53e",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_fix2",
+      "hash": "ad3fd6b163e6",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "1ff4b098a972",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "39db9a340bc2",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "3c2c2926c43c",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "4a6394d7122c",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "79f2db659786",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "c7facbfc8074",
+      "op": "Activation",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "5434bd7e21d0",
+      "op": "Add",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "083515695c1a",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "3918947ad277",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "3fbaf40eda30",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "41c1ed10040c",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "4accf679bdbc",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "512ad58a3d9d",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "535b777cc08e",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "56b42e76664f",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "7c9e62bb7b42",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "83b49873869d",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "857653a63ed0",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "87fa52b0f5f4",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "a18f06f71769",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "a28a79f04556",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "ac0b61f40bcc",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "b5dfc48cbcd0",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "c04b804963b8",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "d3d485cf68b6",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "e2bee4c59b3e",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "ff9dcc310e24",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "ffdb7a1967f9",
+      "op": "LayerNorm",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "03ed552b6528",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "19ff914b905d",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "29c401ce2e90",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "43efff34b5c7",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "5887aad4e53a",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "602c89d3fc6d",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "6491f6396a78",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "6906c5d650ea",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "8b8364b95483",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "b812d39f67a6",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "c31f7c2657d6",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "c3835f8689a5",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "c6ca3f39eac6",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "d17c0acf6428",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "e8484424d6b1",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "efc0720657be",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "f7ac623c7181",
+      "op": "ReduceSum",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "0694511f1378",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "10bc69ab1b24",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "2d721744a73f",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "4f1aafa86ca7",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "56b0b4b064e4",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "586359127fcf",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "836e1f1cf28b",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "934feb066ef7",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "9d66dd0f5ad4",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "c1b325def8e6",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "c960a80dff7a",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "d33e95a7cb39",
+      "op": "Softmax",
+      "unchanged": true
+    },
+    {
+      "run": "results_sweep_ext2",
+      "hash": "e924577a807a",
+      "op": "Softmax",
+      "unchanged": true
+    }
+  ]
+}

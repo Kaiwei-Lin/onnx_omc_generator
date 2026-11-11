@@ -4,7 +4,9 @@
 
 默认参数以 handfree 模型为依据，权重是可重复的合成测试值。Softmax 没有找到可独立恢复的原节点，使用通用样例。实际 OMC 类型由 DDK 决定，例如本机 GemmD 家族实际编译为 GemmV3。
 
-当前布局修正、31 µs 局部临界点和两种 Add 的实测见 [BOUNDARY_31US.md](BOUNDARY_31US.md)。设备实际上报 Kirin9020，编译使用 Kirin9030 OMG。`results_boundary_31us_verified.zip` 提供模型和原始证据。旧版 [BENCHMARK_31US.md](BENCHMARK_31US.md) 及 ZIP 保留为历史对照，其中 Mul、LayerNorm、ConvTranspose 的布局不满足后续要求。
+当前布局修正、31 µs 局部临界点和两种 Add 的实测见 [BOUNDARY_31US.md](BOUNDARY_31US.md)。设备实际上报 Kirin9020，编译使用 Kirin9030 OMG。本机的 `results_boundary_31us_verified.zip` 保存模型和原始证据。旧版 [BENCHMARK_31US.md](BENCHMARK_31US.md) 及 ZIP 保留为历史对照，其中 Mul、LayerNorm、ConvTranspose 的布局不满足后续要求。
+
+后续实验表的逐 shape 实测、放大配置和小 shape 对照见 [SHAPE_SWEEP.md](SHAPE_SWEEP.md)。本次仅同步代码、配置与汇总；临界点 ZIP 和 shape 扫描的模型、原始 profiling、设备日志留在本机。
 
 Mul 和 LayerNorm 默认先生成标准 ONNX，再从同一组张量生成未编译 GE AIR，由 OMG 编译出 ND 核心。已实机验证 NPU 执行和数值；不修改已编译 OMC。当前 DDK 仍会把 ConvTranspose 的一维 bias 改成四维 NC1HWC0，默认模式会明确报错。CastT 仍没有取得独立 NPU 耗时。
 
@@ -111,8 +113,10 @@ LayerNorm 的 decomposed 模式使用 ReduceMean/Sub/Pow/Add/Sqrt/Div/Mul 等标
 `compiler.json` 的 `io_layout` 默认为 `handfree`：
 
 - Mul/LayerNorm 使用 `ge_nd.py` 从已经检查过的 ONNX 取得 shape、dtype、原始 initializer 字节，构建新的 GE AIR，然后调用 `omg --framework 1`。Mul 的两路核心输入、LayerNorm 的核心输入/scale/bias 均为 ND。AIR 保存在编译日志目录并记录 SHA-256。此路径支持 FP16/FP32，LayerNorm 使用 FP32 累积且 affine dtype 与输入一致。
-- ReduceSum 保留 ONNX 编译路径，并核验核心输入为 ND。
+- ReduceSum 使用 GE AIR，并核验核心输入为 ND；归约轴经标准化后以 INT32 常量交给 GE。这样也覆盖了原 ONNX 路径会插入 TransData 的二维归约和较大三维归约。
 - 卷积、Add、Activation、PRelu、Softmax 使用 NC1HWC0 接口。脚本传入 `--use_origin_format=false`、按输入名指定 `--input_format`，并按输出**生产节点名**指定 `--output_format`。
+- 非四维 Add、Sigmoid、PRelu、Softmax 改走 GE AIR，保留配置的 rank；公开接口使用连续逻辑数据。是否可编译仍由 DDK 对相应 shape / 广播的支持决定。
+- Add 的多维部分广播也使用 AIR，处理原 NC1HWC0 路径的 TransData 或模型加载问题；同 shape 的四维 Add 保留既有路径。
 - ConvTranspose 核验 bias 的核心端口和实际 Const 描述：必须是 ND，实际张量必须一维。不能用端口占位 shape `[1]` 替代常量的真实 shape。
 - 所有默认产物必须经解析确认 `TransData=0` 才会发布到结果目录。ND 核心不等于模型入口标签为 ND：当前 OMG 的公开 Data/NetOutput 仍标记 NCHW，按连续逻辑 tensor 供数；记录同时给出公开接口和核心端口，不混淆二者。OMG 本身拒绝 `--input_format X:ND`。
 

@@ -93,6 +93,55 @@ def stats(values):
                 min_us=min(values), max_us=max(values), stddev_us=statistics.pstdev(values))
 
 
+def numerical_check(actual, expected, case, feed):
+    if actual.shape != expected.shape:
+        return dict(passed=False, onnxruntime_passed=False, reason="output_shape_mismatch",
+                    actual_shape=list(actual.shape), expected_shape=list(expected.shape))
+    finite = bool(np.isfinite(actual).all())
+    ort_passed = bool(finite and np.allclose(actual, expected, rtol=0.03, atol=0.003))
+    result = dict(passed=ort_passed, onnxruntime_passed=ort_passed, reference="onnxruntime",
+                  atol=0.003, rtol=0.03, max_abs_error=float(np.max(np.abs(actual - expected))),
+                  rmse=float(np.sqrt(np.mean((actual - expected) ** 2))))
+    attrs = case.get("attributes", {})
+    axes = attrs.get("axes", [])
+    if not ort_passed and finite and case["op"] == "ReduceSum" and len(axes) == 1:
+        x = feed[case["inputs"][0]["name"]]
+        if x.dtype == np.float16:
+            axis = axes[0] % x.ndim
+            ref16 = np.take(np.cumsum(x, axis=axis, dtype=np.float16), -1, axis=axis)
+            if attrs.get("keepdims", 1):
+                ref16 = np.expand_dims(ref16, axis)
+            # A second exact arithmetic reference, never a relaxed error tolerance.
+            exact = bool(actual.shape == ref16.shape and np.array_equal(actual, ref16.astype(np.float32)))
+            result["fp16_sequential_exact"] = exact
+            if exact:
+                result.update(passed=True, reference="fp16_sequential_exact")
+    for key in ("max_abs_error", "rmse"):
+        if not math.isfinite(result[key]):
+            result[key] = None
+            result["nonfinite_output_or_error"] = True
+    return result
+
+
+def target_statistics(rows, cores, times, warmup, threshold):
+    if not cores or not 0 <= warmup < times:
+        raise ValueError("Need target cores and 0 <= warmup < times")
+    per_core, discarded, kept = [], [], []
+    for core in cores:
+        name = core["name"] + "(" + core["type"] + ")"
+        found, values = durations(rows, "op name", name, times)
+        if any(r.get("device type") != "npu_aicore" for r in found):
+            raise ValueError("Target is not executing on npu_aicore: " + name)
+        discarded.extend(values[:warmup]); kept.extend(values[warmup:])
+        per_core.append(dict(target=name, **stats(values[warmup:]), values_us=values,
+                             warmup=warmup, all_samples_above_threshold=min(values[warmup:]) > threshold))
+    # Keep slicing by values_us[warmup:] valid, but never sum separate kernels' times.
+    return dict(target="; ".join(c["target"] for c in per_core), target_device_types=["npu_aicore"],
+                **stats(kept), threshold_us=threshold, all_samples_above_threshold=min(kept) > threshold,
+                values_us=discarded + kept, warmup=len(discarded), warmup_per_core=warmup,
+                core_count=len(cores), per_core=per_core, timing_kind="individual_core_samples_not_sum")
+
+
 class Device:
     def __init__(self, hdc, target, tools):
         self.hdc, self.target, self.tools = str(hdc), target, tools
@@ -124,7 +173,8 @@ class Device:
             raise RuntimeError("Pull hash mismatch: " + str(local))
 
 
-def profile(device, record_path, out, remote_root, times, warmup, perf, threshold, allow_transdata=False):
+def profile(device, record_path, out, remote_root, times, warmup, perf, threshold, allow_transdata=False,
+            allow_multiple_core=False):
     record = json.loads(record_path.read_text(encoding="utf-8"))
     compiled = record["compile"]
     if compiled.get("status") != "COMPILED":
@@ -137,7 +187,7 @@ def profile(device, record_path, out, remote_root, times, warmup, perf, threshol
     if audit["types"].get("TransData", 0) and not allow_transdata:
         raise ValueError("TransData is present")
     core = [n for n in audit["nodes"] if n["type"] in CORE_TYPES[record["op"]]]
-    if len(core) != 1:
+    if not core or (len(core) != 1 and not allow_multiple_core):
         raise ValueError("Expected exactly one target compute node")
     identifier = record["op"] + "_" + record["config_sha256"][:12]
     dest = out / identifier
@@ -174,7 +224,7 @@ def profile(device, record_path, out, remote_root, times, warmup, perf, threshol
         command += ["--input_format=" + ",".join(t["layout"] for t in ordered_inputs),
                     "--output_format=" + ",".join(t["layout"] for t in outputs)]
     save_json(dest / "invocation.json", dict(command=command, record=str(record_path), omc_sha256=sha256(omc),
-              onnx_sha256=sha256(onnx), times=times, warmup=warmup, perf=perf, core=core[0],
+              onnx_sha256=sha256(onnx), times=times, warmup=warmup, perf=perf, core=core[0], cores=core,
               interfaces=audit["interfaces"], compiler_platform=compiled["compiler"]["config"].get("platform", "kirin9030"),
               input="seeded finite normal(0,0.1); NC1HWC0 packed with descriptor padding; NCHW/ND logical bytes"))
     thermal = "date; for z in /sys/class/thermal/thermal_zone*; do printf '%s ' \"$z\"; cat \"$z/type\" \"$z/temp\" 2>/dev/null; done; true"
@@ -215,26 +265,18 @@ def profile(device, record_path, out, remote_root, times, warmup, perf, threshol
     ref_types = {"FLOAT": np.float32, "FLOAT16": np.float16}
     reference_feed = {t["name"]: feed[t["name"]].astype(ref_types[t["dtype"]]) for t in record["onnx_info"]["inputs"]}
     expected = session.run(None, reference_feed)[0].astype(np.float32)
-    numeric = dict(passed=bool(np.isfinite(actual).all() and np.allclose(actual, expected, rtol=0.03, atol=0.003)),
-                   atol=0.003, rtol=0.03, max_abs_error=float(np.max(np.abs(actual - expected))),
-                   rmse=float(np.sqrt(np.mean((actual - expected) ** 2))))
+    numeric = numerical_check(actual, expected, record["case"], reference_feed)
     save_json(dest / "numerical_check.json", numeric)
     if not numeric["passed"]:
         raise ValueError("Device output differs from ONNX; inspect numerical_check.json")
     if len(op_files) != 1 or len(model_files) != 1 or not list((dest / "csv").glob("*_pmu.csv")):
         raise ValueError("No unambiguous NPU op/PMU CSV; model latency is not a target-kernel measurement")
     op_rows = csv_rows(op_files[0])
-    name = core[0]["name"] + "(" + core[0]["type"] + ")"
-    target_rows, values = durations(op_rows, "op name", name, times)
-    if any(r["device type"] != "npu_aicore" for r in target_rows):
-        raise ValueError("Target is not executing on npu_aicore")
+    timing = target_statistics(op_rows, core, times, warmup, threshold)
     _, model_values = durations([r for r in csv_rows(model_files[0]) if r.get("item event") == "inference end"],
                                 "model name", identifier, times)
-    result = dict(op=record["op"], id=identifier, config=record["case"], target=name,
-                  target_device_types=sorted({r["device type"] for r in target_rows}),
-                  **stats(values[warmup:]), threshold_us=threshold,
-                  all_samples_above_threshold=min(values[warmup:]) > threshold,
-                  model=stats(model_values[warmup:]), values_us=values, warmup=warmup,
+    result = dict(op=record["op"], id=identifier, config=record["case"], **timing,
+                  model=stats(model_values[warmup:]),
                   all_runtime_ops=sorted({r["op name"] for r in op_rows}),
                   transdata_count=audit["types"].get("TransData", 0), numerical_check=numeric,
                   record=str(record_path), onnx=str(onnx), omc=str(omc),
@@ -257,6 +299,7 @@ def main():
     p.add_argument("--perf", type=int, choices=(1, 2, 3, 4, 103), default=3)
     p.add_argument("--threshold", type=float, default=31)
     p.add_argument("--allow-transdata", action="store_true", help="Diagnostic comparison only; target timing still excludes TransData")
+    p.add_argument("--allow-multiple-core", action="store_true", help="Check every target kernel separately; never sum kernel times")
     a = p.parse_args()
     if not a.hdc or not 0 <= a.warmup < a.times or not math.isfinite(a.threshold) or a.threshold < 0:
         p.error("Need HDC, 0 <= warmup < times, and finite nonnegative threshold")
@@ -282,7 +325,8 @@ def main():
     results, failures = [], []
     for record in records:
         try:
-            results.append(profile(device, record, a.out, remote, a.times, a.warmup, a.perf, a.threshold, a.allow_transdata))
+            results.append(profile(device, record, a.out, remote, a.times, a.warmup, a.perf, a.threshold,
+                                   a.allow_transdata, a.allow_multiple_core))
         except (RuntimeError, ValueError, OSError, subprocess.TimeoutExpired) as error:
             failures.append(dict(record=str(record), error=str(error)))
             print("PROFILE FAILED " + str(record) + " " + str(error), flush=True)

@@ -1,0 +1,60 @@
+﻿group,op,title,total,above_31,at_or_below_31,unmeasured,min_us,max_us
+MatMul_small_m,MatMul,小 M、大 N、大 K,8,8,0,0,258.0,704.0
+MatMul_small_n,MatMul,小 N、大 M、大 K,8,8,0,0,216.0,394.0
+MatMul_k,MatMul,固定 M/N 扫描 K,8,6,2,0,23.0,341.0
+MatMul_square,MatMul,规则大矩阵,8,4,4,0,18.0,170.0
+MatMul_small_k,MatMul,大 M/N、小 K,8,8,0,0,61.0,172.0
+MatMul_long_reduce,MatMul,小 M/N、长归约,8,0,8,0,16.0,39.0
+MatMul_same_flops,MatMul,相同 FLOPs、不同矩阵比例,8,8,0,0,54.0,12821.0
+MatMul_alignment,MatMul,Tile 对齐边界,12,12,0,0,37.0,115.0
+GemmD_small_m,GemmD,小 M、宽输出,8,8,0,0,33.0,88.0
+GemmD_n,GemmD,输出 N 扩展,8,1,7,0,20.0,59.0
+GemmD_k,GemmD,归约 K 扩展,8,4,4,0,24.0,81.0
+GemmD_alignment,GemmD,非对齐 N,12,0,12,0,19.0,59.0
+BatchMatMul_batch,BatchMatMul,Batch 数量,8,6,2,0,23.0,705.0
+BatchMatMul_m,BatchMatMul,单批 M,8,8,0,0,45.0,77.0
+BatchMatMul_n,BatchMatMul,输出 N,8,6,2,0,27.0,173.0
+BatchMatMul_k,BatchMatMul,归约 K,8,8,0,0,34.0,166.0
+BatchMatMul_same_flops,BatchMatMul,固定 B×M=128,8,5,3,0,25.0,580.0
+Convolution_width,Convolution,原始长宽比,8,3,5,0,12.0,81.0
+Convolution_cin,Convolution,输入通道,8,5,3,0,19.0,207.0
+Convolution_cout,Convolution,输出通道,8,5,3,0,26.0,125.0
+Convolution_kernel,Convolution,Kernel 几何,8,5,3,0,20.0,195.0
+Convolution_group,Convolution,Group / Depthwise,8,4,4,0,11.0,90.0
+Convolution_aspect,Convolution,H×W=8192,8,8,0,0,270.0,600.0
+ConvTranspose_spatial,ConvTranspose,原始空间规模,8,0,0,8,,
+ConvTranspose_cout,ConvTranspose,输出通道,8,0,0,8,,
+ConvTranspose_stride,ConvTranspose,上采样倍率,8,0,0,8,,
+ConvTranspose_kernel,ConvTranspose,Kernel 几何,8,0,0,8,,
+ConvTranspose_group,ConvTranspose,分组反卷积,8,0,0,8,,
+Add_small,Add,small,8,0,8,0,4.0,6.0
+Add_small_constant,Add,small：一方常量,8,0,8,0,4.0,6.0
+Add_large,Add,large,8,4,4,0,5.0,952.0
+Add_large_constant,Add,large：一方常量,8,4,4,0,5.0,937.0
+Mul_small,Mul,small,8,0,8,0,4.0,6.0
+Mul_large,Mul,large,8,4,4,0,5.0,954.0
+Activation_small,Activation,small,8,0,8,0,4.0,7.0
+Activation_large,Activation,large,8,3,5,0,5.0,733.0
+Add_broadcast,Add,广播,8,8,0,0,44.0,142.0
+Add_broadcast_constant,Add,广播：一方常量,8,8,0,0,44.0,171.0
+Mul_broadcast,Mul,广播与可复用常量,8,8,0,0,44.0,4001.0
+Activation_shape,Activation,同元素数不同 rank,8,8,0,0,49.0,132.0
+Activation_alignment,Activation,L 对齐边界,12,3,9,0,10.0,132.0
+PRelu_scalar,PRelu,标量 slope,8,0,0,8,,
+PRelu_channel,PRelu,通道 slope,8,4,4,0,14.0,148.0
+PRelu_broadcast,PRelu,slope 广播粒度,8,1,0,7,40.0,43.0
+ReduceSum_short,ReduceSum,短归约,8,1,7,0,29.0,232.0
+ReduceSum_long,ReduceSum,长归约,8,1,7,0,6.0,77.0
+ReduceSum_fixed_elements,ReduceSum,固定 262144 元素,8,6,2,0,25.0,201.0
+ReduceSum_axis0,ReduceSum,原始 axis=0,8,6,2,0,21.0,1302.0
+ReduceSum_direction,ReduceSum,连续/跨步归约,8,0,8,0,13.0,41.0
+LayerNorm_short,LayerNorm,短归一化,8,8,0,0,207.0,282.0
+LayerNorm_long,LayerNorm,长归一化,8,0,5,3,7.0,12.0
+LayerNorm_fixed_elements,LayerNorm,固定 65536 元素,8,6,1,1,21.0,875.0
+LayerNorm_rank,LayerNorm,原始及等价布局,8,5,0,3,56.0,99.0
+LayerNorm_alignment,LayerNorm,归一化长度对齐,12,12,0,0,55.0,85.0
+Softmax_short,Softmax,短行,8,8,0,0,61.0,329.0
+Softmax_long,Softmax,长行,8,4,4,0,5.0,225.0
+Softmax_fixed_elements,Softmax,固定 262144 元素,8,8,0,0,82.0,449.0
+Softmax_four_d,Softmax,原始四维,8,8,0,0,44.0,233.0
+Softmax_alignment,Softmax,归约边界,12,12,0,0,36.0,184.0

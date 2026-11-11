@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from profile_ops import Device, durations, pack, unpack
+from profile_ops import Device, durations, pack, unpack, target_statistics, numerical_check
 
 
 class ProfileTests(unittest.TestCase):
@@ -42,6 +42,37 @@ class ProfileTests(unittest.TestCase):
         device.call = lambda *args, **kwargs: "missing remote status"
         with self.assertRaises(RuntimeError):
             device.shell("test")
+
+    def test_multiple_cores_are_not_summed_and_each_drops_its_warmup(self):
+        cores = [dict(name="a", type="Convolution"), dict(name="b", type="Convolution")]
+        rows = [{"op name": c["name"] + "(Convolution)", "total time(us)": str(v), "device type": "npu_aicore"}
+                for c in cores for v in (99, 20, 22)]
+        result = target_statistics(rows, cores, 3, 1, 31)
+        self.assertFalse(result["all_samples_above_threshold"])
+        self.assertEqual(result["core_count"], 2)
+        self.assertEqual(result["samples"], 4)
+        self.assertEqual(result["values_us"][result["warmup"]:], [20, 22, 20, 22])
+        self.assertEqual(result["max_us"], 22)
+        rows[-1]["device type"] = "cpu"
+        with self.assertRaises(ValueError):
+            target_statistics(rows, cores, 3, 1, 31)
+
+    def test_half_reduction_requires_exact_secondary_reference(self):
+        x = np.array([[2048], [1], [-2048]], dtype=np.float16)
+        case = dict(op="ReduceSum", inputs=[dict(name="X")], attributes=dict(axes=[0], keepdims=1))
+        expected = x.astype(np.float32).sum(axis=0, keepdims=True)
+        result = numerical_check(np.array([[0]], np.float32), expected, case, {"X": x})
+        self.assertTrue(result["passed"])
+        self.assertFalse(result["onnxruntime_passed"])
+        self.assertTrue(result["fp16_sequential_exact"])
+        wrong = numerical_check(np.array([[0.25]], np.float32), expected, case, {"X": x})
+        self.assertFalse(wrong["passed"])
+        nonfinite = numerical_check(np.array([[np.inf]], np.float32), expected, case, {"X": x})
+        self.assertFalse(nonfinite["passed"])
+        self.assertIsNone(nonfinite["max_abs_error"])
+        mismatched = numerical_check(np.ones(1, np.float32), np.ones((1,1), np.float32), case, {"X":x})
+        self.assertFalse(mismatched["passed"])
+        self.assertEqual(mismatched["reason"], "output_shape_mismatch")
 
 
 if __name__ == "__main__":

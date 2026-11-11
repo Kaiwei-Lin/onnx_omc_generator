@@ -1,0 +1,567 @@
+[
+  {
+    "op": "MatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264848,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            1,
+            4096
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "B",
+          "shape": [
+            4096,
+            32
+          ]
+        }
+      ],
+      "constant_left_rewrite": true
+    }
+  },
+  {
+    "op": "MatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264848,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            32,
+            6144
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "B",
+          "shape": [
+            6144,
+            1
+          ]
+        }
+      ],
+      "constant_left_rewrite": true
+    }
+  },
+  {
+    "op": "MatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264848,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            1024,
+            1
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "B",
+          "shape": [
+            1,
+            256
+          ]
+        }
+      ],
+      "constant_left_rewrite": true
+    }
+  },
+  {
+    "op": "MatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264848,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            256,
+            128
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "B",
+          "shape": [
+            128,
+            256
+          ]
+        }
+      ],
+      "constant_left_rewrite": true
+    }
+  },
+  {
+    "op": "MatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264848,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            1,
+            1024
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "B",
+          "shape": [
+            1024,
+            128
+          ]
+        }
+      ],
+      "constant_left_rewrite": true
+    }
+  },
+  {
+    "op": "GemmD",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264128,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            1,
+            288
+          ]
+        },
+        {
+          "name": "B",
+          "shape": [
+            288,
+            384
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "C",
+          "shape": [
+            384
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ],
+      "attributes": {
+        "transA": 0,
+        "transB": 0,
+        "alpha": 1.0,
+        "beta": 1.0
+      }
+    }
+  },
+  {
+    "op": "BatchMatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264026,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            8,
+            1,
+            256
+          ]
+        },
+        {
+          "name": "B",
+          "shape": [
+            8,
+            256,
+            64
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ]
+    }
+  },
+  {
+    "op": "BatchMatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264026,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            8,
+            2,
+            1
+          ]
+        },
+        {
+          "name": "B",
+          "shape": [
+            8,
+            1,
+            128
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ]
+    }
+  },
+  {
+    "op": "Convolution",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264171,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            96,
+            3,
+            256
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            96,
+            96,
+            3,
+            3
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "B",
+          "shape": [
+            96
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ],
+      "attributes": {
+        "kernel_shape": [
+          3,
+          3
+        ],
+        "strides": [
+          1,
+          1
+        ],
+        "dilations": [
+          1,
+          1
+        ],
+        "group": 1,
+        "pads": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  {
+    "op": "Add",
+    "params": {
+      "dtype": "float16",
+      "seed": 20262525,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            16,
+            128,
+            128
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            1
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "op": "Add",
+    "params": {
+      "dtype": "float16",
+      "seed": 20262525,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            16,
+            128,
+            128
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            1
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "op": "Mul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261522,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            256,
+            1024,
+            1
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            1
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "op": "Activation",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261629,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            262144
+          ]
+        }
+      ],
+      "activation": "Sigmoid"
+    }
+  },
+  {
+    "op": "LayerNorm",
+    "params": {
+      "dtype": "float16",
+      "seed": 20263366,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            128,
+            8
+          ]
+        },
+        {
+          "name": "scale",
+          "shape": [
+            1,
+            8
+          ],
+          "init": {
+            "kind": "normal",
+            "mean": 1.0,
+            "std": 0.02
+          }
+        },
+        {
+          "name": "bias",
+          "shape": [
+            1,
+            8
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ],
+      "attributes": {
+        "axis": 1,
+        "epsilon": 9.999999747378752e-06
+      },
+      "implementation": "native",
+      "accumulation_dtype": "float32",
+      "opset": 17
+    }
+  },
+  {
+    "op": "LayerNorm",
+    "params": {
+      "dtype": "float16",
+      "seed": 20263366,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            128,
+            31
+          ]
+        },
+        {
+          "name": "scale",
+          "shape": [
+            1,
+            31
+          ],
+          "init": {
+            "kind": "normal",
+            "mean": 1.0,
+            "std": 0.02
+          }
+        },
+        {
+          "name": "bias",
+          "shape": [
+            1,
+            31
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ],
+      "attributes": {
+        "axis": 1,
+        "epsilon": 9.999999747378752e-06
+      },
+      "implementation": "native",
+      "accumulation_dtype": "float32",
+      "opset": 17
+    }
+  },
+  {
+    "op": "Softmax",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261111,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1024,
+            2
+          ]
+        }
+      ],
+      "attributes": {
+        "axis": 1
+      }
+    }
+  },
+  {
+    "op": "Softmax",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261111,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1024,
+            8
+          ]
+        }
+      ],
+      "attributes": {
+        "axis": 1
+      }
+    }
+  },
+  {
+    "op": "Softmax",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261111,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            2048,
+            2,
+            1
+          ]
+        }
+      ],
+      "attributes": {
+        "axis": 2
+      }
+    }
+  },
+  {
+    "op": "Softmax",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261111,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "attributes": {
+        "axis": 1
+      }
+    }
+  }
+]

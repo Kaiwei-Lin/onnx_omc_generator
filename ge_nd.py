@@ -1,4 +1,5 @@
-"""Build uncompiled GE AIR for ND Mul/LayerNorm; OMG still compiles every kernel."""
+"""Build uncompiled GE AIR for ND cores; OMG still compiles every kernel."""
+import numpy as np
 from onnx import TensorProto, numpy_helper
 
 from omc_reader import schema
@@ -7,8 +8,10 @@ from omc_reader import schema
 def build_air(case, model, ge_proto):
     """Use the checked ONNX's shapes, types and exact initializer bytes."""
     op = case["op"]
-    if op not in {"Mul", "LayerNorm"}:
-        raise ValueError("ND AIR supports Mul and LayerNorm")
+    if op not in {"Add", "Mul", "LayerNorm", "Activation", "PRelu", "Softmax", "ReduceSum"}:
+        raise ValueError("Unsupported ND AIR operator: " + op)
+    if op == "Activation" and case.get("activation", "Sigmoid") != "Sigmoid":
+        raise ValueError("ND AIR Activation currently supports Sigmoid")
     Model, *_ = schema(ge_proto)
     ir = Model(name=op, version=0)
     graph = ir.graph.add(name=op + "_nd")
@@ -58,6 +61,21 @@ def build_air(case, model, ge_proto):
             node.input_desc.add().CopyFrom(node.output_desc[0])
             graph.input.append(name + ":0")
 
+    if op == "ReduceSum":
+        attrs = case.get("attributes", {})
+        rank = len(describe(case["inputs"][0]["name"])[0])
+        axes = [a % rank for a in (attrs.get("axes") or [])]
+        if not axes and not attrs.get("noop_with_empty_axes", 0):
+            axes = list(range(rank))
+        const = graph.op.add(name="__nd_axes", type="Const")
+        axes_desc = const.output_desc.add()
+        axes_desc.shape.dim.append(len(axes))
+        axes_desc.layout = "ND"
+        axes_desc.dtype = axes_desc.DESCRIPTOR.fields_by_name["dtype"].enum_type.values_by_name["DT_INT32"].number
+        const.attr["value"].t.desc.CopyFrom(axes_desc)
+        # Normalized axis indices fit INT32; GE consumes these as its Tidx=3 type.
+        const.attr["value"].t.data = np.asarray(axes, dtype=np.int32).tobytes()
+
     node = graph.op.add(name="Y", type=op)
     node.input.extend(t["name"] + ":0" for t in case["inputs"])
     for item in case["inputs"]:
@@ -65,6 +83,28 @@ def build_air(case, model, ge_proto):
     desc(node.output_desc.add(), "Y")
     node.attr["version"].i = 5 if op == "LayerNorm" else 6
     node.attr["transformer_nd"].b = True
+    if op == "ReduceSum":
+        node.input.append("__nd_axes:0")
+        node.input_desc.add().CopyFrom(axes_desc)
+        node.attr["axis"].list.i.extend(axes)
+        node.attr["axis"].list.val_type = 2
+        node.attr["keep_dims"].b = bool(attrs.get("keepdims", 1))
+        node.attr["noop_with_empty_axes"].b = bool(attrs.get("noop_with_empty_axes", 0))
+        node.attr["Tidx"].i = 3
+        node.attr["alpha"].f = 1
+        node.attr["beta"].f = 0
+    if op == "Activation":
+        node.attr["mode"].i = 0  # GE Activation mode 0 is Sigmoid.
+    if op == "PRelu":
+        slope_shape, _ = describe(case["inputs"][1]["name"])
+        node.attr["data_format"].s = b"NCHW"
+        node.attr["channel_shared"].b = all(d == 1 for d in slope_shape)
+    if op == "Softmax":
+        rank = len(describe(case["inputs"][0]["name"])[0])
+        axis = case.get("attributes", {}).get("axis", -1) % rank
+        if case.get("opset", 13) < 13 and axis != rank - 1:
+            raise ValueError("ND Softmax requires opset >=13 for a non-last axis")
+        node.attr["axis"].i = axis
     if op == "LayerNorm":
         attrs = case.get("attributes", {})
         rank = len(describe(case["inputs"][0]["name"])[0])
