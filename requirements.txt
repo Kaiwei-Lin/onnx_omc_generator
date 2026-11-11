@@ -1,0 +1,6 @@
+numpy>=1.24,<3
+onnx>=1.14,<2
+protobuf>=3.20.3,<8
+networkx>=3,<4
+# Optional --check-runtime and numerical tests:
+onnxruntime>=1.15,<2

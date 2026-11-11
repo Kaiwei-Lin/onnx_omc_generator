@@ -1,0 +1,27 @@
+test_activation_and_cast (test_generate_ops.GeneratorTests) ... ok
+test_all_handfree_defaults (test_generate_ops.GeneratorTests) ... ok
+test_bad_config_is_rejected (test_generate_ops.GeneratorTests) ... ok
+test_batched_transpose_and_broadcast (test_generate_ops.GeneratorTests) ... ok
+test_broadcast_binary (test_generate_ops.GeneratorTests) ... ok
+test_compiler_preserves_cast_interfaces (test_generate_ops.GeneratorTests) ... ok
+test_constant_left_matmul_rewrite (test_generate_ops.GeneratorTests) ... ok
+test_convtranspose_stride_padding_output_padding (test_generate_ops.GeneratorTests) ... ok
+test_failed_compiler_never_publishes_omc (test_generate_ops.GeneratorTests) ... ok
+test_gemm_transpose_scaling_bias (test_generate_ops.GeneratorTests) ... ok
+test_grouped_conv_stride_padding_dilation (test_generate_ops.GeneratorTests) ... ok
+test_layernorm_fp32_accumulation_for_fp16_input (test_generate_ops.GeneratorTests) ... ok
+test_layernorm_full_fp32_with_fp16_interface (test_generate_ops.GeneratorTests) ... ok
+test_layernorm_native_and_decomposed (test_generate_ops.GeneratorTests) ... ok
+test_matmul_vector_and_scalar_output (test_generate_ops.GeneratorTests) ... ok
+test_npy_change_updates_hash (test_generate_ops.GeneratorTests) ... ok
+test_overrides_and_alias (test_generate_ops.GeneratorTests) ... ok
+test_prelu_channel_slope (test_generate_ops.GeneratorTests) ... ok
+test_reduce_axes_keepdims_and_empty (test_generate_ops.GeneratorTests) ... ok
+test_reuse_and_protect_existing_onnx (test_generate_ops.GeneratorTests) ... ok
+test_seed_and_float_attributes_distinguish_filenames (test_generate_ops.GeneratorTests) ... ok
+test_softmax_axis (test_generate_ops.GeneratorTests) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.639s
+
+OK
