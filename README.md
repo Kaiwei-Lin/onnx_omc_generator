@@ -4,6 +4,10 @@
 
 默认参数以 handfree 模型为依据，权重是可重复的合成测试值。Softmax 没有找到可独立恢复的原节点，使用通用样例。实际 OMC 类型由 DDK 决定，例如本机 GemmD 家族实际编译为 GemmV3。
 
+2026-11-11 实机测试已找到 **12 类目标 NPU 算子耗时 >31 µs** 的配置，每项通过 3 组、共 60 次有效采样。设备实际上报 Kirin9020，编译使用 Kirin9030 OMG。完整 shape、权重、时间、复测命令与 CastT 的限制见 [BENCHMARK_31US.md](BENCHMARK_31US.md)。`results_31us_verified.zip` 提供已测模型和原始证据。
+
+原生 LayerNormalization 的默认配置在本 DDK 下进入 CPUCL；零 TransData 不代表 NPU 执行。需测 NPU LayerNorm 时使用 `configs/layernorm_31us.json` 配合 `configs/layernorm_npu_compiler.json`。
+
 ## 快速使用
 
 在 Linux / WSL 中，使用已经能够运行 OMG 的 Python 环境：

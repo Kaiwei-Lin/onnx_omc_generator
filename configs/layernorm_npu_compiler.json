@@ -1,0 +1,14 @@
+{
+  "platform": "kirin9030",
+  "weight_data_type": "FP16",
+  "use_origin_format": true,
+  "io_types": "auto",
+  "extra_args": [
+    "--input_type",
+    "X:FP16",
+    "--output_type",
+    "Y:FP16"
+  ],
+  "timeout": 300,
+  "io_layout": "native"
+}
