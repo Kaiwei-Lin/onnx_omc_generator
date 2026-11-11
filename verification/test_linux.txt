@@ -13,15 +13,19 @@ test_layernorm_fp32_accumulation_for_fp16_input (test_generate_ops.GeneratorTest
 test_layernorm_full_fp32_with_fp16_interface (test_generate_ops.GeneratorTests) ... ok
 test_layernorm_native_and_decomposed (test_generate_ops.GeneratorTests) ... ok
 test_matmul_vector_and_scalar_output (test_generate_ops.GeneratorTests) ... ok
+test_native_defaults_preserve_logical_values (test_generate_ops.GeneratorTests) ... ok
+test_native_io_command_and_boolean_flag (test_generate_ops.GeneratorTests) ... ok
+test_native_mode_rejects_remaining_transdata (test_generate_ops.GeneratorTests) ... ok
 test_npy_change_updates_hash (test_generate_ops.GeneratorTests) ... ok
 test_overrides_and_alias (test_generate_ops.GeneratorTests) ... ok
 test_prelu_channel_slope (test_generate_ops.GeneratorTests) ... ok
 test_reduce_axes_keepdims_and_empty (test_generate_ops.GeneratorTests) ... ok
 test_reuse_and_protect_existing_onnx (test_generate_ops.GeneratorTests) ... ok
 test_seed_and_float_attributes_distinguish_filenames (test_generate_ops.GeneratorTests) ... ok
+test_simple_config_roundtrip_and_legacy_input (test_generate_ops.GeneratorTests) ... ok
 test_softmax_axis (test_generate_ops.GeneratorTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 22 tests in 0.639s
+Ran 26 tests in 0.653s
 
 OK

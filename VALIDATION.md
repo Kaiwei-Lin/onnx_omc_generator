@@ -1,29 +1,34 @@
-# 本机验证记录（2026-11-11）
+# 验证记录：简化配置与零 TransData（2026-11-11）
 
-13 类默认配置全部通过 ONNX checker、shape 推导、ONNX Runtime CPU 试运行，以及 Kirin9030 OMG 编译。每个生成的 OMC 都由 IMOD/GE 解析器重新读取，核对真实类型及输入输出描述。22 项单元/数值测试在 Windows 和 WSL 环境中分别全部通过。
+13 类默认样例均通过 ONNX 检查、CPU 试运行、Kirin9030 OMG 编译及 OMC 结构解析。TransData 总数从 **18 减少到 0**。Windows 和 WSL 的 **26 项测试分别全部通过**，包括二维/四维配置的数值对应关系、配置回读、NPY 路径、布尔编译参数和残留 TransData 拒绝测试。
 
-编译环境为 WSL Ubuntu-22.04、Python 3.10.21、ONNX 1.14.1、NumPy 1.26.4、ONNX Runtime 1.15.1、protobuf 3.20.3、DDK-tools-next-6.1.1.0，平台 kirin9030。Windows 测试环境为 Python 3.10.20、ONNX 1.23.2、NumPy 2.2.6、ONNX Runtime 1.23.2。
+| 算子家族 | 原 TransData | 当前 TransData | 当前 OMC 计算节点 |
+|---|---:|---:|---|
+| MatMul | 0 | 0 | MatMulV2 × 1, Permute × 2 |
+| GemmD | 0 | 0 | GemmV3 × 1 |
+| BatchMatMul | 0 | 0 | BatchMatMulV2 × 1 |
+| Convolution | 2 | 0 | Convolution × 1 |
+| ConvTranspose | 2 | 0 | ConvTranspose × 1 |
+| Add | 3 | 0 | Eltwise × 1 |
+| Mul | 3 | 0 | Eltwise × 1 |
+| Activation | 2 | 0 | Activation × 1 |
+| PRelu | 2 | 0 | PRelu × 1 |
+| ReduceSum | 0 | 0 | ReduceSum × 1 |
+| LayerNorm | 2 | 0 | CastT × 2, LayerNorm × 1 |
+| Softmax | 2 | 0 | Softmax × 1 |
+| CastT | 0 | 0 | CastT × 1 |
 
-| 请求家族 / 目录 | OMC 中实际计算节点（包含布局转换） |
-|---|---|
-| MatMul | MatMulV2 × 1, Permute × 2 |
-| GemmD | GemmV3 × 1 |
-| BatchMatMul | BatchMatMulV2 × 1 |
-| Convolution | Convolution × 1, TransData × 2 |
-| ConvTranspose | ConvTranspose × 1, TransData × 2 |
-| Add | Eltwise × 1, TransData × 3 |
-| Mul | Mul × 1, TransData × 3 |
-| Activation | Activation × 1, TransData × 2 |
-| PRelu | PRelu × 1, TransData × 2 |
-| ReduceSum | ReduceSum × 1 |
-| LayerNorm | LayerNorm × 1, TransData × 2 |
-| Softmax | Softmax × 1, TransData × 2 |
-| CastT | CastT × 1 |
+本机环境：DDK-tools-next-6.1.1.0 / kirin9030，WSL Ubuntu-22.04，Python 3.10.21，ONNX 1.14.1，ORT 1.15.1，NumPy 1.26.4。Windows 自检：Python 3.10.20，ONNX/ORT 1.23.2，NumPy 2.2.6。
 
-完整 shape、权重 shape、dtype、文件哈希汇总见 `verification/results.json`；详细节点属性和编译命令见每对 ONNX/OMC 同名 JSON 及其日志。测试输出见 `verification/test_windows.txt` 和 `verification/test_linux.txt`。压缩包仅含最终通过的默认样例，失败探索记录保留在原项目输出目录。
+## 配置和接口变化
 
-默认 LayerNorm 的逻辑 shape / axis / epsilon 来自 handfree；为满足当前 DDK 融合要求，统计量与 affine 部分在 ONNX 中按 FP32 计算，再转换为 FP16 输出。OMG 最终融合出一个 LayerNorm 和两个 TransData。原 OMC 的内部舍入与该 ONNX 未进行数值对比。
+- 默认配置及每个样例的同名 JSON 只有 `op` 和 `params`。编译信息在 `logs/<摘要>/record.json`，编译选项在独立的 `compiler.json`。
+- 卷积、Add/Mul、Activation、PRelu、Softmax 的 OMC 接口使用 NC1HWC0，调用者必须按 SDK tensor 描述打包数据并分配实际 buffer。ONNX shape 是逻辑 shape，不能将普通 NCHW 数据直接当作 NC1HWC0 内存使用。
+- Mul 的 `[1,256]` 补为 `[1,256,1,1]`，实际类型变为 Eltwise（乘法语义）；Softmax 的 `[256,64]` 补为 `[1,256,64,1]`，axis 从 -1 改为 2。CPU 对照测试验证元素计算对应关系。
+- LayerNorm 保留 `[256,64]` 和 axis=1，使用 opset 17 原生 LayerNormalization，FP16 默认产物仍有两个 CastT；没有把它报告成纯单节点模型。
+- 可选 `configs/layernorm_fp32.json` 也已经真实编译，结果只有 **LayerNorm × 1**，无 CastT / TransData。FP32 输入输出与默认 FP16 的数据类型不同。
+- 原二维/分解图参数保留在 `configs/logical_2d.json`；使用 `--io-layout standard` 可生成普通布局接口，允许 TransData。
 
-GemmD 目录内的默认 OMC 实际为 GemmV3。切换到公司 DDK 后必须重新解析，不能把目录名当成编译类型保证。Softmax 是明确标注的通用样例。带权重算子使用合成测试值。
+所有实际 shape、dtype、layout、buffer_bytes、文件哈希见 `verification/results.json` 和各样例日志。`native` 模式会在发布 OMC 前检查 TransData 数量；不是通过删改已编译二进制或过滤统计结果实现。
 
-验证范围不包括手机/NPU 上的执行、数值误差、时间或功耗，也不包括所有可能参数组合。上述版本和默认参数的通过结果不能保证其他 DDK 或任意配置都可编译。
+这批模型用于算子测试，权重为合成值，Softmax 为通用样例，GemmD 家族在本 DDK 下仍为 GemmV3。布局、形状映射、实现和 dtype 的变化可能影响功耗及执行时间；已通过的 CPU 检查不能证明与原模型的 NPU 浮点舍入或性能一致。尚未做板端数值、时间或功耗验证。

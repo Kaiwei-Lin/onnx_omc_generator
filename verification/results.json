@@ -2,17 +2,25 @@
   "date": "2026-11-11",
   "ddk": "DDK-tools-next-6.1.1.0",
   "platform": "kirin9030",
+  "io_layout": "native",
   "onnx_count": 13,
   "omc_count": 13,
+  "transdata_before": 18,
+  "transdata_after": 0,
+  "tests": {
+    "windows": "26 passed",
+    "linux": "26 passed"
+  },
   "cases": [
     {
       "op": "MatMul",
       "status": "COMPILED",
-      "onnx": "MatMul/MatMul_f16_w0-514x6144_in1-6144x2_out-514x2_25caa97156e2.onnx",
-      "omc": "MatMul/MatMul_f16_w0-514x6144_in1-6144x2_out-514x2_25caa97156e2.omc",
-      "record": "MatMul/MatMul_f16_w0-514x6144_in1-6144x2_out-514x2_25caa97156e2.json",
+      "onnx": "MatMul/MatMul_f16_w0-514x6144_in1-6144x2_out-514x2_72c7ec89c1bc.onnx",
+      "omc": "MatMul/MatMul_f16_w0-514x6144_in1-6144x2_out-514x2_72c7ec89c1bc.omc",
+      "config": "MatMul/MatMul_f16_w0-514x6144_in1-6144x2_out-514x2_72c7ec89c1bc.json",
+      "record": "MatMul/logs/72c7ec89c1bc/record.json",
       "onnx_sha256": "adf8cb527b12d552d72fa5f552f2ef2d8ef54464a95f77b3c4eb3b55dc105eb3",
-      "omc_sha256": "90b6bd25f6e3ac68141fb495d9e7c45aee8fa49d555da13c99311d9e4ff4aece",
+      "omc_sha256": "d3c9f40963c57a1fc9a3cbd9cf048e15a9a26e53399f1e44226b30c0c6fe0054",
       "onnx_inputs": [
         {
           "name": "B",
@@ -46,16 +54,53 @@
       "actual_omc_types": {
         "MatMulV2": 1,
         "Permute": 2
-      }
+      },
+      "omc_interfaces": [
+        {
+          "name": "B",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                6144,
+                2
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 24608
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                514,
+                2
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 2112
+            }
+          ]
+        }
+      ],
+      "transdata_before": 0,
+      "transdata_after": 0
     },
     {
       "op": "GemmD",
       "status": "COMPILED",
-      "onnx": "GemmD/GemmD_f16_in0-128x288_w1-288x768_w2-768_out-128x768_alpha-1_beta-1_transA-0_transB-0_8d9b7dddaa81.onnx",
-      "omc": "GemmD/GemmD_f16_in0-128x288_w1-288x768_w2-768_out-128x768_alpha-1_beta-1_transA-0_transB-0_8d9b7dddaa81.omc",
-      "record": "GemmD/GemmD_f16_in0-128x288_w1-288x768_w2-768_out-128x768_alpha-1_beta-1_transA-0_transB-0_8d9b7dddaa81.json",
+      "onnx": "GemmD/GemmD_f16_in0-128x288_w1-288x768_w2-768_out-128x768_alpha-1_beta-1_transA-0_transB-0_43d472ca14a6.onnx",
+      "omc": "GemmD/GemmD_f16_in0-128x288_w1-288x768_w2-768_out-128x768_alpha-1_beta-1_transA-0_transB-0_43d472ca14a6.omc",
+      "config": "GemmD/GemmD_f16_in0-128x288_w1-288x768_w2-768_out-128x768_alpha-1_beta-1_transA-0_transB-0_43d472ca14a6.json",
+      "record": "GemmD/logs/43d472ca14a6/record.json",
       "onnx_sha256": "2ac665501ebaf45bf3e431a58b71b210e5c7429bb050c79173dccd03ab2daa05",
-      "omc_sha256": "fd95a6061bef3ccf3f0e311e838289646ac8a013b80531b4a595b1126232aabb",
+      "omc_sha256": "42f3916956a2c7b9feb44b1f0299c886d8c94931cfed3d2aa4a0471f58bb485d",
       "onnx_inputs": [
         {
           "name": "A",
@@ -95,16 +140,53 @@
       ],
       "actual_omc_types": {
         "GemmV3": 1
-      }
+      },
+      "omc_interfaces": [
+        {
+          "name": "A",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                128,
+                288
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 73760
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                128,
+                768
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 196640
+            }
+          ]
+        }
+      ],
+      "transdata_before": 0,
+      "transdata_after": 0
     },
     {
       "op": "BatchMatMul",
       "status": "COMPILED",
-      "onnx": "BatchMatMul/BatchMatMul_f16_in0-8x2x256_w1-8x256x256_out-8x2x256_7478c7d63b4e.onnx",
-      "omc": "BatchMatMul/BatchMatMul_f16_in0-8x2x256_w1-8x256x256_out-8x2x256_7478c7d63b4e.omc",
-      "record": "BatchMatMul/BatchMatMul_f16_in0-8x2x256_w1-8x256x256_out-8x2x256_7478c7d63b4e.json",
+      "onnx": "BatchMatMul/BatchMatMul_f16_in0-8x2x256_w1-8x256x256_out-8x2x256_cfefefc67fd2.onnx",
+      "omc": "BatchMatMul/BatchMatMul_f16_in0-8x2x256_w1-8x256x256_out-8x2x256_cfefefc67fd2.omc",
+      "config": "BatchMatMul/BatchMatMul_f16_in0-8x2x256_w1-8x256x256_out-8x2x256_cfefefc67fd2.json",
+      "record": "BatchMatMul/logs/cfefefc67fd2/record.json",
       "onnx_sha256": "1b6d78dc401540baa6e097846b483c886e0f603f2df93f2499b687c693cc0b71",
-      "omc_sha256": "2fc4a8d1b8e8eff868346e5e6fd11e35adea0c6a32909cbf80e6b46fe96fd9b8",
+      "omc_sha256": "084bf048b2ccb5511aad080445612330149c109b9564543b89da7ad461d9ac47",
       "onnx_inputs": [
         {
           "name": "A",
@@ -140,16 +222,55 @@
       ],
       "actual_omc_types": {
         "BatchMatMulV2": 1
-      }
+      },
+      "omc_interfaces": [
+        {
+          "name": "A",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                8,
+                2,
+                256
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 8224
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                8,
+                2,
+                256
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 8224
+            }
+          ]
+        }
+      ],
+      "transdata_before": 0,
+      "transdata_after": 0
     },
     {
       "op": "Convolution",
       "status": "COMPILED",
-      "onnx": "Convolution/Convolution_f16_in0-1x96x5x128_w1-96x96x5x1_w2-96_out-1x96x1x128_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_74ac6d7d1a37.onnx",
-      "omc": "Convolution/Convolution_f16_in0-1x96x5x128_w1-96x96x5x1_w2-96_out-1x96x1x128_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_74ac6d7d1a37.omc",
-      "record": "Convolution/Convolution_f16_in0-1x96x5x128_w1-96x96x5x1_w2-96_out-1x96x1x128_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_74ac6d7d1a37.json",
+      "onnx": "Convolution/Convolution_f16_in0-1x96x5x128_w1-96x96x5x1_w2-96_out-1x96x1x128_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_b517c3cb5c72.onnx",
+      "omc": "Convolution/Convolution_f16_in0-1x96x5x128_w1-96x96x5x1_w2-96_out-1x96x1x128_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_b517c3cb5c72.omc",
+      "config": "Convolution/Convolution_f16_in0-1x96x5x128_w1-96x96x5x1_w2-96_out-1x96x1x128_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_b517c3cb5c72.json",
+      "record": "Convolution/logs/b517c3cb5c72/record.json",
       "onnx_sha256": "cb8a666d4a380faefa0fe9751f18038f0d81f98b1941fd7f870cd0015aab8ee3",
-      "omc_sha256": "4a8dab3175efd72f43de562df99e6674e34a9b5eeb387df4b8abf6c91b1ced44",
+      "omc_sha256": "cd93689a39a2350b70020524ed283151bb613284e17f2ae87728ded741d0a8bc",
       "onnx_inputs": [
         {
           "name": "X",
@@ -194,18 +315,58 @@
         }
       ],
       "actual_omc_types": {
-        "Convolution": 1,
-        "TransData": 2
-      }
+        "Convolution": 1
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                96,
+                5,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 122912
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                1,
+                96,
+                1,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 24608
+            }
+          ]
+        }
+      ],
+      "transdata_before": 2,
+      "transdata_after": 0
     },
     {
       "op": "ConvTranspose",
       "status": "COMPILED",
-      "onnx": "ConvTranspose/ConvTranspose_f16_in0-1x16x2x128_w1-16x1x1x3_w2-1_out-1x1x2x257_dilations-1x1_group-1_kernel_shape-1x3_output_padding-0x0_pads-0x0x0x0_strides-1x2_aecb5d3c3cce.onnx",
-      "omc": "ConvTranspose/ConvTranspose_f16_in0-1x16x2x128_w1-16x1x1x3_w2-1_out-1x1x2x257_dilations-1x1_group-1_kernel_shape-1x3_output_padding-0x0_pads-0x0x0x0_strides-1x2_aecb5d3c3cce.omc",
-      "record": "ConvTranspose/ConvTranspose_f16_in0-1x16x2x128_w1-16x1x1x3_w2-1_out-1x1x2x257_dilations-1x1_group-1_kernel_shape-1x3_output_padding-0x0_pads-0x0x0x0_strides-1x2_aecb5d3c3cce.json",
+      "onnx": "ConvTranspose/ConvTranspose_f16_in0-1x16x2x128_w1-16x1x1x3_w2-1_out-1x1x2x257_dilations-1x1_group-1_kernel_shape-1x3_output_padding-0x0_pads-0x0x0x0_strides-1x2_bf53e39db4a4.onnx",
+      "omc": "ConvTranspose/ConvTranspose_f16_in0-1x16x2x128_w1-16x1x1x3_w2-1_out-1x1x2x257_dilations-1x1_group-1_kernel_shape-1x3_output_padding-0x0_pads-0x0x0x0_strides-1x2_bf53e39db4a4.omc",
+      "config": "ConvTranspose/ConvTranspose_f16_in0-1x16x2x128_w1-16x1x1x3_w2-1_out-1x1x2x257_dilations-1x1_group-1_kernel_shape-1x3_output_padding-0x0_pads-0x0x0x0_strides-1x2_bf53e39db4a4.json",
+      "record": "ConvTranspose/logs/bf53e39db4a4/record.json",
       "onnx_sha256": "4ebe5d4f3dcea0283e16e2335e53d56c2691802be02e4fbd654154428a9cd8a7",
-      "omc_sha256": "19f0da3659a660ed1020500f10ea1345d2fcdcb53458b1b610a0d831ad6dcbd3",
+      "omc_sha256": "da68d650b0551bece6ac605eb37a230ad35d9511cd5eeefb79d436c0aeb5dbf4",
       "onnx_inputs": [
         {
           "name": "X",
@@ -250,18 +411,58 @@
         }
       ],
       "actual_omc_types": {
-        "ConvTranspose": 1,
-        "TransData": 2
-      }
+        "ConvTranspose": 1
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                16,
+                2,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 8224
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                1,
+                1,
+                2,
+                257
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 16480
+            }
+          ]
+        }
+      ],
+      "transdata_before": 2,
+      "transdata_after": 0
     },
     {
       "op": "Add",
       "status": "COMPILED",
-      "onnx": "Add/Add_f16_in0-1x16x2x128_in1-1x16x2x128_out-1x16x2x128_25089a7a780c.onnx",
-      "omc": "Add/Add_f16_in0-1x16x2x128_in1-1x16x2x128_out-1x16x2x128_25089a7a780c.omc",
-      "record": "Add/Add_f16_in0-1x16x2x128_in1-1x16x2x128_out-1x16x2x128_25089a7a780c.json",
+      "onnx": "Add/Add_f16_in0-1x16x2x128_in1-1x16x2x128_out-1x16x2x128_8ee0294018a5.onnx",
+      "omc": "Add/Add_f16_in0-1x16x2x128_in1-1x16x2x128_out-1x16x2x128_8ee0294018a5.omc",
+      "config": "Add/Add_f16_in0-1x16x2x128_in1-1x16x2x128_out-1x16x2x128_8ee0294018a5.json",
+      "record": "Add/logs/8ee0294018a5/record.json",
       "onnx_sha256": "a232281b5563a15613facf1363360cd24c01be45ba7805da3a1984ef9dd64d41",
-      "omc_sha256": "c41b17740546147c237141fa5ba762ae438f1f82a133c8d929860e226252587a",
+      "omc_sha256": "3257b38e28f51af5ca79bd94934cdb6e487c71d2bc8255e541a4b64c8dda344b",
       "onnx_inputs": [
         {
           "name": "X",
@@ -298,24 +499,84 @@
       ],
       "onnx_initializers": [],
       "actual_omc_types": {
-        "Eltwise": 1,
-        "TransData": 3
-      }
+        "Eltwise": 1
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                16,
+                2,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 8224
+            }
+          ]
+        },
+        {
+          "name": "W",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                16,
+                2,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 8224
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                1,
+                16,
+                2,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 8224
+            }
+          ]
+        }
+      ],
+      "transdata_before": 3,
+      "transdata_after": 0
     },
     {
       "op": "Mul",
       "status": "COMPILED",
-      "onnx": "Mul/Mul_f16_in0-1x256_in1-1x256_out-1x256_9d7af1a07679.onnx",
-      "omc": "Mul/Mul_f16_in0-1x256_in1-1x256_out-1x256_9d7af1a07679.omc",
-      "record": "Mul/Mul_f16_in0-1x256_in1-1x256_out-1x256_9d7af1a07679.json",
-      "onnx_sha256": "2589653129c140da824c31540b0a74a93f28dd62babba63d3e07e58943b77aed",
-      "omc_sha256": "a93a0c4f22a84b2fcb6a43893aef5418cfc3d4cedfec367f589117bda39f5b69",
+      "onnx": "Mul/Mul_f16_in0-1x256x1x1_in1-1x256x1x1_out-1x256x1x1_58a1183c73a4.onnx",
+      "omc": "Mul/Mul_f16_in0-1x256x1x1_in1-1x256x1x1_out-1x256x1x1_58a1183c73a4.omc",
+      "config": "Mul/Mul_f16_in0-1x256x1x1_in1-1x256x1x1_out-1x256x1x1_58a1183c73a4.json",
+      "record": "Mul/logs/58a1183c73a4/record.json",
+      "onnx_sha256": "b7fa9f9439601c98055aee59009450fe573468f3a654d5e699cb93307f494584",
+      "omc_sha256": "d9a4ad8da8ee5d66b69350ee1c8b1d8b32263a0d2c7276a223ecfef149a909f6",
       "onnx_inputs": [
         {
           "name": "X",
           "shape": [
             1,
-            256
+            256,
+            1,
+            1
           ],
           "dtype": "FLOAT16"
         },
@@ -323,7 +584,9 @@
           "name": "W",
           "shape": [
             1,
-            256
+            256,
+            1,
+            1
           ],
           "dtype": "FLOAT16"
         }
@@ -333,25 +596,85 @@
           "name": "Y",
           "shape": [
             1,
-            256
+            256,
+            1,
+            1
           ],
           "dtype": "FLOAT16"
         }
       ],
       "onnx_initializers": [],
       "actual_omc_types": {
-        "Mul": 1,
-        "TransData": 3
-      }
+        "Eltwise": 1
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                256,
+                1,
+                1
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 544
+            }
+          ]
+        },
+        {
+          "name": "W",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                256,
+                1,
+                1
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 544
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                1,
+                256,
+                1,
+                1
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 544
+            }
+          ]
+        }
+      ],
+      "transdata_before": 3,
+      "transdata_after": 0
     },
     {
       "op": "Activation",
       "status": "COMPILED",
-      "onnx": "Activation/Activation_f16_in0-1x16x2x128_out-1x16x2x128_Sigmoid_79dbc653207e.onnx",
-      "omc": "Activation/Activation_f16_in0-1x16x2x128_out-1x16x2x128_Sigmoid_79dbc653207e.omc",
-      "record": "Activation/Activation_f16_in0-1x16x2x128_out-1x16x2x128_Sigmoid_79dbc653207e.json",
+      "onnx": "Activation/Activation_f16_in0-1x16x2x128_out-1x16x2x128_Sigmoid_10e6c40c7f00.onnx",
+      "omc": "Activation/Activation_f16_in0-1x16x2x128_out-1x16x2x128_Sigmoid_10e6c40c7f00.omc",
+      "config": "Activation/Activation_f16_in0-1x16x2x128_out-1x16x2x128_Sigmoid_10e6c40c7f00.json",
+      "record": "Activation/logs/10e6c40c7f00/record.json",
       "onnx_sha256": "0519be33b0584840342a4db98b81668b86832033ed80a8c1ff4c8013f136e2de",
-      "omc_sha256": "2b98c84cefabd0f5868e968a0837e2e781a50461d964666c350febe3a79d4ac8",
+      "omc_sha256": "31f2d88fe9b1a1defb4ff30b9487ace385080b2f5d0e901edfbb265733b799fb",
       "onnx_inputs": [
         {
           "name": "X",
@@ -378,18 +701,58 @@
       ],
       "onnx_initializers": [],
       "actual_omc_types": {
-        "Activation": 1,
-        "TransData": 2
-      }
+        "Activation": 1
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                16,
+                2,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 8224
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                1,
+                16,
+                2,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 8224
+            }
+          ]
+        }
+      ],
+      "transdata_before": 2,
+      "transdata_after": 0
     },
     {
       "op": "PRelu",
       "status": "COMPILED",
-      "onnx": "PRelu/PRelu_f16_in0-1x64x2x128_w1-64x1x1_out-1x64x2x128_9734552512d3.onnx",
-      "omc": "PRelu/PRelu_f16_in0-1x64x2x128_w1-64x1x1_out-1x64x2x128_9734552512d3.omc",
-      "record": "PRelu/PRelu_f16_in0-1x64x2x128_w1-64x1x1_out-1x64x2x128_9734552512d3.json",
+      "onnx": "PRelu/PRelu_f16_in0-1x64x2x128_w1-64x1x1_out-1x64x2x128_d3a13e3f9ace.onnx",
+      "omc": "PRelu/PRelu_f16_in0-1x64x2x128_w1-64x1x1_out-1x64x2x128_d3a13e3f9ace.omc",
+      "config": "PRelu/PRelu_f16_in0-1x64x2x128_w1-64x1x1_out-1x64x2x128_d3a13e3f9ace.json",
+      "record": "PRelu/logs/d3a13e3f9ace/record.json",
       "onnx_sha256": "f48073b891fb6cd3fa05944da9e8f7cd4fcbd2cdd9b630fb55e69e278e006528",
-      "omc_sha256": "0e09c1bae42fe923c85c8375ecda7d9191328b75818ef0ac8ffff754bd1f00f1",
+      "omc_sha256": "fd8e8308cf132e05637e2e2c8e3c64d7cac8cb3bb63241ac9d8ce9de70e7eb8f",
       "onnx_inputs": [
         {
           "name": "X",
@@ -426,18 +789,58 @@
         }
       ],
       "actual_omc_types": {
-        "PRelu": 1,
-        "TransData": 2
-      }
+        "PRelu": 1
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                64,
+                2,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 32800
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                1,
+                64,
+                2,
+                128
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 32800
+            }
+          ]
+        }
+      ],
+      "transdata_before": 2,
+      "transdata_after": 0
     },
     {
       "op": "ReduceSum",
       "status": "COMPILED",
-      "onnx": "ReduceSum/ReduceSum_f16_in0-4x256x1_out-1x256x1_axes-0_keepdims-1_noop_with_empty_axes-1_2ecc89eaa326.onnx",
-      "omc": "ReduceSum/ReduceSum_f16_in0-4x256x1_out-1x256x1_axes-0_keepdims-1_noop_with_empty_axes-1_2ecc89eaa326.omc",
-      "record": "ReduceSum/ReduceSum_f16_in0-4x256x1_out-1x256x1_axes-0_keepdims-1_noop_with_empty_axes-1_2ecc89eaa326.json",
+      "onnx": "ReduceSum/ReduceSum_f16_in0-4x256x1_out-1x256x1_axes-0_keepdims-1_noop_with_empty_axes-1_caadb4a0ad70.onnx",
+      "omc": "ReduceSum/ReduceSum_f16_in0-4x256x1_out-1x256x1_axes-0_keepdims-1_noop_with_empty_axes-1_caadb4a0ad70.omc",
+      "config": "ReduceSum/ReduceSum_f16_in0-4x256x1_out-1x256x1_axes-0_keepdims-1_noop_with_empty_axes-1_caadb4a0ad70.json",
+      "record": "ReduceSum/logs/caadb4a0ad70/record.json",
       "onnx_sha256": "d44b685a254ceb1e883fad7a38f0da3b7bd03560ad303b637c43c4f3310ab724",
-      "omc_sha256": "28d2f2cc96fd7ed158d57cfe40735eeaf979862e67685cce18ad99cda727c3d1",
+      "omc_sha256": "331a9c42fefc2033b14bd94a5668a6bd920cd693cb8e832a81a76db219d6d364",
       "onnx_inputs": [
         {
           "name": "X",
@@ -471,16 +874,55 @@
       ],
       "actual_omc_types": {
         "ReduceSum": 1
-      }
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                4,
+                256,
+                1
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 2080
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                1,
+                256,
+                1
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 544
+            }
+          ]
+        }
+      ],
+      "transdata_before": 0,
+      "transdata_after": 0
     },
     {
       "op": "LayerNorm",
       "status": "COMPILED",
-      "onnx": "LayerNorm/LayerNorm_f16_in0-256x64_w1-1x64_w2-1x64_out-256x64_axis-1_epsilon-1e-05_e952e2ac857c.onnx",
-      "omc": "LayerNorm/LayerNorm_f16_in0-256x64_w1-1x64_w2-1x64_out-256x64_axis-1_epsilon-1e-05_e952e2ac857c.omc",
-      "record": "LayerNorm/LayerNorm_f16_in0-256x64_w1-1x64_w2-1x64_out-256x64_axis-1_epsilon-1e-05_e952e2ac857c.json",
-      "onnx_sha256": "b79c4277fe22dbb5d44a6e8d565c7cd881c05c14f9ebe263b30141ba92d01bc9",
-      "omc_sha256": "41253dd38c8be580332a8adb6a7b83c0609abc050b398eb1d0672747dd13512c",
+      "onnx": "LayerNorm/LayerNorm_f16_in0-256x64_w1-1x64_w2-1x64_out-256x64_axis-1_epsilon-1e-05_99a12598a86b.onnx",
+      "omc": "LayerNorm/LayerNorm_f16_in0-256x64_w1-1x64_w2-1x64_out-256x64_axis-1_epsilon-1e-05_99a12598a86b.omc",
+      "config": "LayerNorm/LayerNorm_f16_in0-256x64_w1-1x64_w2-1x64_out-256x64_axis-1_epsilon-1e-05_99a12598a86b.json",
+      "record": "LayerNorm/logs/99a12598a86b/record.json",
+      "onnx_sha256": "31fd581b0609e7423805af6b1290fe830cf50c555afa7146cbeb2f0130c70bb7",
+      "omc_sha256": "98be9e63591afa3b65ac21bf1e753dc9929e67eddf737c59c9fbe151070eec36",
       "onnx_inputs": [
         {
           "name": "X",
@@ -508,7 +950,7 @@
             1,
             64
           ],
-          "dtype": "FLOAT"
+          "dtype": "FLOAT16"
         },
         {
           "name": "bias",
@@ -516,38 +958,67 @@
             1,
             64
           ],
-          "dtype": "FLOAT"
-        },
-        {
-          "name": "__g_two",
-          "shape": [],
-          "dtype": "FLOAT"
-        },
-        {
-          "name": "__g_epsilon",
-          "shape": [],
-          "dtype": "FLOAT"
+          "dtype": "FLOAT16"
         }
       ],
       "actual_omc_types": {
-        "LayerNorm": 1,
-        "TransData": 2
-      }
+        "CastT": 2,
+        "LayerNorm": 1
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                256,
+                64
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 32800
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                256,
+                64
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 32800
+            }
+          ]
+        }
+      ],
+      "transdata_before": 2,
+      "transdata_after": 0
     },
     {
       "op": "Softmax",
       "status": "COMPILED",
-      "onnx": "Softmax/Softmax_f16_in0-256x64_out-256x64_axis--1_82fceb61d367.onnx",
-      "omc": "Softmax/Softmax_f16_in0-256x64_out-256x64_axis--1_82fceb61d367.omc",
-      "record": "Softmax/Softmax_f16_in0-256x64_out-256x64_axis--1_82fceb61d367.json",
-      "onnx_sha256": "45cc9f7380556539527da7544c371b72f91ea0e7a6b1d7dea62a97d36a1a3330",
-      "omc_sha256": "ff7bb7fce43df7b34dafa5586863121487cb805a94e5ea93c51dedc85263be7e",
+      "onnx": "Softmax/Softmax_f16_in0-1x256x64x1_out-1x256x64x1_axis-2_3370c0c0895b.onnx",
+      "omc": "Softmax/Softmax_f16_in0-1x256x64x1_out-1x256x64x1_axis-2_3370c0c0895b.omc",
+      "config": "Softmax/Softmax_f16_in0-1x256x64x1_out-1x256x64x1_axis-2_3370c0c0895b.json",
+      "record": "Softmax/logs/3370c0c0895b/record.json",
+      "onnx_sha256": "71925ade7bb5a96c0f83e3eaf049c1c9797a932d78ecc3e0d8606e7243d6b3b2",
+      "omc_sha256": "a364ac5de61c4e7afcfacfcdae96150cdfba260755d30096e700698345c60c7a",
       "onnx_inputs": [
         {
           "name": "X",
           "shape": [
+            1,
             256,
-            64
+            64,
+            1
           ],
           "dtype": "FLOAT16"
         }
@@ -556,26 +1027,68 @@
         {
           "name": "Y",
           "shape": [
+            1,
             256,
-            64
+            64,
+            1
           ],
           "dtype": "FLOAT16"
         }
       ],
       "onnx_initializers": [],
       "actual_omc_types": {
-        "Softmax": 1,
-        "TransData": 2
-      }
+        "Softmax": 1
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                1,
+                256,
+                64,
+                1
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 32800
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                1,
+                256,
+                64,
+                1
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NC1HWC0",
+              "buffer_bytes": 32800
+            }
+          ]
+        }
+      ],
+      "transdata_before": 2,
+      "transdata_after": 0
     },
     {
       "op": "CastT",
       "status": "COMPILED",
-      "onnx": "CastT/CastT_f32_in0-2x2x2x257_out-2x2x2x257_to-float16_b3ce2f3e7a33.onnx",
-      "omc": "CastT/CastT_f32_in0-2x2x2x257_out-2x2x2x257_to-float16_b3ce2f3e7a33.omc",
-      "record": "CastT/CastT_f32_in0-2x2x2x257_out-2x2x2x257_to-float16_b3ce2f3e7a33.json",
+      "onnx": "CastT/CastT_f32_in0-2x2x2x257_out-2x2x2x257_to-float16_baff4efdb006.onnx",
+      "omc": "CastT/CastT_f32_in0-2x2x2x257_out-2x2x2x257_to-float16_baff4efdb006.omc",
+      "config": "CastT/CastT_f32_in0-2x2x2x257_out-2x2x2x257_to-float16_baff4efdb006.json",
+      "record": "CastT/logs/baff4efdb006/record.json",
       "onnx_sha256": "0f545c8483be0a72b93800c932c234332ead91d410cd8626fcfe5a1aed161c1a",
-      "omc_sha256": "53c8be914e885ad16bf08815ce29c3132d02e8594b50e019268984d47c1f3aff",
+      "omc_sha256": "edddb9c0b9c95b1e4322d98a141cab49faf8b97d25d9d20b6022728681a932b4",
       "onnx_inputs": [
         {
           "name": "X",
@@ -603,12 +1116,54 @@
       "onnx_initializers": [],
       "actual_omc_types": {
         "CastT": 1
-      }
+      },
+      "omc_interfaces": [
+        {
+          "name": "X",
+          "kind": "Data",
+          "tensors": [
+            {
+              "name": "",
+              "shape": [
+                2,
+                2,
+                2,
+                257
+              ],
+              "dtype": "DT_FLOAT",
+              "layout": "NCHW",
+              "buffer_bytes": 8256
+            }
+          ]
+        },
+        {
+          "name": "Node_Output",
+          "kind": "NetOutput",
+          "tensors": [
+            {
+              "name": "Y",
+              "shape": [
+                2,
+                2,
+                2,
+                257
+              ],
+              "dtype": "DT_FLOAT16",
+              "layout": "NCHW",
+              "buffer_bytes": 4160
+            }
+          ]
+        }
+      ],
+      "transdata_before": 0,
+      "transdata_after": 0
     }
   ],
-  "tests": {
-    "windows": "22 passed",
-    "linux": "22 passed"
+  "optional_fp32_layernorm": {
+    "actual_omc_types": {
+      "LayerNorm": 1
+    },
+    "omc_sha256": "812f1908f10e1825bd274a059160719194709efb531c61f2c68d7f7c4fe45566"
   },
   "npu_execution": "not_tested"
 }

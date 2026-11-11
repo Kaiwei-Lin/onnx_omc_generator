@@ -1,0 +1,37 @@
+{
+  "op": "LayerNorm",
+  "params": {
+    "dtype": "float32",
+    "seed": 20263366,
+    "inputs": [
+      {
+        "name": "X",
+        "shape": [256, 64]
+      },
+      {
+        "name": "scale",
+        "shape": [1, 64],
+        "init": {
+          "kind": "normal",
+          "mean": 1.0,
+          "std": 0.02
+        }
+      },
+      {
+        "name": "bias",
+        "shape": [1, 64],
+        "init": {
+          "kind": "normal",
+          "std": 0.02
+        }
+      }
+    ],
+    "attributes": {
+      "axis": 1,
+      "epsilon": 9.999999747378752e-06
+    },
+    "implementation": "native",
+    "accumulation_dtype": "float32",
+    "opset": 17
+  }
+}

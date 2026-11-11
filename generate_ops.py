@@ -31,6 +31,7 @@ DTYPES = {"float16": TensorProto.FLOAT16, "float32": TensorProto.FLOAT,
 OMG_TYPES = {v: k.upper() for k, v in DTYPES.items()}
 OMG_TYPES.update({TensorProto.FLOAT16: "FP16", TensorProto.FLOAT: "FP32", TensorProto.DOUBLE: "FP64"})
 SCHEMA_RELATIVE = "tools/tools_ascendc/package/python/opc_tool/ge_ir_pb2.py"
+BLOCKED_IO_OPS = {"Convolution", "ConvTranspose", "Add", "Mul", "Activation", "PRelu", "LayerNorm", "Softmax"}
 
 
 def canonical(op):
@@ -66,6 +67,55 @@ def save_json(path, obj):
 
 def model_config(case):
     return {k: v for k, v in case.items() if k not in {"id", "source", "expect_omc_type"}}
+
+
+def operator_config(case):
+    """The editable sidecar contains only operator type and model parameters."""
+    params = copy.deepcopy(model_config(case))
+    op = params.pop("op")
+    return {"op": op, "params": params}
+
+
+def load_config(path):
+    value = json.loads(Path(path).read_text(encoding="utf-8-sig"))
+    compiler = {}
+    if isinstance(value, list):
+        cases = value
+    elif "cases" in value:
+        unknown_keys(value, {"compiler", "cases"}, "configuration")
+        cases, compiler = value["cases"], value.get("compiler", {})
+    else:
+        cases = [value]
+    result = []
+    for case in cases:
+        if "params" in case:
+            unknown_keys(case, {"op", "params"}, "operator configuration")
+            if "op" in case["params"]:
+                raise ValueError("Put op outside params")
+            case = {"op": case["op"], **case["params"]}
+        result.append(case)
+    return result, compiler
+
+
+def save_operator_config(path, case, base=None):
+    value = operator_config(case)
+    if base is not None:
+        for item in value["params"]["inputs"]:
+            spec = item.get("init", {})
+            if spec.get("kind") == "npy":
+                source = (Path(base) / spec["path"]).resolve()
+                try:
+                    spec["path"] = os.path.relpath(source, path.parent)
+                except ValueError:
+                    spec["path"] = str(source)
+    if path.exists():
+        old = json.loads(path.read_text(encoding="utf-8-sig"))
+        if "params" in old and old != value:
+            raise FileExistsError(f"Edited configuration already exists: {path}; choose a new --out")
+    text = json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False)
+    text = re.sub(r"\[\s*([-+\d.eE]+(?:\s*,\s*[-+\d.eE]+)*)\s*\]",
+                  lambda m: "[" + re.sub(r"\s+", "", m[1]).replace(",", ", ") + "]", text)
+    path.write_text(text + "\n", encoding="utf-8")
 
 
 def unknown_keys(obj, allowed, location):
@@ -468,7 +518,7 @@ def resolve_npy_hashes(case, base):
 
 def compiler_setup(config, ddk_root=None, ge_proto=None):
     unknown_keys(config, {"platform", "weight_data_type", "use_origin_format", "io_types", "extra_args", "timeout",
-                          "ddk_root", "omg", "loader", "command", "env", "ge_proto", "version_label"}, "compiler")
+                          "ddk_root", "omg", "loader", "command", "env", "ge_proto", "version_label", "io_layout"}, "compiler")
     root = ddk_root or config.get("ddk_root") or os.environ.get("DDK_PATH") or os.environ.get("DDK_INSTALL_PATH")
     root = Path(root).expanduser().resolve() if root else None
     if os.name == "nt" and not config.get("command"):
@@ -503,6 +553,8 @@ def compiler_setup(config, ddk_root=None, ge_proto=None):
         raise ValueError("compiler.timeout must be positive")
     if config.get("io_types", "model") not in {"model", "auto"}:
         raise ValueError("compiler.io_types must be model or auto")
+    if config.get("io_layout", "standard") not in {"standard", "native"}:
+        raise ValueError("compiler.io_layout must be standard or native")
     evidence = {"config": config, "ddk_root": str(root) if root else None,
                 "omg": str(binary) if binary else None, "omg_sha256": sha256(binary) if binary and binary.is_file() else None,
                 "ge_proto": str(Path(schema).resolve()), "ge_proto_sha256": sha256(schema),
@@ -515,9 +567,20 @@ def compiler_setup(config, ddk_root=None, ge_proto=None):
 
 def compiler_command(setup, model, source, prefix):
     cfg = setup["config"]
+    native = (cfg.get("io_layout", "standard") == "native"
+              and model.graph.name.removesuffix("_parameter_test") in BLOCKED_IO_OPS
+              and not any(n.op_type == "LayerNormalization" for n in model.graph.node))
+    input_format, output_format = "", ""
+    if native:
+        if any(len(t.type.tensor_type.shape.dim) != 4 for t in [*model.graph.input, *model.graph.output]):
+            raise ValueError("Native NC1HWC0 interfaces require rank 4 in this DDK; pad singleton dimensions and adjust axes, or use --io-layout standard")
+        input_format = ";".join(t.name + ":NC1HWC0" for t in model.graph.input)
+        # OMG output_format addresses producer node names, not ONNX tensor names.
+        producers = {output: n.name for n in model.graph.node for output in n.output}
+        output_format = ";".join(producers[t.name] + ":NC1HWC0" for t in model.graph.output)
     if cfg.get("command"):
         mapping = {"model": str(source), "output": str(prefix), "platform": setup["platform"],
-                   "ddk_root": str(setup["root"] or "")}
+                   "ddk_root": str(setup["root"] or ""), "input_format": input_format, "output_format": output_format}
         command = [part.format(**mapping) for part in cfg["command"]]
     else:
         loader = cfg.get("loader", "auto")
@@ -529,7 +592,9 @@ def compiler_command(setup, model, source, prefix):
             command.insert(0, loader)
         command += ["--framework", "5", "--model", str(source), "--output", str(prefix),
                     "--target", "omc", "--platform", setup["platform"],
-                    "--use_origin_format", str(cfg.get("use_origin_format", True)).lower()]
+                    "--use_origin_format=" + str(False if native else cfg.get("use_origin_format", True)).lower()]
+        if native:
+            command += ["--input_format", input_format, "--output_format", output_format]
         if cfg.get("weight_data_type", "FP16"):
             command += ["--weight_data_type", cfg.get("weight_data_type", "FP16")]
         if cfg.get("io_types", "model") == "model":
@@ -576,7 +641,13 @@ def audit_omc(path, schema):
         records.append({"name": data["name"], "type": data["op_type"], "region": data["region"],
                         "inputs": inputs, "outputs": [short(t) for t in data["output_tensors"]],
                         "attributes": data["attributes"]})
-    return {"types": dict(sorted(Counter(r["type"] for r in records).items())), "nodes": records,
+    interfaces = []
+    for _, data in graph.nodes(data=True):
+        if data["op_type"] in {"Data", "NetOutput"} and graph.graph["regions"][data["region"]]["parent_node"] is None:
+            tensors = data["output_tensors"] if data["op_type"] == "Data" else data["input_tensors"]
+            interfaces.append({"name": data["name"], "kind": data["op_type"],
+                               "tensors": [{**short(t), "buffer_bytes": int(t["descriptor"].get("size", 0))} for t in tensors]})
+    return {"types": dict(sorted(Counter(r["type"] for r in records).items())), "nodes": records, "interfaces": interfaces,
             "schema_sha256": graph.graph["schema_sha256"], "warnings": graph.graph["warnings"]}
 
 
@@ -588,7 +659,8 @@ def generate_case(case, base, out, setup=None, runtime=False):
     name = filename(case, model)
     directory = out / case["op"]
     directory.mkdir(parents=True, exist_ok=True)
-    source, compiled, record_path = [directory / (name + suffix) for suffix in (".onnx", ".omc", ".json")]
+    source, compiled, config_path = [directory / (name + suffix) for suffix in (".onnx", ".omc", ".json")]
+    record_path = directory / "logs" / digest(model_config(case))[:12] / "record.json"
     payload = model.SerializeToString(deterministic=True)
     model_hash = hashlib.sha256(payload).hexdigest()
     if source.exists() and sha256(source) != model_hash:
@@ -598,6 +670,7 @@ def generate_case(case, base, out, setup=None, runtime=False):
         raise ValueError("Filename hash collision; use another output directory")
     if not source.exists():
         source.write_bytes(payload)
+    save_operator_config(config_path, case, base)
     record = {"id": case.get("id", case["op"]), "op": case["op"], "case": case,
               "config_sha256": digest(model_config(case)), "onnx": source.name, "onnx_sha256": model_hash,
               "onnx_info": describe(model), "status": "ONNX_READY", "original_omc_numerical_equivalence": "not_verified"}
@@ -636,6 +709,9 @@ def generate_case(case, base, out, setup=None, runtime=False):
                 if rc or not produced.is_file():
                     raise RuntimeError(f"OMG failed (returncode={rc}); see {job / 'convert.log'}")
                 audit = audit_omc(produced, setup["schema"])
+                attempt["actual_omc"] = audit
+                if setup["config"].get("io_layout") == "native" and audit["types"].get("TransData", 0):
+                    raise RuntimeError(f"Native I/O still contains {audit['types']['TransData']} TransData nodes; inspect temporary OMC/logs or use --io-layout standard")
                 if sha256(source) != model_hash:
                     raise RuntimeError("ONNX changed during compilation")
                 attempt.update(status="COMPILED", omc=compiled.name, omc_sha256=sha256(produced),
@@ -658,7 +734,8 @@ def generate_case(case, base, out, setup=None, runtime=False):
             raise ValueError(f"Expected {expected}; actual compiled types {actual}; OMC retained for inspection")
     save_json(record_path, record)
     return {"id": record["id"], "op": case["op"], "status": record["status"],
-            "onnx": source.relative_to(out).as_posix(), "record": record_path.relative_to(out).as_posix(),
+            "onnx": source.relative_to(out).as_posix(), "config": config_path.relative_to(out).as_posix(),
+            "record": record_path.relative_to(out).as_posix(),
             "omc": compiled.relative_to(out).as_posix() if compiled.is_file() else None,
             "actual_omc_types": record.get("compile", {}).get("actual_omc", {}).get("types", {})}
 
@@ -666,6 +743,7 @@ def generate_case(case, base, out, setup=None, runtime=False):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=HERE / "defaults_handfree.json")
+    parser.add_argument("--compiler-config", type=Path, default=HERE / "compiler.json")
     parser.add_argument("--out", type=Path, default=Path("results"))
     parser.add_argument("--op", nargs="+", help="Operator family or case id; default: all cases")
     parser.add_argument("--all", action="store_true", help="Explicitly select all cases")
@@ -676,10 +754,9 @@ def main(argv=None):
     parser.add_argument("--ddk-root", type=Path)
     parser.add_argument("--ge-proto", type=Path)
     parser.add_argument("--platform", help="Override compiler platform, e.g. kirin9030")
+    parser.add_argument("--io-layout", choices=("native", "standard"), help="Native blocked interfaces remove boundary TransData; standard keeps normal tensor I/O")
     args = parser.parse_args(argv)
-    config = json.loads(args.config.read_text(encoding="utf-8-sig"))
-    unknown_keys(config, {"compiler", "cases"}, "configuration")
-    cases = config["cases"]
+    cases, compiler = load_config(args.config)
     if args.op and args.all:
         parser.error("Use --op or --all, not both")
     if args.op:
@@ -703,10 +780,15 @@ def main(argv=None):
     if args.set and len(cases) != 1:
         parser.error("--set requires exactly one selected case")
     for expression in args.set:
+        if expression.startswith("params."):
+            expression = expression[len("params."):]
         apply_override(cases[0], expression)
-    compiler = config.get("compiler", {})
+    if args.compiler_config.is_file():
+        compiler = {**json.loads(args.compiler_config.read_text(encoding="utf-8-sig")), **compiler}
     if args.platform:
         compiler["platform"] = args.platform
+    if args.io_layout:
+        compiler["io_layout"] = args.io_layout
     setup = None if args.onnx_only else compiler_setup(compiler, args.ddk_root, args.ge_proto)
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=True)

@@ -1,26 +1,13 @@
-{
-  "compiler": {
-    "platform": "kirin9030",
-    "weight_data_type": "FP16",
-    "use_origin_format": true,
-    "io_types": "model",
-    "extra_args": [],
-    "timeout": 300
-  },
-  "cases": [
-    {
-      "id": "MatMul",
-      "op": "MatMul",
+[
+  {
+    "op": "MatMul",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20264848,
       "inputs": [
         {
           "name": "A",
-          "shape": [
-            514,
-            6144
-          ],
+          "shape": [514, 6144],
           "init": {
             "kind": "normal",
             "std": 0.02
@@ -28,84 +15,25 @@
         },
         {
           "name": "B",
-          "shape": [
-            6144,
-            2
-          ]
+          "shape": [6144, 2]
         }
       ],
-      "attributes": {},
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "3739",
-        "region": "1",
-        "node_name": "dual_model_freq_decompress_decompress_MatMul",
-        "omc_type": "MatMul",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              514,
-              6144
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "FRACTAL_NZ",
-            "source_ref": "dual_model.freq_decompress.decompress.weight:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 6488064
-          },
-          {
-            "name": "",
-            "shape": [
-              6144,
-              2
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "dual_model_freq_decompress_decompress_Transpose:0",
-            "shape_source": "OMC input descriptor"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              514,
-              2
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values.",
-          "For this DDK use (X.T @ W.T).T with W pretransposed offline; preserves public logical shapes, adds runtime Transpose nodes."
-        ],
-        "preset_sha256": "25caa97156e2a272409573231bd763b4ad5764dec45f4d79736b5fa8f5ed3ef6"
-      },
       "constant_left_rewrite": true
-    },
-    {
-      "id": "GemmD",
-      "op": "GemmD",
+    }
+  },
+  {
+    "op": "GemmD",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20264128,
       "inputs": [
         {
           "name": "A",
-          "shape": [
-            128,
-            288
-          ]
+          "shape": [128, 288]
         },
         {
           "name": "B",
-          "shape": [
-            288,
-            768
-          ],
+          "shape": [288, 768],
           "init": {
             "kind": "normal",
             "std": 0.02
@@ -113,9 +41,7 @@
         },
         {
           "name": "C",
-          "shape": [
-            768
-          ],
+          "shape": [768],
           "init": {
             "kind": "normal",
             "std": 0.02
@@ -127,173 +53,43 @@
         "transB": 0,
         "alpha": 1.0,
         "beta": 1.0
-      },
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "3019",
-        "region": "1",
-        "node_name": "Gemm_3606",
-        "omc_type": "GemmD",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              128,
-              288
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "dual_model_oSpatialNet_freq_cmps_1_mhsa_Concat:0",
-            "shape_source": "OMC input descriptor"
-          },
-          {
-            "name": "",
-            "shape": [
-              288,
-              768
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "FRACTAL_NZ",
-            "source_ref": "dual_model.oSpatialNet_freq_cmps_1.mhsa.all_gate_weight:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 442368
-          },
-          {
-            "name": "",
-            "shape": [
-              768
-            ],
-            "dtype": "DT_FLOAT",
-            "layout": "NCHW",
-            "source_ref": "dual_model.oSpatialNet_freq_cmps_1.mhsa.all_gate_bias:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 3072
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              128,
-              768
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values.",
-          "FP32 compiled bias becomes FP16 synthetic initializer for homogeneous ONNX tensor types; logical NCHW/ND replaces blocked storage."
-        ],
-        "preset_sha256": "8d9b7dddaa81a2824d55eaebb9eb6410d7e1c23b3bde15d9d14507af366f170a"
       }
-    },
-    {
-      "id": "BatchMatMul",
-      "op": "BatchMatMul",
+    }
+  },
+  {
+    "op": "BatchMatMul",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20264026,
       "inputs": [
         {
           "name": "A",
-          "shape": [
-            8,
-            2,
-            256
-          ]
+          "shape": [8, 2, 256]
         },
         {
           "name": "B",
-          "shape": [
-            8,
-            256,
-            256
-          ],
+          "shape": [8, 256, 256],
           "init": {
             "kind": "normal",
             "std": 0.02
           }
         }
-      ],
-      "attributes": {},
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "2917",
-        "region": "1",
-        "node_name": "iccrn_model_fb_full_MatMul",
-        "omc_type": "BatchMatMul",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              8,
-              2,
-              256
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "transdata_for_nd_113:0",
-            "shape_source": "OMC input descriptor"
-          },
-          {
-            "name": "",
-            "shape": [
-              8,
-              256,
-              256
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "FRACTAL_NZ",
-            "source_ref": "onnx::MatMul_8850:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 1048576
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              8,
-              2,
-              256
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values."
-        ],
-        "preset_sha256": "7478c7d63b4e3213f9d49954c1348e3aecad2a543fb81bf076c04248edd4ba06"
-      }
-    },
-    {
-      "id": "Convolution",
-      "op": "Convolution",
+      ]
+    }
+  },
+  {
+    "op": "Convolution",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20264171,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            1,
-            96,
-            5,
-            128
-          ]
+          "shape": [1, 96, 5, 128]
         },
         {
           "name": "W",
-          "shape": [
-            96,
-            96,
-            5,
-            1
-          ],
+          "shape": [96, 96, 5, 1],
           "init": {
             "kind": "normal",
             "std": 0.02
@@ -301,9 +97,7 @@
         },
         {
           "name": "B",
-          "shape": [
-            96
-          ],
+          "shape": [96],
           "init": {
             "kind": "normal",
             "std": 0.02
@@ -311,117 +105,27 @@
         }
       ],
       "attributes": {
-        "kernel_shape": [
-          5,
-          1
-        ],
-        "strides": [
-          1,
-          1
-        ],
-        "dilations": [
-          1,
-          1
-        ],
+        "kernel_shape": [5, 1],
+        "strides": [1, 1],
+        "dilations": [1, 1],
         "group": 1,
-        "pads": [
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "3062",
-        "region": "1",
-        "node_name": "dual_model_encoder_conv_Conv",
-        "omc_type": "Convolution",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              96,
-              5,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0",
-            "source_ref": "dual_model_Concat_1:0",
-            "shape_source": "OMC input descriptor"
-          },
-          {
-            "name": "",
-            "shape": [
-              96,
-              96,
-              5,
-              1
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "FRACTAL_Z",
-            "source_ref": "dual_model.encoder.conv.weight:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 92160
-          },
-          {
-            "name": "",
-            "shape": [
-              96
-            ],
-            "dtype": "DT_FLOAT",
-            "layout": "NCHW",
-            "source_ref": "dual_model.encoder.conv.bias:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 384
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              96,
-              1,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values.",
-          "FP32 compiled bias becomes FP16 synthetic initializer for homogeneous ONNX tensor types; logical NCHW/ND replaces blocked storage."
-        ],
-        "preset_sha256": "74ac6d7d1a37bddbfdd244aea288f6a63336d390c2bf9db8447a4ff483c48723"
+        "pads": [0, 0, 0, 0]
       }
-    },
-    {
-      "id": "ConvTranspose",
-      "op": "ConvTranspose",
+    }
+  },
+  {
+    "op": "ConvTranspose",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20263283,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            1,
-            16,
-            2,
-            128
-          ]
+          "shape": [1, 16, 2, 128]
         },
         {
           "name": "W",
-          "shape": [
-            16,
-            1,
-            1,
-            3
-          ],
+          "shape": [16, 1, 1, 3],
           "init": {
             "kind": "normal",
             "std": 0.02
@@ -429,9 +133,7 @@
         },
         {
           "name": "B",
-          "shape": [
-            1
-          ],
+          "shape": [1],
           "init": {
             "kind": "normal",
             "std": 0.02
@@ -439,592 +141,115 @@
         }
       ],
       "attributes": {
-        "kernel_shape": [
-          1,
-          3
-        ],
-        "strides": [
-          1,
-          2
-        ],
-        "dilations": [
-          1,
-          1
-        ],
+        "kernel_shape": [1, 3],
+        "strides": [1, 2],
+        "dilations": [1, 1],
         "group": 1,
-        "pads": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "output_padding": [
-          0,
-          0
-        ]
-      },
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "2174",
-        "region": "1",
-        "node_name": "aec_model_gate_deconv4_2_deconv2_ConvTranspose",
-        "omc_type": "ConvTranspose",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              16,
-              2,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0",
-            "source_ref": "aec_model_Add_50:0",
-            "shape_source": "OMC input descriptor"
-          },
-          {
-            "name": "",
-            "shape": [
-              16,
-              1,
-              1,
-              3
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "FRACTAL_Z",
-            "source_ref": "aec_model.gate_deconv4_2.deconv2.weight:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 1536
-          },
-          {
-            "name": "",
-            "shape": [
-              1
-            ],
-            "dtype": "DT_FLOAT",
-            "layout": "ND",
-            "source_ref": "aec_model.gate_deconv4_2.deconv2.bias:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 64
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              1,
-              2,
-              257
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values.",
-          "FP32 compiled bias becomes FP16 synthetic initializer for homogeneous ONNX tensor types; logical NCHW/ND replaces blocked storage."
-        ],
-        "preset_sha256": "aecb5d3c3cce4f0a43c6d7f812431f7c0b3e39bd5ee3b524cb4001e5470663f0"
+        "pads": [0, 0, 0, 0],
+        "output_padding": [0, 0]
       }
-    },
-    {
-      "id": "Add",
-      "op": "Add",
+    }
+  },
+  {
+    "op": "Add",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20262525,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            1,
-            16,
-            2,
-            128
-          ]
+          "shape": [1, 16, 2, 128]
         },
         {
           "name": "W",
-          "shape": [
-            1,
-            16,
-            2,
-            128
-          ]
+          "shape": [1, 16, 2, 128]
         }
-      ],
-      "attributes": {},
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "1416",
-        "region": "1",
-        "node_name": "aec_model_gate_conv1_Add",
-        "omc_type": "Add",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              16,
-              2,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0",
-            "source_ref": "aec_model_gate_conv1_act_Elu:0",
-            "shape_source": "OMC input descriptor"
-          },
-          {
-            "name": "",
-            "shape": [
-              1,
-              16,
-              2,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0",
-            "source_ref": "aec_model_gate_conv1_u_block_u2_deconv1_Slice:0",
-            "shape_source": "OMC input descriptor"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              16,
-              2,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values."
-        ],
-        "compiled_attributes": {
-          "version": 6,
-          "core_type_support": 1,
-          "npucl_substore": "generated_lib",
-          "is_input_const": {
-            "b": [
-              false,
-              false
-            ],
-            "val_type": 4
-          },
-          "group_id": 0,
-          "block_dim": 1,
-          "soc_version": "Changsha",
-          "npucl_implementation": 3,
-          "broacast_real_dim_cnt": 4,
-          "format": 0,
-          "npu_type": 0,
-          "inferred_format": 0
-        },
-        "preset_sha256": "25089a7a780cc3f5020126360ed56bba8274baacf9ffd1c4a5fbaf7f7c3a30b9"
-      }
-    },
-    {
-      "id": "Mul",
-      "op": "Mul",
+      ]
+    }
+  },
+  {
+    "op": "Mul",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20261522,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            1,
-            256
-          ]
+          "shape": [1, 256, 1, 1]
         },
         {
           "name": "W",
-          "shape": [
-            1,
-            256
-          ]
+          "shape": [1, 256, 1, 1]
         }
-      ],
-      "attributes": {},
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "413",
-        "region": "1",
-        "node_name": "aec_model_Mul_22",
-        "omc_type": "Mul",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              256
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "aec_model_Gather_9:0",
-            "shape_source": "OMC input descriptor"
-          },
-          {
-            "name": "",
-            "shape": [
-              1,
-              256
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "aec_model_Gather_13:0",
-            "shape_source": "OMC input descriptor"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              256
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values."
-        ],
-        "compiled_attributes": {
-          "version": 6,
-          "core_type_support": 1,
-          "npucl_substore": "generated_lib",
-          "transformer_nd": true,
-          "group_id": 0,
-          "is_input_const": {
-            "b": [
-              false,
-              false
-            ],
-            "val_type": 4
-          },
-          "block_dim": 1,
-          "soc_version": "Changsha",
-          "npucl_implementation": 3,
-          "broacast_real_dim_cnt": 2,
-          "format": 0,
-          "npu_type": 0,
-          "inferred_format": 0
-        },
-        "preset_sha256": "9d7af1a07679c6de157fbc2435630ea8a721240171deff6fafc4feafff1b1c58"
-      }
-    },
-    {
-      "id": "Activation",
-      "op": "Activation",
+      ]
+    }
+  },
+  {
+    "op": "Activation",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20261629,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            1,
-            16,
-            2,
-            128
-          ]
+          "shape": [1, 16, 2, 128]
         }
       ],
-      "attributes": {},
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "520",
-        "region": "1",
-        "node_name": "aec_model_gate_conv1_g_conv_Sigmoid",
-        "omc_type": "Activation",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              16,
-              2,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0",
-            "source_ref": "aec_model_gate_conv1_g_conv_conv2_Conv:0",
-            "shape_source": "OMC input descriptor"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              16,
-              2,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values."
-        ],
-        "activation_mode": 0,
-        "compiled_attributes": {
-          "core_type_support": 1,
-          "group_id": 0,
-          "beta": 0.0,
-          "alpha": 1.0,
-          "npucl_implementation": 3,
-          "mode": 0,
-          "npu_type": 0,
-          "format": 0,
-          "inferred_format": 0,
-          "version": 6,
-          "is_input_const": {
-            "b": [
-              false
-            ],
-            "val_type": 4
-          },
-          "npucl_substore": "generated_lib",
-          "negative_slope": 0.0,
-          "block_dim": 1,
-          "soc_version": "Changsha",
-          "coef": 0.0
-        },
-        "preset_sha256": "79dbc653207e51c27fde2a2f275c5c3336956d8b11e3c4eba60d2de140361d2c"
-      },
       "activation": "Sigmoid"
-    },
-    {
-      "id": "PRelu",
-      "op": "PRelu",
+    }
+  },
+  {
+    "op": "PRelu",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20263501,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            1,
-            64,
-            2,
-            128
-          ]
+          "shape": [1, 64, 2, 128]
         },
         {
           "name": "slope",
-          "shape": [
-            64,
-            1,
-            1
-          ],
+          "shape": [64, 1, 1],
           "init": {
             "kind": "fill",
             "value": 0.25
           }
         }
-      ],
-      "attributes": {},
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "2392",
-        "region": "1",
-        "node_name": "iccrn_model_oSpatialNet_freq_cmps_1_fconv1_2_PRelu",
-        "omc_type": "PRelu",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              64,
-              2,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0",
-            "source_ref": "iccrn_model_oSpatialNet_freq_cmps_1_fconv1_1_conv_Conv:0",
-            "shape_source": "OMC input descriptor"
-          },
-          {
-            "name": "",
-            "shape": [
-              64,
-              1,
-              1
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0",
-            "source_ref": "onnx::PRelu_8738:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 160
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              64,
-              2,
-              128
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NC1HWC0"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values."
-        ],
-        "compiled_attributes": {
-          "_need_judge_dtype": true,
-          "core_type_support": 1,
-          "is_input_const": {
-            "b": [
-              false,
-              true
-            ],
-            "val_type": 4
-          },
-          "version": 6,
-          "group_id": 0,
-          "npucl_substore": "generated_lib",
-          "block_dim": 1,
-          "soc_version": "Changsha",
-          "npucl_implementation": 3,
-          "data_format": "NCHW",
-          "format": 0,
-          "npu_type": 0,
-          "inferred_format": 0
-        },
-        "preset_sha256": "9734552512d338f81ac7dd7da0d01436eeac67e8e5d182af0157f492542cc91e"
-      }
-    },
-    {
-      "id": "ReduceSum",
-      "op": "ReduceSum",
+      ]
+    }
+  },
+  {
+    "op": "ReduceSum",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20264623,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            4,
-            256,
-            1
-          ]
+          "shape": [4, 256, 1]
         }
       ],
       "attributes": {
-        "axes": [
-          0
-        ],
+        "axes": [0],
         "keepdims": 1,
         "noop_with_empty_axes": 1
-      },
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "3514",
-        "region": "1",
-        "node_name": "dual_model_fb_fullband_mamba_0_ReduceSum",
-        "omc_type": "ReduceSum",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              4,
-              256,
-              1
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "dual_model_fb_fullband_mamba_0_Mul:0",
-            "shape_source": "OMC input descriptor"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              1,
-              256,
-              1
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values."
-        ],
-        "compiled_attributes": {
-          "noop_with_empty_axes": true,
-          "core_type_support": 1,
-          "keep_dims": true,
-          "group_id": 0,
-          "beta": 0.0,
-          "npucl_implementation": 3,
-          "alpha": 1.0,
-          "axes": {
-            "i": [
-              "0"
-            ],
-            "val_type": 2
-          },
-          "format": 0,
-          "npu_type": 0,
-          "inferred_format": 0,
-          "version": 6,
-          "Tidx": 3,
-          "is_input_const": {
-            "b": [
-              false,
-              true
-            ],
-            "val_type": 4
-          },
-          "transformer_nd": true,
-          "npucl_substore": "generated_lib",
-          "block_dim": 1,
-          "soc_version": "Changsha"
-        },
-        "preset_sha256": "2ecc89eaa32659921e2f05f1665eb2e61a8aef8a166ee6cb8fb1be56663cbb38"
       }
-    },
-    {
-      "id": "LayerNorm",
-      "op": "LayerNorm",
+    }
+  },
+  {
+    "op": "LayerNorm",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20263366,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            256,
-            64
-          ]
+          "shape": [256, 64]
         },
         {
           "name": "scale",
-          "shape": [
-            1,
-            64
-          ],
+          "shape": [1, 64],
           "init": {
             "kind": "normal",
             "mean": 1.0,
@@ -1033,10 +258,7 @@
         },
         {
           "name": "bias",
-          "shape": [
-            1,
-            64
-          ],
+          "shape": [1, 64],
           "init": {
             "kind": "normal",
             "std": 0.02
@@ -1047,206 +269,41 @@
         "axis": 1,
         "epsilon": 9.999999747378752e-06
       },
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "2257",
-        "region": "1",
-        "node_name": "iccrn_model_oSpatialNet_freq_cmps_1_fconv1_0_Add_1",
-        "omc_type": "LayerNorm",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              256,
-              64
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "iccrn_model_oSpatialNet_freq_cmps_1_fconv1_0_Transpose:0",
-            "shape_source": "OMC input descriptor"
-          },
-          {
-            "name": "",
-            "shape": [
-              1,
-              64
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "iccrn_model_oSpatialNet_freq_cmps_1_fconv1_0_Add_1_inner_const_1:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 160
-          },
-          {
-            "name": "",
-            "shape": [
-              1,
-              64
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND",
-            "source_ref": "iccrn_model_oSpatialNet_freq_cmps_1_fconv1_0_Add_1_inner_const_2:0",
-            "shape_source": "OMC Const tensor",
-            "constant_storage_bytes": 160
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              256,
-              64
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "ND"
-          },
-          {
-            "name": "",
-            "shape": [
-              256,
-              1
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NCHW"
-          },
-          {
-            "name": "",
-            "shape": [
-              256,
-              1
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NCHW"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values.",
-          "Rebuild primary Y only. Original two auxiliary outputs are not claimed equivalent to ONNX Mean/InvStdDev. Decomposed LayerNorm pattern may be fused by OMG.",
-          "Kirin9030 DDK 6.1.1 LayerNorm fusion requires FP32 epsilon. Statistics and affine calculation use FP32, with FP16 external interfaces; scale/bias are promoted after synthetic FP16 initialization. Internal rounding equivalence to original OMC is not asserted."
-        ],
-        "compiled_attributes": {
-          "core_type_support": 1,
-          "begin_params_axis": 1,
-          "group_id": 0,
-          "begin_norm_axis": 1,
-          "end_norm_axis": 1,
-          "epsilon": 9.999999747378752e-06,
-          "npucl_implementation": 3,
-          "format": 0,
-          "npu_type": 0,
-          "version": 5,
-          "norm_type": "LayerNorm",
-          "npucl_substore": "generated_lib",
-          "transformer_nd": true,
-          "inferred_format": 0,
-          "block_dim": 1,
-          "soc_version": "Changsha"
-        },
-        "preset_sha256": "e952e2ac857c39d81443908f7c515c3d72d969b33feb4fafea43d91f10a8dad9"
-      },
-      "implementation": "decomposed",
+      "implementation": "native",
       "accumulation_dtype": "float32",
-      "affine_dtype": "float32"
-    },
-    {
-      "id": "Softmax",
-      "op": "Softmax",
+      "opset": 17
+    }
+  },
+  {
+    "op": "Softmax",
+    "params": {
       "dtype": "float16",
-      "opset": 13,
       "seed": 20261111,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            256,
-            64
-          ]
+          "shape": [1, 256, 64, 1]
         }
       ],
       "attributes": {
-        "axis": -1
-      },
-      "source": {
-        "kind": "generic_example",
-        "reason": "No independently identifiable Softmax/SoftmaxV2 node in parsed handfree OMC. Example shape borrowed from a LayerNorm activation; axis=-1 is a test choice, not recovered.",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "preset_sha256": "82fceb61d367ccd7ed9f95ddc8c3b9e09657f2fcd47b0b6e4ce8407094402553"
+        "axis": 2
       }
-    },
-    {
-      "id": "CastT",
-      "op": "CastT",
+    }
+  },
+  {
+    "op": "CastT",
+    "params": {
       "dtype": "float32",
-      "opset": 13,
       "seed": 20261112,
       "inputs": [
         {
           "name": "X",
-          "shape": [
-            2,
-            2,
-            2,
-            257
-          ]
+          "shape": [2, 2, 2, 257]
         }
       ],
       "attributes": {
         "to": "float16"
-      },
-      "source": {
-        "kind": "handfree_compiled_node",
-        "omc_sha256": "414032aa61ba24f8d068e1eef431a50882036ad9033ecb16690b309b26180cc7",
-        "node_id": "3",
-        "region": "0",
-        "node_name": "graphop_data_cast_1",
-        "omc_type": "CastT",
-        "resolved_inputs": [
-          {
-            "name": "",
-            "shape": [
-              2,
-              2,
-              2,
-              257
-            ],
-            "dtype": "DT_FLOAT",
-            "layout": "NCHW",
-            "source_ref": "input_x_linear:0",
-            "shape_source": "OMC input descriptor"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "",
-            "shape": [
-              2,
-              2,
-              2,
-              257
-            ],
-            "dtype": "DT_FLOAT16",
-            "layout": "NCHW"
-          }
-        ],
-        "adaptations": [
-          "Learned weights/biases/slopes are deterministic synthetic test values, not original trained values."
-        ],
-        "compiled_attributes": {
-          "version": 3,
-          "inferred_format": 0,
-          "npucl_substore": "generated_lib",
-          "dst_dtype": 1,
-          "attr_invalid_input_cache": false,
-          "attr_invalid_feature_map_cache": false,
-          "soc_version": "Changsha",
-          "npucl_implementation": 3,
-          "stable_sort_id": 3,
-          "attr_flush_output_cache": true,
-          "src_dtype": 0
-        },
-        "preset_sha256": "b3ce2f3e7a33e3ffde2209e9ec3da321e06852d42f84f2c879322dfdca147e01"
       }
     }
-  ]
-}
+  }
+]

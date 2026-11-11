@@ -5,13 +5,14 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 import onnxruntime as ort
 
 import generate_ops as g
 
-DEFAULTS = json.loads((g.HERE / "defaults_handfree.json").read_text(encoding="utf-8"))
+DEFAULTS, _ = g.load_config(g.HERE / "defaults_handfree.json")
 
 
 def case(op, shapes, attrs=None, **extra):
@@ -34,16 +35,57 @@ def evaluate(config, values):
 
 class GeneratorTests(unittest.TestCase):
     def test_all_handfree_defaults(self):
-        self.assertEqual({c["op"] for c in DEFAULTS["cases"]}, set(g.OPS))
-        for config in DEFAULTS["cases"]:
+        self.assertEqual({c["op"] for c in DEFAULTS}, set(g.OPS))
+        expected = {c["op"]: c for c in json.loads((g.HERE / "verification/results.json").read_text(encoding="utf-8"))["cases"]}
+        for config in DEFAULTS:
             with self.subTest(op=config["op"]):
-                self.assertEqual(g.digest(g.model_config(config)), config["source"]["preset_sha256"])
                 model = g.build_model(config)
                 g.check_runtime(model, 42)
-                if "outputs" in config["source"]:
-                    self.assertEqual(g.describe(model)["outputs"][0]["shape"], config["source"]["outputs"][0]["shape"])
-        softmax = next(c for c in DEFAULTS["cases"] if c["op"] == "Softmax")
-        self.assertEqual(softmax["source"]["kind"], "generic_example")
+                actual_shape = g.describe(model)["outputs"][0]["shape"]
+                expected_shape = expected[config["op"]]["onnx_outputs"][0]["shape"]
+                self.assertEqual([d for d in actual_shape if d != 1], [d for d in expected_shape if d != 1])
+
+    def test_native_defaults_preserve_logical_values(self):
+        logical, _ = g.load_config(g.HERE / "configs/logical_2d.json")
+        current = {c["op"]: c for c in DEFAULTS}
+        rng = np.random.default_rng(9)
+        for old in logical:
+            with self.subTest(op=old["op"]):
+                new = current[old["op"]]
+                old_inputs = [i for i in old["inputs"] if "init" not in i]
+                new_inputs = [i for i in new["inputs"] if "init" not in i]
+                values = [rng.normal(size=i["shape"]).astype("float16") for i in old_inputs]
+                actual = evaluate(new, [v.reshape(i["shape"]) for v, i in zip(values, new_inputs)])
+                expected = evaluate(old, values)
+                np.testing.assert_allclose(actual.reshape(expected.shape), expected, rtol=2e-3, atol=2e-3)
+
+    def test_simple_config_roundtrip_and_legacy_input(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            cfg = case("Add", [[2], [2]])
+            row = g.generate_case(cfg, base, base)
+            editable = base / row["config"]
+            self.assertEqual(set(json.loads(editable.read_text())), {"op", "params"})
+            loaded, compiler = g.load_config(editable)
+            self.assertEqual(loaded, [cfg])
+            self.assertEqual(compiler, {})
+            self.assertIn("logs", Path(row["record"]).parts)
+            legacy = base / "old.json"
+            g.save_json(legacy, {"compiler": {"platform": "kirin9030"}, "cases": [cfg]})
+            self.assertEqual(g.load_config(legacy), ([cfg], {"platform": "kirin9030"}))
+
+    def test_native_io_command_and_boolean_flag(self):
+        cfg = next(c for c in DEFAULTS if c["op"] == "Convolution")
+        model = g.build_model(cfg)
+        setup = {"config": {"loader": None, "io_layout": "native"}, "binary": Path("omg"), "platform": "kirin9030"}
+        command = g.compiler_command(setup, model, Path("model.onnx"), Path("output"))
+        self.assertIn("--use_origin_format=false", command)
+        self.assertNotIn("--use_origin_format", command)
+        self.assertEqual(command[command.index("--input_format") + 1], "X:NC1HWC0")
+        self.assertEqual(command[command.index("--output_format") + 1], "Y_Conv:NC1HWC0")
+        layernorm = g.build_model(next(c for c in DEFAULTS if c["op"] == "LayerNorm"))
+        command = g.compiler_command(setup, layernorm, Path("model.onnx"), Path("output"))
+        self.assertNotIn("--input_format", command)
 
     def test_gemm_transpose_scaling_bias(self):
         a, b, c = np.arange(6).reshape(3, 2) / 10, np.arange(12).reshape(4, 3) / 20, np.arange(4) / 5
@@ -205,6 +247,10 @@ class GeneratorTests(unittest.TestCase):
             first = copy.deepcopy(cfg)
             g.resolve_npy_hashes(first, base)
             g.build_model(first, base)
+            row = g.generate_case(cfg, base, base / "results")
+            exported = base / "results" / row["config"]
+            loaded, _ = g.load_config(exported)
+            g.build_model(loaded[0], exported.parent)
             np.save(base / "w.npy", np.zeros((3, 4), dtype="float32"))
             second = copy.deepcopy(cfg)
             g.resolve_npy_hashes(second, base)
@@ -234,9 +280,21 @@ class GeneratorTests(unittest.TestCase):
                 with self.assertRaises((ValueError, RuntimeError)):
                     g.generate_case(cfg, out, out, setup)
                 self.assertEqual(list((out / "CastT").glob("*.omc")), [])
-                records = list((out / "CastT").glob("*.json"))
+                records = list((out / "CastT" / "logs").glob("*/record.json"))
                 self.assertEqual(len(records), 1)
                 self.assertEqual(json.loads(records[0].read_text())["status"], "FAILED")
+
+    def test_native_mode_rejects_remaining_transdata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            cfg = case("CastT", [[2]], {"to": "float16"})
+            command = [sys.executable, "-c", "import sys; from pathlib import Path; Path(sys.argv[1]+'.omc').write_bytes(b'test')", "{output}"]
+            setup = {"config": {"command": command, "io_layout": "native", "timeout": 10}, "root": None,
+                     "platform": "test", "schema": "unused", "env": None, "evidence": {"fingerprint": "test"}}
+            with patch.object(g, "audit_omc", return_value={"types": {"TransData": 1}}):
+                with self.assertRaisesRegex(RuntimeError, "still contains 1 TransData"):
+                    g.generate_case(cfg, out, out, setup)
+            self.assertEqual(list((out / "CastT").glob("*.omc")), [])
 
 
 if __name__ == "__main__":
