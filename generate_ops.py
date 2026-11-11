@@ -553,21 +553,23 @@ def compiler_setup(config, ddk_root=None, ge_proto=None):
         raise ValueError("compiler.timeout must be positive")
     if config.get("io_types", "model") not in {"model", "auto"}:
         raise ValueError("compiler.io_types must be model or auto")
-    if config.get("io_layout", "standard") not in {"standard", "native"}:
-        raise ValueError("compiler.io_layout must be standard or native")
+    if config.get("io_layout", "standard") not in {"standard", "native", "handfree"}:
+        raise ValueError("compiler.io_layout must be standard, native or handfree")
     evidence = {"config": config, "ddk_root": str(root) if root else None,
                 "omg": str(binary) if binary else None, "omg_sha256": sha256(binary) if binary and binary.is_file() else None,
                 "ge_proto": str(Path(schema).resolve()), "ge_proto_sha256": sha256(schema),
                 "python": sys.executable, "onnx_version": onnx.__version__,
                 "environment_sha256": digest({k: env.get(k) for k in ("PATH", "PYTHONPATH", "LD_LIBRARY_PATH", "SOC_VERSION")})}
+    if config.get("io_layout") == "handfree":
+        evidence["air_builder_sha256"] = sha256(HERE / "ge_nd.py")
     evidence["fingerprint"] = digest(evidence)
     return {"root": root, "binary": binary, "schema": str(Path(schema).resolve()), "env": env,
             "config": config, "evidence": evidence, "platform": platform}
 
 
-def compiler_command(setup, model, source, prefix):
+def compiler_command(setup, model, source, prefix, framework=5):
     cfg = setup["config"]
-    native = (cfg.get("io_layout", "standard") == "native"
+    native = (cfg.get("io_layout", "standard") in {"native", "handfree"} and framework == 5
               and model.graph.name.removesuffix("_parameter_test") in BLOCKED_IO_OPS
               and not any(n.op_type == "LayerNormalization" for n in model.graph.node))
     input_format, output_format = "", ""
@@ -580,7 +582,8 @@ def compiler_command(setup, model, source, prefix):
         output_format = ";".join(producers[t.name] + ":NC1HWC0" for t in model.graph.output)
     if cfg.get("command"):
         mapping = {"model": str(source), "output": str(prefix), "platform": setup["platform"],
-                   "ddk_root": str(setup["root"] or ""), "input_format": input_format, "output_format": output_format}
+                   "ddk_root": str(setup["root"] or ""), "input_format": input_format, "output_format": output_format,
+                   "framework": str(framework)}
         command = [part.format(**mapping) for part in cfg["command"]]
     else:
         loader = cfg.get("loader", "auto")
@@ -590,7 +593,7 @@ def compiler_command(setup, model, source, prefix):
             loader = str(candidate) if candidate.exists() else None
         if loader:
             command.insert(0, loader)
-        command += ["--framework", "5", "--model", str(source), "--output", str(prefix),
+        command += ["--framework", str(framework), "--model", str(source), "--output", str(prefix),
                     "--target", "omc", "--platform", setup["platform"],
                     "--use_origin_format=" + str(False if native else cfg.get("use_origin_format", True)).lower()]
         if native:
@@ -651,6 +654,29 @@ def audit_omc(path, schema):
             "schema_sha256": graph.graph["schema_sha256"], "warnings": graph.graph["warnings"]}
 
 
+def check_handfree_layouts(case, audit):
+    """Validate core ports, not Data placeholders or ONNX logical shapes."""
+    op = case["op"]
+    ports = {"Mul": (0, 1), "LayerNorm": (0,), "ReduceSum": (0,)}
+    if op not in ports and op != "ConvTranspose":
+        return
+    nodes = [n for n in audit["nodes"] if n["type"] == op]
+    if len(nodes) != 1:
+        raise RuntimeError(f"{op}: expected one core with handfree layouts")
+    inputs = nodes[0]["inputs"]
+    if op == "ConvTranspose":
+        if len(case["inputs"]) < 3:
+            return
+        bias = inputs[-1]
+        actual = bias.get("constant_tensor", bias)
+        if bias["layout"] != "ND" or actual["layout"] != "ND" or len(actual["shape"]) != 1:
+            raise RuntimeError(f"ConvTranspose bias must be 1-D ND; actual {actual}. Use a compatible DDK; native mode is a layout-mismatched control only")
+    else:
+        for port in ports[op]:
+            if inputs[port]["layout"] != "ND":
+                raise RuntimeError(f"{op} input {port} must be ND; actual {inputs[port]['layout']}")
+
+
 def generate_case(case, base, out, setup=None, runtime=False):
     case = copy.deepcopy(case)
     case["op"] = canonical(case["op"])
@@ -698,10 +724,18 @@ def generate_case(case, base, out, setup=None, runtime=False):
             job.mkdir()
             # Publish only after return code, IMOD parsing, and ONNX integrity all pass.
             temporary_prefix = job / "compiled"
-            command = compiler_command(setup, model, source.resolve(), temporary_prefix.resolve())
+            compile_source, framework = source.resolve(), 5
+            if setup["config"].get("io_layout") == "handfree" and case["op"] in {"Mul", "LayerNorm"}:
+                from ge_nd import build_air
+                compile_source, framework = job / "source.air", 1
+                compile_source.write_bytes(build_air(case, model, setup["schema"]))
+            command = compiler_command(setup, model, compile_source.resolve(), temporary_prefix.resolve(), framework)
             save_json(job / "command.json", {"argv": command, "compiler": setup["evidence"], "onnx_sha256": model_hash})
             attempt = {"status": "FAILED", "fingerprint": fingerprint, "compiler": setup["evidence"],
                        "command": command, "log": (job / "convert.log").relative_to(directory).as_posix()}
+            if framework == 1:
+                attempt.update(source_ir=compile_source.relative_to(directory).as_posix(),
+                               source_ir_sha256=sha256(compile_source), route="ONNX tensors -> GE AIR -> OMG")
             try:
                 rc = run_logged(command, job / "convert.log", setup["env"], job, setup["config"].get("timeout", 300))
                 attempt["returncode"] = rc
@@ -710,8 +744,10 @@ def generate_case(case, base, out, setup=None, runtime=False):
                     raise RuntimeError(f"OMG failed (returncode={rc}); see {job / 'convert.log'}")
                 audit = audit_omc(produced, setup["schema"])
                 attempt["actual_omc"] = audit
-                if setup["config"].get("io_layout") == "native" and audit["types"].get("TransData", 0):
+                if setup["config"].get("io_layout") in {"native", "handfree"} and audit["types"].get("TransData", 0):
                     raise RuntimeError(f"Native I/O still contains {audit['types']['TransData']} TransData nodes; inspect temporary OMC/logs or use --io-layout standard")
+                if setup["config"].get("io_layout") == "handfree":
+                    check_handfree_layouts(case, audit)
                 if sha256(source) != model_hash:
                     raise RuntimeError("ONNX changed during compilation")
                 attempt.update(status="COMPILED", omc=compiled.name, omc_sha256=sha256(produced),
@@ -724,6 +760,8 @@ def generate_case(case, base, out, setup=None, runtime=False):
                 save_json(record_path, record)
                 raise
             record.update(status="COMPILED", compile=attempt)
+        if setup["config"].get("io_layout") == "handfree":
+            check_handfree_layouts(case, record["compile"]["actual_omc"])
     expected = case.get("expect_omc_type")
     if expected and "compile" in record and record["compile"]["status"] == "COMPILED":
         actual = record["compile"]["actual_omc"]["types"]
@@ -754,7 +792,7 @@ def main(argv=None):
     parser.add_argument("--ddk-root", type=Path)
     parser.add_argument("--ge-proto", type=Path)
     parser.add_argument("--platform", help="Override compiler platform, e.g. kirin9030")
-    parser.add_argument("--io-layout", choices=("native", "standard"), help="Native blocked interfaces remove boundary TransData; standard keeps normal tensor I/O")
+    parser.add_argument("--io-layout", choices=("native", "standard", "handfree"), help="handfree uses ND AIR for Mul/LayerNorm and checks original core layouts; native uses blocked interfaces; standard keeps normal I/O")
     args = parser.parse_args(argv)
     cases, compiler = load_config(args.config)
     if args.op and args.all:

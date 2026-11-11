@@ -1,6 +1,8 @@
 # 实机测试：目标算子超过 31 µs（2026-11-11）
 
-**12 类算子已找到达标配置；CastT 尚未取得独立 NPU 节点耗时，不能判定达标。** 每个推荐配置独立运行 3 组，每组 25 次，去掉前 5 次预热后保留 20 次：以下每项的 **60 个目标节点样本全部 >31 µs**，均来自 `op.csv` 的 `npu_aicore` 记录，OMC 的 TransData 数量均为 0。
+**历史对照：本文先于 ND 布局修正。** Mul、LayerNorm、ConvTranspose 的旧结果不满足后续提出的原节点布局要求；最新结果见 [BOUNDARY_31US.md](BOUNDARY_31US.md)。重现本文的普通配置时需显式添加 `--io-layout native`，不能作为 ND 结果使用。
+
+当时 12 类算子找到达标配置；CastT 尚未取得独立 NPU 节点耗时。每个配置独立运行 3 组，每组 25 次，去掉前 5 次预热后保留 20 次：以下每项的 60 个目标节点样本全部 >31 µs，均来自 `op.csv` 的 `npu_aicore` 记录，OMC 的 TransData 数量均为 0。
 
 连接设备实际上报 **Kirin9020 / MOR**，系统 `MOR-W52 6.1.0.125(SP10ENTC302E101R1P1log)`。编译沿用用户指定的 **Kirin9030 OMG**：`DDK-tools-next-6.1.1.0`，`--platform kirin9030`。这些模型已在该设备上实际运行，但下面的时间**不是 Kirin9030 真机实测值**。
 

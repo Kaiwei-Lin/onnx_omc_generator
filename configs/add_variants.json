@@ -1,0 +1,60 @@
+[
+  {
+    "op": "Add",
+    "params": {
+      "dtype": "float16",
+      "seed": 20262525,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            16,
+            256,
+            128
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            1,
+            16,
+            256,
+            128
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "op": "Add",
+    "params": {
+      "dtype": "float16",
+      "seed": 20262525,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            16,
+            256,
+            128
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            1,
+            16,
+            256,
+            128
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.1
+          }
+        }
+      ]
+    }
+  }
+]

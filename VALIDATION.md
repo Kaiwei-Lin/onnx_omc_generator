@@ -1,5 +1,7 @@
 # 验证记录：简化配置与零 TransData（2026-11-11）
 
+本文是旧版结构对照。最新的 ND Mul/LayerNorm、两种 Add、严格 bias 校验和实机临界点见 [BOUNDARY_31US.md](BOUNDARY_31US.md)；核心端口的原模型/当前模型对照见 `verification/layout_comparison.json`。最新默认模式已不使用下表的 Mul/LayerNorm 编译路径。
+
 后续实机测试见 [BENCHMARK_31US.md](BENCHMARK_31US.md)：12 类推荐配置已通过 NPU 逐节点计时、输出数值检查和三组复测。下表保留此前的默认产物结构记录；其中原生 LayerNorm 已确认进入 CPUCL，CastT 默认产物没有导出 NPU 节点耗时，不能将“编译成功/零 TransData”当作 NPU 执行验证。
 
 13 类默认样例均通过 ONNX 检查、CPU 试运行、Kirin9030 OMG 编译及 OMC 结构解析。TransData 总数从 **18 减少到 0**。Windows 和 WSL 的 **26 项测试分别全部通过**，包括二维/四维配置的数值对应关系、配置回读、NPY 路径、布尔编译参数和残留 TransData 拒绝测试。

@@ -5,5 +5,5 @@
   "io_types": "model",
   "extra_args": [],
   "timeout": 300,
-  "io_layout": "native"
+  "io_layout": "handfree"
 }

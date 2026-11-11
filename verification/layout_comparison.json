@@ -1,0 +1,830 @@
+[
+  {
+    "op": "Mul",
+    "original": {
+      "name": "aec_model_Mul_16",
+      "type": "Mul",
+      "inputs": [
+        {
+          "shape": [
+            1,
+            256
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        },
+        {
+          "shape": [
+            1,
+            256
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        }
+      ],
+      "attributes": {
+        "inferred_format": 0,
+        "group_id": 0,
+        "npu_type": 0,
+        "block_dim": 1,
+        "core_type_support": 1,
+        "is_input_const": {
+          "b": [
+            false,
+            false
+          ],
+          "val_type": 4
+        },
+        "npucl_substore": "generated_lib",
+        "soc_version": "Changsha",
+        "format": 0,
+        "version": 6,
+        "transformer_nd": true,
+        "broacast_real_dim_cnt": 2,
+        "npucl_implementation": 3,
+        "aec_model_Mul_16_pattern": "ElemWise"
+      }
+    },
+    "current": {
+      "name": "Y",
+      "type": "Mul",
+      "region": 1,
+      "inputs": [
+        {
+          "name": "",
+          "shape": [
+            1,
+            256
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        },
+        {
+          "name": "",
+          "shape": [
+            1,
+            256
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "shape": [
+            1,
+            256
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        }
+      ],
+      "attributes": {
+        "version": 6,
+        "inferred_format": 0,
+        "npucl_substore": "elementary_lib",
+        "transformer_nd": true,
+        "block_dim": 1,
+        "npu_type": 0,
+        "core_type_support": 1,
+        "broacast_real_dim_cnt": 2,
+        "format": 0
+      }
+    },
+    "public_interfaces": [
+      {
+        "name": "X",
+        "kind": "Data",
+        "tensors": [
+          {
+            "name": "",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NCHW",
+            "buffer_bytes": 544
+          }
+        ]
+      },
+      {
+        "name": "W",
+        "kind": "Data",
+        "tensors": [
+          {
+            "name": "",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NCHW",
+            "buffer_bytes": 544
+          }
+        ]
+      },
+      {
+        "name": "NetOutput",
+        "kind": "NetOutput",
+        "tensors": [
+          {
+            "name": "",
+            "shape": [
+              1,
+              256
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NCHW",
+            "buffer_bytes": 544
+          }
+        ]
+      }
+    ],
+    "compile_status": "COMPILED",
+    "omg_sha256": "57099596d36e7704dd0f9a83a0dc185b4ea6fbd78ade351f6ed2a2d8af908f9d",
+    "ddk": "/mnt/d/WHU/huawei_power_opt/spatialnet_field_kit/microbenchmark/.local/DDK-tools-next-6.1.1.0"
+  },
+  {
+    "op": "LayerNorm",
+    "original": {
+      "name": "iccrn_model_oSpatialNet_freq_cmps_1_fconv1_0_Add_1",
+      "type": "LayerNorm",
+      "inputs": [
+        {
+          "shape": [
+            256,
+            64
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        },
+        {
+          "shape": [
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND",
+          "constant": {
+            "shape": [
+              1,
+              64
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "ND"
+          }
+        },
+        {
+          "shape": [
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND",
+          "constant": {
+            "shape": [
+              1,
+              64
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "ND"
+          }
+        }
+      ],
+      "attributes": {
+        "begin_params_axis": 1,
+        "version": 5,
+        "npu_type": 0,
+        "norm_type": "LayerNorm",
+        "end_norm_axis": 1,
+        "soc_version": "Changsha",
+        "begin_norm_axis": 1,
+        "transformer_nd": true,
+        "inferred_format": 0,
+        "iccrn_model_oSpatialNet_freq_cmps_1_fconv1_0_Add_1_pattern": "Opaque",
+        "group_id": 0,
+        "format": 0,
+        "block_dim": 1,
+        "npucl_implementation": 3,
+        "core_type_support": 1,
+        "npucl_substore": "generated_lib",
+        "original_op_names": {
+          "s": [
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfQWRk",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfQWRkXzE=",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfRGl2",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfVHJhbnNwb3Nl",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfUmVkdWNlTWVhbg==",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfUmVkdWNlTWVhbl8x",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfTXVs",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfUG93",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfU3FydA==",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfU3Vi",
+            "aWNjcm5fbW9kZWxfb1NwYXRpYWxOZXRfZnJlcV9jbXBzXzFfZmNvbnYxXzBfU3Vi"
+          ],
+          "val_type": 1
+        },
+        "epsilon": 9.999999747378752e-06
+      }
+    },
+    "current": {
+      "name": "Y",
+      "type": "LayerNorm",
+      "region": 1,
+      "inputs": [
+        {
+          "name": "",
+          "shape": [
+            256,
+            64
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        },
+        {
+          "name": "",
+          "shape": [
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND",
+          "constant_tensor": {
+            "name": "",
+            "shape": [
+              1,
+              64
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "ND"
+          }
+        },
+        {
+          "name": "",
+          "shape": [
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND",
+          "constant_tensor": {
+            "name": "",
+            "shape": [
+              1,
+              64
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "ND"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "shape": [
+            256,
+            64
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        }
+      ],
+      "attributes": {
+        "begin_norm_axis": 1,
+        "norm_type": "LayerNorm",
+        "npucl_substore": "elementary_lib",
+        "format": 0,
+        "version": 5,
+        "end_norm_axis": 1,
+        "npu_type": 0,
+        "inferred_format": 0,
+        "transformer_nd": true,
+        "no_search": false,
+        "core_type_support": 1,
+        "epsilon": 9.999999747378752e-06,
+        "begin_params_axis": 1,
+        "block_dim": 1
+      }
+    },
+    "public_interfaces": [
+      {
+        "name": "X",
+        "kind": "Data",
+        "tensors": [
+          {
+            "name": "",
+            "shape": [
+              256,
+              64
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NCHW",
+            "buffer_bytes": 32800
+          }
+        ]
+      },
+      {
+        "name": "NetOutput",
+        "kind": "NetOutput",
+        "tensors": [
+          {
+            "name": "",
+            "shape": [
+              256,
+              64
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NCHW",
+            "buffer_bytes": 32800
+          }
+        ]
+      }
+    ],
+    "compile_status": "COMPILED",
+    "omg_sha256": "57099596d36e7704dd0f9a83a0dc185b4ea6fbd78ade351f6ed2a2d8af908f9d",
+    "ddk": "/mnt/d/WHU/huawei_power_opt/spatialnet_field_kit/microbenchmark/.local/DDK-tools-next-6.1.1.0"
+  },
+  {
+    "op": "ReduceSum",
+    "original": {
+      "name": "dual_model_fb_fullband_mamba_0_ReduceSum",
+      "type": "ReduceSum",
+      "inputs": [
+        {
+          "shape": [
+            4,
+            256,
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        }
+      ],
+      "attributes": {
+        "version": 6,
+        "npu_type": 0,
+        "beta": 0.0,
+        "is_input_const": {
+          "b": [
+            false,
+            true
+          ],
+          "val_type": 4
+        },
+        "soc_version": "Changsha",
+        "transformer_nd": true,
+        "inferred_format": 0,
+        "axes": {
+          "i": [
+            "0"
+          ],
+          "val_type": 2
+        },
+        "format": 0,
+        "block_dim": 1,
+        "npucl_implementation": 3,
+        "group_id": 0,
+        "npucl_substore": "generated_lib",
+        "noop_with_empty_axes": true,
+        "core_type_support": 1,
+        "alpha": 1.0,
+        "Tidx": 3,
+        "keep_dims": true,
+        "dual_model_fb_fullband_mamba_0_ReduceSum_pattern": "CommReduce"
+      }
+    },
+    "current": {
+      "name": "Y_ReduceSum",
+      "type": "ReduceSum",
+      "region": 1,
+      "inputs": [
+        {
+          "name": "",
+          "shape": [
+            4,
+            256,
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        },
+        {
+          "name": "",
+          "shape": [
+            1
+          ],
+          "dtype": "DT_INT32",
+          "layout": "ND",
+          "constant_tensor": {
+            "name": "",
+            "shape": [
+              1
+            ],
+            "dtype": "DT_INT32",
+            "layout": "NCHW"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "shape": [
+            1,
+            256,
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND"
+        }
+      ],
+      "attributes": {
+        "version": 6,
+        "Tidx": 3,
+        "npucl_substore": "elementary_lib",
+        "format": 0,
+        "core_type_support": 1,
+        "npu_type": 0,
+        "alpha": 1.0,
+        "noop_with_empty_axes": true,
+        "block_dim": 1,
+        "axis": {
+          "i": [
+            "1"
+          ],
+          "val_type": 2
+        },
+        "keep_dims": true,
+        "beta": 0.0,
+        "is_input_const": {
+          "b": [
+            false,
+            true
+          ],
+          "val_type": 4
+        },
+        "inferred_format": 0
+      }
+    },
+    "public_interfaces": [
+      {
+        "name": "X",
+        "kind": "Data",
+        "tensors": [
+          {
+            "name": "",
+            "shape": [
+              4,
+              256,
+              1
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NCHW",
+            "buffer_bytes": 2080
+          }
+        ]
+      },
+      {
+        "name": "Node_Output",
+        "kind": "NetOutput",
+        "tensors": [
+          {
+            "name": "Y",
+            "shape": [
+              1,
+              256,
+              1
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NCHW",
+            "buffer_bytes": 544
+          }
+        ]
+      }
+    ],
+    "compile_status": "COMPILED",
+    "omg_sha256": "57099596d36e7704dd0f9a83a0dc185b4ea6fbd78ade351f6ed2a2d8af908f9d",
+    "ddk": "/mnt/d/WHU/huawei_power_opt/spatialnet_field_kit/microbenchmark/.local/DDK-tools-next-6.1.1.0"
+  },
+  {
+    "op": "ConvTranspose",
+    "original": {
+      "name": "aec_model_gate_deconv4_2_deconv2_ConvTranspose",
+      "type": "ConvTranspose",
+      "inputs": [
+        {
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "NC1HWC0"
+        },
+        {
+          "shape": [
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "FRACTAL_Z",
+          "constant": {
+            "shape": [
+              16,
+              1,
+              1,
+              3
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "FRACTAL_Z"
+          }
+        },
+        {
+          "shape": [
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "ND",
+          "constant": {
+            "shape": [
+              1
+            ],
+            "dtype": "DT_FLOAT",
+            "layout": "ND"
+          }
+        }
+      ],
+      "attributes": {
+        "version": 6,
+        "has_bias_value": false,
+        "original_format": 0,
+        "dilations": {
+          "i": [
+            "1",
+            "1",
+            "1",
+            "1"
+          ],
+          "val_type": 2
+        },
+        "algo": 0,
+        "npu_type": 0,
+        "groups": 1,
+        "data_format": "NCHW",
+        "group_id": 0,
+        "core_type_support": 1,
+        "pads": {
+          "i": [
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          "val_type": 2
+        },
+        "adj": {
+          "i": [
+            "0",
+            "0"
+          ],
+          "val_type": 2
+        },
+        "beta": 0.0,
+        "is_input_const": {
+          "b": [
+            true,
+            true,
+            false,
+            true
+          ],
+          "val_type": 4
+        },
+        "soc_version": "Changsha",
+        "aec_model_gate_deconv4_2_deconv2_ConvTranspose_pattern": "Conv2d_backprop_input",
+        "num_output": 0,
+        "mode": 1,
+        "inferred_format": 0,
+        "strides": {
+          "i": [
+            "1",
+            "2"
+          ],
+          "val_type": 2
+        },
+        "format": 0,
+        "block_dim": 1,
+        "npucl_implementation": 3,
+        "pad_mode": 4,
+        "npucl_substore": "generated_lib",
+        "alpha": 1.0,
+        "input_size": {
+          "i": [
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          "val_type": 2
+        },
+        "offset_x": 0,
+        "has_bias": true
+      }
+    },
+    "current": {
+      "name": "Y_ConvTranspose",
+      "type": "ConvTranspose",
+      "region": 1,
+      "inputs": [
+        {
+          "name": "",
+          "shape": [
+            1
+          ],
+          "dtype": "DT_INT32",
+          "layout": "NC1HWC0",
+          "constant_tensor": {
+            "name": "",
+            "shape": [
+              4
+            ],
+            "dtype": "DT_INT32",
+            "layout": "NCHW"
+          }
+        },
+        {
+          "name": "",
+          "shape": [
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "NC1HWC0",
+          "constant_tensor": {
+            "name": "",
+            "shape": [
+              16,
+              1,
+              1,
+              3
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "FRACTAL_DECONV"
+          }
+        },
+        {
+          "name": "",
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "NC1HWC0"
+        },
+        {
+          "name": "",
+          "shape": [
+            1
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "NC1HWC0",
+          "constant_tensor": {
+            "name": "",
+            "shape": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NC1HWC0"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "shape": [
+            1,
+            1,
+            2,
+            257
+          ],
+          "dtype": "DT_FLOAT16",
+          "layout": "NC1HWC0"
+        }
+      ],
+      "attributes": {
+        "groups": 1,
+        "has_bias_value": false,
+        "pads": {
+          "i": [
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          "val_type": 2
+        },
+        "pad_mode": 4,
+        "npucl_substore": "elementary_lib",
+        "inferred_format": 0,
+        "before_pad": {
+          "val_type": 2
+        },
+        "dilations": {
+          "i": [
+            "1",
+            "1"
+          ],
+          "val_type": 2
+        },
+        "version": 6,
+        "adj": {
+          "i": [
+            "0",
+            "0"
+          ],
+          "val_type": 2
+        },
+        "is_input_const": {
+          "b": [
+            true,
+            true,
+            false,
+            true
+          ],
+          "val_type": 4
+        },
+        "algo": 0,
+        "upsample_param": 1,
+        "data_format": "NCHW",
+        "offset_x": 0,
+        "adjusted_pads": true,
+        "npu_type": 0,
+        "alpha": 1.0,
+        "format": 0,
+        "output_padding": {
+          "i": [
+            "0",
+            "0"
+          ],
+          "val_type": 2
+        },
+        "original_format": 0,
+        "no_search": false,
+        "num_output": 0,
+        "strides": {
+          "i": [
+            "1",
+            "2"
+          ],
+          "val_type": 2
+        },
+        "beta": 0.0,
+        "has_bias": true,
+        "core_type_support": 1,
+        "mode": 1,
+        "block_dim": 1
+      }
+    },
+    "public_interfaces": [
+      {
+        "name": "X",
+        "kind": "Data",
+        "tensors": [
+          {
+            "name": "",
+            "shape": [
+              1,
+              16,
+              2,
+              128
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NC1HWC0",
+            "buffer_bytes": 8224
+          }
+        ]
+      },
+      {
+        "name": "Node_Output",
+        "kind": "NetOutput",
+        "tensors": [
+          {
+            "name": "Y",
+            "shape": [
+              1,
+              1,
+              2,
+              257
+            ],
+            "dtype": "DT_FLOAT16",
+            "layout": "NC1HWC0",
+            "buffer_bytes": 16480
+          }
+        ]
+      }
+    ],
+    "compile_status": "FAILED",
+    "omg_sha256": "57099596d36e7704dd0f9a83a0dc185b4ea6fbd78ade351f6ed2a2d8af908f9d",
+    "ddk": "/mnt/d/WHU/huawei_power_opt/spatialnet_field_kit/microbenchmark/.local/DDK-tools-next-6.1.1.0"
+  }
+]

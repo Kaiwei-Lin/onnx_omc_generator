@@ -1,12 +1,12 @@
 # ONNX / OMC 单算子生成器
 
-生成 13 类算子的 ONNX 和 Kirin OMC。可编辑 JSON 只保留 `op`（算子类型）和 `params`（参数）。默认开启去 TransData 的编译模式；每个 OMC 生成后都会重新解析，发现残留 TransData 就报错，不会把它当成成功结果。
+生成 13 类算子的 ONNX 和 Kirin OMC。可编辑 JSON 只保留 `op`（算子类型）和 `params`（参数）。默认 `handfree` 模式校验核心算子布局并要求零 TransData；不符合要求的 OMC 留在诊断目录，不会发布为成功产物。
 
 默认参数以 handfree 模型为依据，权重是可重复的合成测试值。Softmax 没有找到可独立恢复的原节点，使用通用样例。实际 OMC 类型由 DDK 决定，例如本机 GemmD 家族实际编译为 GemmV3。
 
-2026-11-11 实机测试已找到 **12 类目标 NPU 算子耗时 >31 µs** 的配置，每项通过 3 组、共 60 次有效采样。设备实际上报 Kirin9020，编译使用 Kirin9030 OMG。完整 shape、权重、时间、复测命令与 CastT 的限制见 [BENCHMARK_31US.md](BENCHMARK_31US.md)。`results_31us_verified.zip` 提供已测模型和原始证据。
+当前布局修正、31 µs 局部临界点和两种 Add 的实测见 [BOUNDARY_31US.md](BOUNDARY_31US.md)。设备实际上报 Kirin9020，编译使用 Kirin9030 OMG。`results_boundary_31us_verified.zip` 提供模型和原始证据。旧版 [BENCHMARK_31US.md](BENCHMARK_31US.md) 及 ZIP 保留为历史对照，其中 Mul、LayerNorm、ConvTranspose 的布局不满足后续要求。
 
-原生 LayerNormalization 的默认配置在本 DDK 下进入 CPUCL；零 TransData 不代表 NPU 执行。需测 NPU LayerNorm 时使用 `configs/layernorm_31us.json` 配合 `configs/layernorm_npu_compiler.json`。
+Mul 和 LayerNorm 默认先生成标准 ONNX，再从同一组张量生成未编译 GE AIR，由 OMG 编译出 ND 核心。已实机验证 NPU 执行和数值；不修改已编译 OMC。当前 DDK 仍会把 ConvTranspose 的一维 bias 改成四维 NC1HWC0，默认模式会明确报错。CastT 仍没有取得独立 NPU 耗时。
 
 ## 快速使用
 
@@ -27,7 +27,7 @@ python generate_ops.py --op Convolution --onnx-only --check-runtime
 python -m zipfile -e results.zip .
 ```
 
-`results.zip` 是本机已验证的 13 对样例，解压得到 `results/`。重新编译使用新输出目录，避免覆盖不同 DDK 的结果。建议使用较短路径，OMG 有路径长度限制。
+`results.zip` 是早期的 13 对样例，不代表当前布局要求。使用最新的临界点 ZIP 或重新生成；重新编译使用新输出目录，避免覆盖不同 DDK 的结果。建议使用较短路径，OMG 有路径长度限制。`--all` 在当前 DDK 下会因 ConvTranspose bias 校验不通过而返回非零，其他算子仍逐项生成。
 
 ## 配置只包含类型和参数
 
@@ -51,6 +51,8 @@ python generate_ops.py --config add.json --ddk-root /path/to/DDK-tools --out res
 ```
 
 同名输出 JSON 也采用这个格式，可以直接修改后再次作为 `--config` 使用。来源、编译命令、节点描述、哈希和验证结果不再混在可编辑参数中，详细诊断统一放在 `logs/` 中。
+
+`configs/add_variants.json` 同时提供两路运行时输入和“运行时输入 + 常量”两种 Add。第二个输入有 `init` 就是 ONNX initializer 常量；删除 `init` 就是运行时输入。可修改常量 shape 实现广播，也可用 `kind: values/fill/npy` 指定值。本次常量 Add 是同 shape 的稠密非零常量，实测 OMC 为 Add；双动态输入为 Eltwise，分别统计。
 
 | 参数 | 含义 |
 |---|---|
@@ -106,11 +108,15 @@ LayerNorm 的 decomposed 模式使用 ReduceMean/Sub/Pow/Add/Sqrt/Div/Mul 等标
 
 完整模型的相邻算子可以共享内部布局。独立 ONNX 暴露普通布局接口时，OMG 会在边界加入布局转换。脚本通过编译接口选项去除这些转换，不修改编译后的 OMC 二进制。
 
-`compiler.json` 的 `io_layout` 默认为 `native`：
+`compiler.json` 的 `io_layout` 默认为 `handfree`：
 
-- 卷积、Add/Mul、Activation、PRelu、Softmax 使用 NC1HWC0 接口。脚本传入 `--use_origin_format=false`、按输入名指定 `--input_format`，并按输出**生产节点名**指定 `--output_format`。
-- 原生 LayerNormalization 使用本 DDK 的 ND 实现，不强制套 NC1HWC0；MatMul/Gemm/ReduceSum/Cast 等也保留各自的兼容接口。
-- 所有默认产物必须经解析确认 `TransData=0` 才会发布到结果目录。
+- Mul/LayerNorm 使用 `ge_nd.py` 从已经检查过的 ONNX 取得 shape、dtype、原始 initializer 字节，构建新的 GE AIR，然后调用 `omg --framework 1`。Mul 的两路核心输入、LayerNorm 的核心输入/scale/bias 均为 ND。AIR 保存在编译日志目录并记录 SHA-256。此路径支持 FP16/FP32，LayerNorm 使用 FP32 累积且 affine dtype 与输入一致。
+- ReduceSum 保留 ONNX 编译路径，并核验核心输入为 ND。
+- 卷积、Add、Activation、PRelu、Softmax 使用 NC1HWC0 接口。脚本传入 `--use_origin_format=false`、按输入名指定 `--input_format`，并按输出**生产节点名**指定 `--output_format`。
+- ConvTranspose 核验 bias 的核心端口和实际 Const 描述：必须是 ND，实际张量必须一维。不能用端口占位 shape `[1]` 替代常量的真实 shape。
+- 所有默认产物必须经解析确认 `TransData=0` 才会发布到结果目录。ND 核心不等于模型入口标签为 ND：当前 OMG 的公开 Data/NetOutput 仍标记 NCHW，按连续逻辑 tensor 供数；记录同时给出公开接口和核心端口，不混淆二者。OMG 本身拒绝 `--input_format X:ND`。
+
+公司端应运行更新后的完整脚本。ONNX 不携带这个 GE 布局约束，单独把生成的 ONNX 送入旧的 `omg --framework 5` 命令，可能再次得到 NC1HWC0 或 CPU LayerNorm；它不等价于这里经过验证的 AIR 编译路径。
 
 这会改变部分 OMC 的外部数据布局。**NC1HWC0 模型不能直接输入普通 NCHW 连续内存。** 板端需根据 SDK 的 tensor 描述准备、打包和解包数据，并按实际 buffer size 分配；不能只用逻辑 shape 的元素数估算缓冲区。接口的 layout、shape、dtype、buffer_bytes 记录在 `logs/<摘要>/record.json` 的 `compile.actual_omc.interfaces` 中。
 
@@ -118,9 +124,9 @@ LayerNorm 的 decomposed 模式使用 ReduceMean/Sub/Pow/Add/Sqrt/Div/Mul 等标
 
 | 算子 | 原配置 | 当前默认配置 |
 |---|---|---|
-| Mul | 两个 `[1,256]` 输入 | 两个 `[1,256,1,1]` 输入 |
+| Mul | 两个 `[1,256]` 输入 | 保留两个 `[1,256]`，核心 ND |
 | Softmax | `[256,64]`，axis=-1 | `[1,256,64,1]`，axis=2 |
-| LayerNorm | `[256,64]`，axis=1，分解图 | shape/axis 不变，改为 opset 17 原生 LayerNormalization |
+| LayerNorm | `[256,64]`，axis=1，分解图 | shape/axis 不变，ONNX 为 opset 17 LayerNormalization，AIR 编译为 NPU ND LayerNorm |
 
 保留原二维/分解图配置的文件是 `configs/logical_2d.json`。若要普通外部布局或恢复这些表达：
 
@@ -128,9 +134,9 @@ LayerNorm 的 decomposed 模式使用 ReduceMean/Sub/Pow/Add/Sqrt/Div/Mul 等标
 python generate_ops.py --config configs/logical_2d.json --io-layout standard --ddk-root /path/to/DDK-tools --out results_logical
 ```
 
-standard 模式允许 TransData，保留普通 ONNX 接口。新参数若不能满足 native 模式的约束，会报错并保留诊断文件；不会自动更改用户的 shape 或掩盖残留节点。
+standard 模式允许 TransData，保留普通 ONNX 接口。`--io-layout native` 保留旧的 NC1HWC0 对照路径，不保证原 handfree 的核心布局。handfree 模式失败时保留诊断，不会自动改 shape 或降级为不合要求的布局。
 
-**没有 TransData 不代表只有一个计算节点。** MatMul 的常量左乘兼容改写仍有两个 Permute；本机默认 FP16 LayerNorm 仍有两个 CastT。要试验 FP32 LayerNorm，使用 `configs/layernorm_fp32.json`。实际节点见 `VALIDATION.md` 和结果记录。尺寸映射、实现版本及 dtype 都会影响功耗，不能把新模型当成原节点的硬件执行完全复现。
+**没有 TransData 不代表只有一个计算节点。** MatMul 的常量左乘兼容改写仍有两个 Permute；当前 ND LayerNorm 已实测为单个 NPU 核心，无 CastT。旧 FP32 四维/NC1HWC0 LayerNorm 配置仍保留作对照。尺寸、实现版本及 dtype 都会影响功耗，不能把新模型当成原节点的硬件执行完全复现。
 
 ## 输出与编译选项
 
@@ -146,7 +152,7 @@ results/<算子>/logs/<摘要>/attempt_*/convert.log
 
 `compiler.json` 独立存放平台、io_layout、weight_data_type、io_types、timeout 等编译选项。用 `--compiler-config` 选择公司配置，用 `--ddk-root` / `DDK_PATH` 指定 DDK，用 `--platform` 覆盖平台。`io_types=model` 保留各输入输出的独立 dtype，特别是 CastT 的 FP32→FP16。FP32 ONNX 若需要 FP32 编译权重，也要设置 `weight_data_type=FP32`。
 
-高级选项仍支持 `omg`、`loader`、`env`、`extra_args`、`ge_proto`、`version_label`，以及完整 argv 数组 `command`。自定义 command 支持 `{model}`、`{output}`、`{platform}`、`{ddk_root}`、`{input_format}`、`{output_format}` 占位符；需由公司 wrapper 提供相应编译选项。native 模式最终仍核验 TransData 数量。切换/替换 DDK 或 wrapper 时使用新输出目录。
+高级选项仍支持 `omg`、`loader`、`env`、`extra_args`、`ge_proto`、`version_label`，以及完整 argv 数组 `command`。自定义 command 支持 `{model}`、`{framework}`、`{output}`、`{platform}`、`{ddk_root}`、`{input_format}`、`{output_format}` 占位符；ND AIR 时 framework 为 1，其余为 5，公司 wrapper 必须使用该值。handfree/native 模式最终仍核验 TransData 数量。切换/替换 DDK 或 wrapper 时使用新输出目录。
 
 ## 验证与边界
 

@@ -1,0 +1,13 @@
+﻿variant,axis,lower,upper,lower_min_us,lower_median_us,upper_min_us,upper_median_us,lower_samples,upper_samples,actual_op,input_shapes,weight_shapes,output_shapes
+MatMul,"A rows M; K=6144, B columns=2",48,49,28.0,29.0,43.0,44.0,60,60,__g_product_T_MatMul(MatMulV2),"[[6144, 2]]","[[49, 6144]]","[[49, 2]]"
+GemmD,"weight/output columns N; A=[128,288],W=[288,N],bias=[N]",516,517,31.0,35.0,34.0,35.0,60,60,Y_Gemm(GemmV3),"[[128, 288]]","[[288, 517], [517]]","[[128, 517]]"
+BatchMatMul,"batch B; M=2,K=N=256",2,3,28.0,28.0,33.0,34.0,60,60,Y_MatMul(BatchMatMulV2),"[[3, 2, 256]]","[[3, 256, 256]]","[[3, 2, 256]]"
+Convolution,"input width W; N=1,C=96,H=5",374,375,31.0,32.0,39.0,40.0,60,60,Y_Conv(Convolution),"[[1, 96, 5, 375]]","[[96, 96, 5, 1], [96]]","[[1, 96, 1, 375]]"
+Add,"both input heights H; N=1,C=16,W=128",128,129,31.0,32.0,32.0,32.0,60,60,Y_Add(Eltwise),"[[1, 16, 129, 128], [1, 16, 129, 128]]",[],"[[1, 16, 129, 128]]"
+Mul,"both input last dimensions L; shapes=[1,256,L], core ND",991,992,31.0,32.0,32.0,33.0,60,60,Y(Mul),"[[1, 256, 992], [1, 256, 992]]",[],"[[1, 256, 992]]"
+Activation,"input height H; N=1,C=16,W=128; Sigmoid",154,155,31.0,32.0,32.0,32.0,60,60,Y_Sigmoid(Activation),"[[1, 16, 155, 128]]",[],"[[1, 16, 155, 128]]"
+PRelu,"input height H; N=1,C=64,W=128",47,48,31.0,32.0,32.0,33.0,60,60,Y_PRelu(PRelu),"[[1, 64, 48, 128]]","[[64, 1, 1]]","[[1, 64, 48, 128]]"
+ReduceSum,"input middle dimension L; shape=[4,L,1],axes=[0]",36993,36994,31.0,32.0,32.0,32.0,60,60,Y_ReduceSum(ReduceSum),"[[4, 36994, 1]]",[],"[[1, 36994, 1]]"
+LayerNorm,"rows N; shape=[N,64],axis=1, core ND",135,136,31.0,32.0,32.0,32.0,60,60,Y(LayerNorm),"[[136, 64]]","[[1, 64], [1, 64]]","[[136, 64]]"
+Softmax,"input channels C; shape=[1,C,64,1],axis=2",2160,2161,31.0,32.0,32.0,32.0,60,60,Y_Softmax(Softmax),"[[1, 2161, 64, 1]]",[],"[[1, 2161, 64, 1]]"
+AddConst,"input/constant heights H; X dynamic,W constant; shapes=[1,16,H,128]",124,125,31.0,33.0,32.0,34.0,60,60,Y_Add(Add),"[[1, 16, 125, 128]]","[[1, 16, 125, 128]]","[[1, 16, 125, 128]]"

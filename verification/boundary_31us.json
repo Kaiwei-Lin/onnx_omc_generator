@@ -1,0 +1,5618 @@
+{
+  "threshold_us": 31,
+  "criterion": "min of all kept target-node samples > 31; at least 3 groups per endpoint",
+  "scope": "Local one-dimensional sampled boundaries; not a global minimum or a timing guarantee",
+  "device": {
+    "target": "0123456789ABCDEF",
+    "chip": "Kirin9020",
+    "product": "MOR",
+    "software": "MOR-W52 6.1.0.125(SP10ENTC302E101R1P1log)",
+    "tool_version": "model_run_tool_internal version 109.633.120.010",
+    "host_time": "20261111_141100_142501",
+    "remote": "/data/local/tmp/onnx_31us_20261111_141100_142501",
+    "times": 25,
+    "warmup": 5,
+    "dev_perf": 3,
+    "open_pmu": 1
+  },
+  "compiler_platform": "kirin9030",
+  "ddk": "DDK-tools-next-6.1.1.0",
+  "cases": [
+    {
+      "variant": "MatMul",
+      "axis": "A rows M; K=6144, B columns=2",
+      "low": 48,
+      "high": 49,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 28.9,
+          "median_us": 29.0,
+          "min_us": 28.0,
+          "max_us": 30.0,
+          "stddev_us": 0.5686240703077327,
+          "pass_all": false,
+          "runs": 3,
+          "value": 48,
+          "config": {
+            "op": "MatMul",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264848,
+              "inputs": [
+                {
+                  "name": "A",
+                  "shape": [
+                    48,
+                    6144
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                },
+                {
+                  "name": "B",
+                  "shape": [
+                    6144,
+                    2
+                  ]
+                }
+              ],
+              "constant_left_rewrite": true
+            }
+          },
+          "profiles": [
+            "evidence/MatMul/lower/run1/statistics.json",
+            "evidence/MatMul/lower/run2/statistics.json",
+            "evidence/MatMul/lower/run3/statistics.json"
+          ],
+          "actual_type": "__g_product_T_MatMul(MatMulV2)",
+          "onnx": "results/MatMul/MatMul_f16_w0-48x6144_in1-6144x2_out-48x2_9b96cc0f6cce.onnx",
+          "omc": "results/MatMul/MatMul_f16_w0-48x6144_in1-6144x2_out-48x2_9b96cc0f6cce.omc",
+          "onnx_sha256": "372486e7b2a3e9ade04f6c4944f0e8c3c32459d24c9e5be47a56ff04e3de08c2",
+          "omc_sha256": "904fb7519ecadd894bf47669d8da1feaf5ff4099f1ea3f68917be10bf76c6a55",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "B",
+                "shape": [
+                  6144,
+                  2
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  48,
+                  2
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "__g_A_T",
+                "shape": [
+                  6144,
+                  48
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "Transpose": 2,
+              "MatMul": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "MatMulV2": 1,
+              "Permute": 2
+            },
+            "nodes": [
+              {
+                "name": "__g_B_T_Transpose",
+                "type": "Permute",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      6144,
+                      2
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      6144
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "format": 0,
+                  "npu_type": 0,
+                  "is_input_const": {
+                    "b": [
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "core_type_support": 1,
+                  "npucl_implementation": 0,
+                  "version": 6,
+                  "inferred_format": 0,
+                  "block_dim": 1,
+                  "npucl_substore": "elementary_lib",
+                  "transformer_nd": true,
+                  "order": {
+                    "i": [
+                      "1",
+                      "0"
+                    ],
+                    "val_type": 2
+                  },
+                  "group_id": 0
+                }
+              },
+              {
+                "name": "__g_product_T_MatMul",
+                "type": "MatMulV2",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      6144
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      6144,
+                      48
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "FRACTAL_NZ",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        6144,
+                        48
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "FRACTAL_NZ"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [],
+                    "dtype": "DT_UNDEFINED",
+                    "layout": "RESERVED"
+                  },
+                  {
+                    "name": "",
+                    "shape": [],
+                    "dtype": "DT_UNDEFINED",
+                    "layout": "RESERVED"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      48
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "alpha": 1.0,
+                  "transpose_x2": false,
+                  "format": 2,
+                  "op_tiling_key": 1,
+                  "beta": 0.0,
+                  "version": 6,
+                  "op_tiling_workspace_data": {
+                    "base64": ""
+                  },
+                  "inferred_format": 0,
+                  "__g_product_T_MatMul_pattern": "ascendc_op",
+                  "offset_x": 0,
+                  "block_dim": 1,
+                  "core_type_support": 1,
+                  "weight_tiling_info": {
+                    "i": [
+                      "16",
+                      "48",
+                      "48",
+                      "160",
+                      "48"
+                    ],
+                    "val_type": 2
+                  },
+                  "op_tiling_data": {
+                    "base64": "AQAAAAIAAAAwAAAAABgAAAAYAAACAAAAMAAAAAAYAAAQAAAAMAAAAKAAAAAnAAAABAAAAAEAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnAAAAAgAAAAAAAAAAAAAAAgAAAAIAAAACAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  },
+                  "soc_version": "kirin9030",
+                  "npucl_substore": "ascendc_lib",
+                  "_tiling_data_offset": 590336,
+                  "npu_type": 0,
+                  "op_tiling_blockdim": 1,
+                  "group_id": 1,
+                  "npucl_implementation": 6,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "transpose_x1": false,
+                  "transformer_nd": true
+                }
+              },
+              {
+                "name": "Y_Transpose",
+                "type": "Permute",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      48
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      48,
+                      2
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "is_input_const": {
+                    "b": [
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "block_dim": 1,
+                  "version": 6,
+                  "npucl_implementation": 0,
+                  "group_id": 2,
+                  "format": 0,
+                  "order": {
+                    "i": [
+                      "1",
+                      "0"
+                    ],
+                    "val_type": 2
+                  },
+                  "npucl_substore": "elementary_lib",
+                  "npu_type": 0,
+                  "core_type_support": 1,
+                  "transformer_nd": true,
+                  "inferred_format": 0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "B",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      6144,
+                      2
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 24608
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      48,
+                      2
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 224
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.00146484375
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 47.016666666666666,
+          "median_us": 44.0,
+          "min_us": 43.0,
+          "max_us": 83.0,
+          "stddev_us": 9.898639075931376,
+          "pass_all": true,
+          "runs": 3,
+          "value": 49,
+          "config": {
+            "op": "MatMul",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264848,
+              "inputs": [
+                {
+                  "name": "A",
+                  "shape": [
+                    49,
+                    6144
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                },
+                {
+                  "name": "B",
+                  "shape": [
+                    6144,
+                    2
+                  ]
+                }
+              ],
+              "constant_left_rewrite": true
+            }
+          },
+          "profiles": [
+            "evidence/MatMul/upper/run1/statistics.json",
+            "evidence/MatMul/upper/run2/statistics.json",
+            "evidence/MatMul/upper/run3/statistics.json"
+          ],
+          "actual_type": "__g_product_T_MatMul(MatMulV2)",
+          "onnx": "results/MatMul/MatMul_f16_w0-49x6144_in1-6144x2_out-49x2_b81eccf1ea3d.onnx",
+          "omc": "results/MatMul/MatMul_f16_w0-49x6144_in1-6144x2_out-49x2_b81eccf1ea3d.omc",
+          "onnx_sha256": "ab9b9b2b68edec6720f234c9e8bd3f7b4c3fd89e8466a29dab9b682d281e3438",
+          "omc_sha256": "5872da46eba248a61e28d29431432d257babed618ebb4f9a5296fab0760a4e84",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "B",
+                "shape": [
+                  6144,
+                  2
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  49,
+                  2
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "__g_A_T",
+                "shape": [
+                  6144,
+                  49
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "Transpose": 2,
+              "MatMul": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "MatMulV2": 1,
+              "Permute": 2
+            },
+            "nodes": [
+              {
+                "name": "__g_B_T_Transpose",
+                "type": "Permute",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      6144,
+                      2
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      6144
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "npucl_substore": "elementary_lib",
+                  "npucl_implementation": 0,
+                  "block_dim": 1,
+                  "group_id": 0,
+                  "transformer_nd": true,
+                  "is_input_const": {
+                    "b": [
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "version": 6,
+                  "inferred_format": 0,
+                  "order": {
+                    "i": [
+                      "1",
+                      "0"
+                    ],
+                    "val_type": 2
+                  },
+                  "format": 0,
+                  "npu_type": 0,
+                  "core_type_support": 1
+                }
+              },
+              {
+                "name": "__g_product_T_MatMul",
+                "type": "MatMulV2",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      6144
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      6144,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "FRACTAL_NZ",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        6144,
+                        64
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "FRACTAL_NZ"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [],
+                    "dtype": "DT_UNDEFINED",
+                    "layout": "RESERVED"
+                  },
+                  {
+                    "name": "",
+                    "shape": [],
+                    "dtype": "DT_UNDEFINED",
+                    "layout": "RESERVED"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      49
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "beta": 0.0,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "group_id": 1,
+                  "inferred_format": 0,
+                  "op_tiling_blockdim": 1,
+                  "weight_tiling_info": {
+                    "i": [
+                      "16",
+                      "64",
+                      "64",
+                      "128",
+                      "49"
+                    ],
+                    "val_type": 2
+                  },
+                  "core_type_support": 1,
+                  "__g_product_T_MatMul_pattern": "ascendc_op",
+                  "npucl_substore": "ascendc_lib",
+                  "op_tiling_workspace_data": {
+                    "base64": ""
+                  },
+                  "transformer_nd": true,
+                  "op_tiling_key": 1,
+                  "soc_version": "kirin9030",
+                  "_tiling_data_offset": 786944,
+                  "format": 2,
+                  "offset_x": 0,
+                  "transpose_x1": false,
+                  "block_dim": 1,
+                  "transpose_x2": false,
+                  "alpha": 1.0,
+                  "npucl_implementation": 6,
+                  "version": 6,
+                  "op_tiling_data": {
+                    "base64": "AQAAAAIAAAAxAAAAABgAAAAYAAACAAAAMQAAAAAYAAAQAAAAQAAAAIAAAAAwAAAAAgAAAAEAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAQAAAAAAAAAAAAAAAgAAAAIAAAACAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  },
+                  "npu_type": 0
+                }
+              },
+              {
+                "name": "Y_Transpose",
+                "type": "Permute",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      49
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      49,
+                      2
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "core_type_support": 1,
+                  "group_id": 2,
+                  "block_dim": 1,
+                  "transformer_nd": true,
+                  "npucl_substore": "elementary_lib",
+                  "inferred_format": 0,
+                  "format": 0,
+                  "npucl_implementation": 0,
+                  "order": {
+                    "i": [
+                      "1",
+                      "0"
+                    ],
+                    "val_type": 2
+                  },
+                  "version": 6,
+                  "is_input_const": {
+                    "b": [
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "npu_type": 0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "B",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      6144,
+                      2
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 24608
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      49,
+                      2
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 256
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.00146484375
+        }
+      }
+    },
+    {
+      "variant": "GemmD",
+      "axis": "weight/output columns N; A=[128,288],W=[288,N],bias=[N]",
+      "low": 516,
+      "high": 517,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 74.88333333333334,
+          "median_us": 35.0,
+          "min_us": 31.0,
+          "max_us": 2183.0,
+          "stddev_us": 274.7967789516868,
+          "pass_all": false,
+          "runs": 3,
+          "value": 516,
+          "config": {
+            "op": "GemmD",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264128,
+              "inputs": [
+                {
+                  "name": "A",
+                  "shape": [
+                    128,
+                    288
+                  ]
+                },
+                {
+                  "name": "B",
+                  "shape": [
+                    288,
+                    516
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                },
+                {
+                  "name": "C",
+                  "shape": [
+                    516
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                }
+              ],
+              "attributes": {
+                "transA": 0,
+                "transB": 0,
+                "alpha": 1.0,
+                "beta": 1.0
+              }
+            }
+          },
+          "profiles": [
+            "evidence/GemmD/lower/run1/statistics.json",
+            "evidence/GemmD/lower/run2/statistics.json",
+            "evidence/GemmD/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_Gemm(GemmV3)",
+          "onnx": "results/GemmD/GemmD_f16_in0-128x288_w1-288x516_w2-516_out-128x516_alpha-1_beta-1_transA-0_transB-0_b1e76577936a.onnx",
+          "omc": "results/GemmD/GemmD_f16_in0-128x288_w1-288x516_w2-516_out-128x516_alpha-1_beta-1_transA-0_transB-0_b1e76577936a.omc",
+          "onnx_sha256": "c4e2113d718ebbf7e05ce1519bced63f8776bf3ccf4af04c52dddf7d4997e2d3",
+          "omc_sha256": "0bfc15d3db3388b4afdea725c4bc07e73044cbf12df3cca31caa188f5a18e91b",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "A",
+                "shape": [
+                  128,
+                  288
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  128,
+                  516
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "B",
+                "shape": [
+                  288,
+                  516
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "C",
+                "shape": [
+                  516
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "Gemm": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "GemmV3": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Gemm",
+                "type": "GemmV3",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      128,
+                      288
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      288,
+                      528
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "FRACTAL_NZ",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        288,
+                        528
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "FRACTAL_NZ"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      528
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        528
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "ND"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      128,
+                      516
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "transpose_b": false,
+                  "op_tiling_workspace_data": {
+                    "base64": ""
+                  },
+                  "block_dim": 1,
+                  "version": 6,
+                  "_tiling_data_offset": 306176,
+                  "soc_version": "kirin9030",
+                  "npu_type": 0,
+                  "Y_Gemm_pattern": "ascendc_op",
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "op_tiling_data": {
+                    "base64": "AQAAAIAAAAAEAgAAIAEAACABAACAAAAABAIAACABAACAAAAAgAAAAEAAAAAFAAAAAgAAAAEAAAABAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAAAQAAAAAAAAAAAAAAAgAAAAIAAAACAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  },
+                  "format": 2,
+                  "inferred_format": 0,
+                  "core_type_support": 1,
+                  "weight_tiling_info": {
+                    "i": [
+                      "128",
+                      "128",
+                      "128",
+                      "64",
+                      "516"
+                    ],
+                    "val_type": 2
+                  },
+                  "npucl_substore": "ascendc_lib",
+                  "transpose_a": false,
+                  "beta": 1.0,
+                  "op_tiling_blockdim": 1,
+                  "op_tiling_key": 1,
+                  "alpha": 1.0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "A",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      128,
+                      288
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 73760
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      128,
+                      516
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 132128
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.000244140625
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 74.33333333333333,
+          "median_us": 35.0,
+          "min_us": 34.0,
+          "max_us": 384.0,
+          "stddev_us": 71.14507869292311,
+          "pass_all": true,
+          "runs": 3,
+          "value": 517,
+          "config": {
+            "op": "GemmD",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264128,
+              "inputs": [
+                {
+                  "name": "A",
+                  "shape": [
+                    128,
+                    288
+                  ]
+                },
+                {
+                  "name": "B",
+                  "shape": [
+                    288,
+                    517
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                },
+                {
+                  "name": "C",
+                  "shape": [
+                    517
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                }
+              ],
+              "attributes": {
+                "transA": 0,
+                "transB": 0,
+                "alpha": 1.0,
+                "beta": 1.0
+              }
+            }
+          },
+          "profiles": [
+            "evidence/GemmD/upper/run1/statistics.json",
+            "evidence/GemmD/upper/run2/statistics.json",
+            "evidence/GemmD/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_Gemm(GemmV3)",
+          "onnx": "results/GemmD/GemmD_f16_in0-128x288_w1-288x517_w2-517_out-128x517_alpha-1_beta-1_transA-0_transB-0_e9bb14eb1dba.onnx",
+          "omc": "results/GemmD/GemmD_f16_in0-128x288_w1-288x517_w2-517_out-128x517_alpha-1_beta-1_transA-0_transB-0_e9bb14eb1dba.omc",
+          "onnx_sha256": "3af45816c0f0e690090535bd5463a5177a52d2e20988ee8399f08b20bdf9c120",
+          "omc_sha256": "bcabeb5ca0176f3c6a74d6c967e71689e92df48d5232725b0ec679066bb00667",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "A",
+                "shape": [
+                  128,
+                  288
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  128,
+                  517
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "B",
+                "shape": [
+                  288,
+                  517
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "C",
+                "shape": [
+                  517
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "Gemm": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "GemmV3": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Gemm",
+                "type": "GemmV3",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      128,
+                      288
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      288,
+                      528
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "FRACTAL_NZ",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        288,
+                        528
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "FRACTAL_NZ"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      528
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        528
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "ND"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      128,
+                      517
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "block_dim": 1,
+                  "format": 2,
+                  "npu_type": 0,
+                  "op_tiling_blockdim": 1,
+                  "core_type_support": 1,
+                  "op_tiling_workspace_data": {
+                    "base64": ""
+                  },
+                  "soc_version": "kirin9030",
+                  "op_tiling_key": 1,
+                  "transpose_b": false,
+                  "alpha": 1.0,
+                  "_tiling_data_offset": 306176,
+                  "version": 6,
+                  "inferred_format": 0,
+                  "Y_Gemm_pattern": "ascendc_op",
+                  "beta": 1.0,
+                  "transpose_a": false,
+                  "npucl_substore": "ascendc_lib",
+                  "op_tiling_data": {
+                    "base64": "AQAAAIAAAAAFAgAAIAEAACABAACAAAAABQIAACABAACAAAAAgAAAAEAAAAAFAAAAAgAAAAEAAAABAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAAAQAAAAAAAAAAAAAAAgAAAAIAAAACAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  },
+                  "weight_tiling_info": {
+                    "i": [
+                      "128",
+                      "128",
+                      "128",
+                      "64",
+                      "517"
+                    ],
+                    "val_type": 2
+                  }
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "A",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      128,
+                      288
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 73760
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      128,
+                      517
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 132384
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.0003662109375
+        }
+      }
+    },
+    {
+      "variant": "BatchMatMul",
+      "axis": "batch B; M=2,K=N=256",
+      "low": 2,
+      "high": 3,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 30.083333333333332,
+          "median_us": 28.0,
+          "min_us": 28.0,
+          "max_us": 45.0,
+          "stddev_us": 4.78292681199377,
+          "pass_all": false,
+          "runs": 3,
+          "value": 2,
+          "config": {
+            "op": "BatchMatMul",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264026,
+              "inputs": [
+                {
+                  "name": "A",
+                  "shape": [
+                    2,
+                    2,
+                    256
+                  ]
+                },
+                {
+                  "name": "B",
+                  "shape": [
+                    2,
+                    256,
+                    256
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/BatchMatMul/lower/run1/statistics.json",
+            "evidence/BatchMatMul/lower/run2/statistics.json",
+            "evidence/BatchMatMul/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_MatMul(BatchMatMulV2)",
+          "onnx": "results/BatchMatMul/BatchMatMul_f16_in0-2x2x256_w1-2x256x256_out-2x2x256_654305afe281.onnx",
+          "omc": "results/BatchMatMul/BatchMatMul_f16_in0-2x2x256_w1-2x256x256_out-2x2x256_654305afe281.omc",
+          "onnx_sha256": "76d1b7b9208b0c631e7f20e306b0118c23629e65b6ea3cd04dc5d1092ac4d1de",
+          "omc_sha256": "e3a769a5801356ce823412d7a177d1d0b061c0a4ac5b01b9c379523898fb032c",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "A",
+                "shape": [
+                  2,
+                  2,
+                  256
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  2,
+                  2,
+                  256
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "B",
+                "shape": [
+                  2,
+                  256,
+                  256
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "MatMul": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "BatchMatMulV2": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_MatMul",
+                "type": "BatchMatMulV2",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      2,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      256,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "FRACTAL_NZ",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        2,
+                        256,
+                        256
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "FRACTAL_NZ"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [],
+                    "dtype": "DT_UNDEFINED",
+                    "layout": "RESERVED"
+                  },
+                  {
+                    "name": "",
+                    "shape": [],
+                    "dtype": "DT_UNDEFINED",
+                    "layout": "RESERVED"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      2,
+                      2,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "Y_MatMul_pattern": "ascendc_op",
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "offset_x": 0,
+                  "block_dim": 1,
+                  "adj_x1": false,
+                  "op_tiling_key": 1,
+                  "npucl_substore": "ascendc_lib",
+                  "adj_x2": false,
+                  "_tiling_data_offset": 262656,
+                  "op_tiling_workspace_data": {
+                    "base64": ""
+                  },
+                  "core_type_support": 1,
+                  "inferred_format": 0,
+                  "op_tiling_data": {
+                    "base64": "AQAAAAIAAAAAAQAAAAEAAAABAAACAAAAAAEAAAABAAAQAAAAgAAAAEAAAAAEAAAAAgAAAAEAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAAAAAgAAAAIAAAACAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAIAAAACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  },
+                  "soc_version": "kirin9030",
+                  "transformer_nd": true,
+                  "op_tiling_blockdim": 1,
+                  "npu_type": 0,
+                  "format": 2,
+                  "version": 6,
+                  "weight_tiling_info": {
+                    "i": [
+                      "16",
+                      "128",
+                      "128",
+                      "64",
+                      "256"
+                    ],
+                    "val_type": 2
+                  }
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "A",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      2,
+                      2,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 2080
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      2,
+                      2,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 2080
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.0001220703125
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 33.78333333333333,
+          "median_us": 34.0,
+          "min_us": 33.0,
+          "max_us": 34.0,
+          "stddev_us": 0.41197356981027583,
+          "pass_all": true,
+          "runs": 3,
+          "value": 3,
+          "config": {
+            "op": "BatchMatMul",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264026,
+              "inputs": [
+                {
+                  "name": "A",
+                  "shape": [
+                    3,
+                    2,
+                    256
+                  ]
+                },
+                {
+                  "name": "B",
+                  "shape": [
+                    3,
+                    256,
+                    256
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/BatchMatMul/upper/run1/statistics.json",
+            "evidence/BatchMatMul/upper/run2/statistics.json",
+            "evidence/BatchMatMul/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_MatMul(BatchMatMulV2)",
+          "onnx": "results/BatchMatMul/BatchMatMul_f16_in0-3x2x256_w1-3x256x256_out-3x2x256_114e93298df2.onnx",
+          "omc": "results/BatchMatMul/BatchMatMul_f16_in0-3x2x256_w1-3x256x256_out-3x2x256_114e93298df2.omc",
+          "onnx_sha256": "07ab768781a2009376c1cd88fab2705184b3f52685f8a593c74e11e07b2cc9b5",
+          "omc_sha256": "6966e1f73059d725358daed0fef9b8a072cd0e33d209aad451608f790145e409",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "A",
+                "shape": [
+                  3,
+                  2,
+                  256
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  3,
+                  2,
+                  256
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "B",
+                "shape": [
+                  3,
+                  256,
+                  256
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "MatMul": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "BatchMatMulV2": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_MatMul",
+                "type": "BatchMatMulV2",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      3,
+                      2,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      3,
+                      256,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "FRACTAL_NZ",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        3,
+                        256,
+                        256
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "FRACTAL_NZ"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [],
+                    "dtype": "DT_UNDEFINED",
+                    "layout": "RESERVED"
+                  },
+                  {
+                    "name": "",
+                    "shape": [],
+                    "dtype": "DT_UNDEFINED",
+                    "layout": "RESERVED"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      3,
+                      2,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "soc_version": "kirin9030",
+                  "version": 6,
+                  "npucl_substore": "ascendc_lib",
+                  "core_type_support": 1,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "_tiling_data_offset": 393728,
+                  "op_tiling_data": {
+                    "base64": "AQAAAAIAAAAAAQAAAAEAAAABAAACAAAAAAEAAAABAAAQAAAAgAAAAEAAAAAEAAAAAgAAAAEAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAAAAAgAAAAIAAAACAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAMAAAADAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  },
+                  "op_tiling_blockdim": 1,
+                  "Y_MatMul_pattern": "ascendc_op",
+                  "format": 2,
+                  "adj_x2": false,
+                  "op_tiling_key": 1,
+                  "offset_x": 0,
+                  "inferred_format": 0,
+                  "adj_x1": false,
+                  "op_tiling_workspace_data": {
+                    "base64": ""
+                  },
+                  "npu_type": 0,
+                  "block_dim": 1,
+                  "weight_tiling_info": {
+                    "i": [
+                      "16",
+                      "128",
+                      "128",
+                      "64",
+                      "256"
+                    ],
+                    "val_type": 2
+                  },
+                  "transformer_nd": true
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "A",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      3,
+                      2,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 3104
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      3,
+                      2,
+                      256
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 3104
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.0001220703125
+        }
+      }
+    },
+    {
+      "variant": "Convolution",
+      "axis": "input width W; N=1,C=96,H=5",
+      "low": 374,
+      "high": 375,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 35.46666666666667,
+          "median_us": 32.0,
+          "min_us": 31.0,
+          "max_us": 67.0,
+          "stddev_us": 7.738360435016078,
+          "pass_all": false,
+          "runs": 3,
+          "value": 374,
+          "config": {
+            "op": "Convolution",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264171,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    96,
+                    5,
+                    374
+                  ]
+                },
+                {
+                  "name": "W",
+                  "shape": [
+                    96,
+                    96,
+                    5,
+                    1
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                },
+                {
+                  "name": "B",
+                  "shape": [
+                    96
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                }
+              ],
+              "attributes": {
+                "kernel_shape": [
+                  5,
+                  1
+                ],
+                "strides": [
+                  1,
+                  1
+                ],
+                "dilations": [
+                  1,
+                  1
+                ],
+                "group": 1,
+                "pads": [
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          },
+          "profiles": [
+            "evidence/Convolution/lower/run1/statistics.json",
+            "evidence/Convolution/lower/run2/statistics.json",
+            "evidence/Convolution/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_Conv(Convolution)",
+          "onnx": "results/Convolution/Convolution_f16_in0-1x96x5x374_w1-96x96x5x1_w2-96_out-1x96x1x374_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_da77ce793ad0.onnx",
+          "omc": "results/Convolution/Convolution_f16_in0-1x96x5x374_w1-96x96x5x1_w2-96_out-1x96x1x374_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_da77ce793ad0.omc",
+          "onnx_sha256": "5854089497748e3c4f0a4f5b5fd04fb229047b4d170502311f2c6f99ce1e0799",
+          "omc_sha256": "14b5bca1b29818616a5e8c853436111a61c7017572ebaf36c6f11b10b3bb0e60",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  96,
+                  5,
+                  374
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  96,
+                  1,
+                  374
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "W",
+                "shape": [
+                  96,
+                  96,
+                  5,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "B",
+                "shape": [
+                  96
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "Conv": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Convolution": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Conv",
+                "type": "Convolution",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      96,
+                      5,
+                      374
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        96,
+                        96,
+                        5,
+                        1
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "FRACTAL_Z"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        96,
+                        1,
+                        1
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "NC1HWC0"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      96,
+                      1,
+                      374
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "relu_flag": false,
+                  "num_output": 0,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "compileInfo": -7215311887517991272,
+                  "npu_type": 0,
+                  "beta": 0.0,
+                  "no_search": false,
+                  "before_pad": {
+                    "val_type": 2
+                  },
+                  "groups": 1,
+                  "version": 6,
+                  "pads": {
+                    "i": [
+                      "0",
+                      "0",
+                      "0",
+                      "0"
+                    ],
+                    "val_type": 2
+                  },
+                  "dilations": {
+                    "i": [
+                      "1",
+                      "1"
+                    ],
+                    "val_type": 2
+                  },
+                  "format": 0,
+                  "strides": {
+                    "i": [
+                      "1",
+                      "1"
+                    ],
+                    "val_type": 2
+                  },
+                  "core_type_support": 1,
+                  "algo": 0,
+                  "offset_x": 0,
+                  "mode": 1,
+                  "pad_mode": 4,
+                  "inferred_format": 0,
+                  "data_format": "NCHW",
+                  "block_dim": 1,
+                  "npucl_substore": "elementary_lib",
+                  "alpha": 1.0,
+                  "has_bias": true,
+                  "original_format": 0,
+                  "has_bias_value": true
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      96,
+                      5,
+                      374
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 359072
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      96,
+                      1,
+                      374
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 71840
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.0003662109375
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 43.56666666666667,
+          "median_us": 40.0,
+          "min_us": 39.0,
+          "max_us": 85.0,
+          "stddev_us": 11.272927254661449,
+          "pass_all": true,
+          "runs": 3,
+          "value": 375,
+          "config": {
+            "op": "Convolution",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264171,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    96,
+                    5,
+                    375
+                  ]
+                },
+                {
+                  "name": "W",
+                  "shape": [
+                    96,
+                    96,
+                    5,
+                    1
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                },
+                {
+                  "name": "B",
+                  "shape": [
+                    96
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                }
+              ],
+              "attributes": {
+                "kernel_shape": [
+                  5,
+                  1
+                ],
+                "strides": [
+                  1,
+                  1
+                ],
+                "dilations": [
+                  1,
+                  1
+                ],
+                "group": 1,
+                "pads": [
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          },
+          "profiles": [
+            "evidence/Convolution/upper/run1/statistics.json",
+            "evidence/Convolution/upper/run2/statistics.json",
+            "evidence/Convolution/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_Conv(Convolution)",
+          "onnx": "results/Convolution/Convolution_f16_in0-1x96x5x375_w1-96x96x5x1_w2-96_out-1x96x1x375_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_4f34750a256b.onnx",
+          "omc": "results/Convolution/Convolution_f16_in0-1x96x5x375_w1-96x96x5x1_w2-96_out-1x96x1x375_dilations-1x1_group-1_kernel_shape-5x1_pads-0x0x0x0_strides-1x1_4f34750a256b.omc",
+          "onnx_sha256": "5e909d883b68367149ec1544c770afae3d39fec9cf6f359536903dcd00ffd11a",
+          "omc_sha256": "9f9571b88be3709b9acd2d54128a87a8b3c4b270afcf97f70f9558363ab4d985",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  96,
+                  5,
+                  375
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  96,
+                  1,
+                  375
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "W",
+                "shape": [
+                  96,
+                  96,
+                  5,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "B",
+                "shape": [
+                  96
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "Conv": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Convolution": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Conv",
+                "type": "Convolution",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      96,
+                      5,
+                      375
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        96,
+                        96,
+                        5,
+                        1
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "FRACTAL_Z"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        96,
+                        1,
+                        1
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "NC1HWC0"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      96,
+                      1,
+                      375
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "beta": 0.0,
+                  "npu_type": 0,
+                  "alpha": 1.0,
+                  "mode": 1,
+                  "version": 6,
+                  "pad_mode": 4,
+                  "format": 0,
+                  "algo": 0,
+                  "block_dim": 1,
+                  "has_bias": true,
+                  "num_output": 0,
+                  "dilations": {
+                    "i": [
+                      "1",
+                      "1"
+                    ],
+                    "val_type": 2
+                  },
+                  "inferred_format": 0,
+                  "pads": {
+                    "i": [
+                      "0",
+                      "0",
+                      "0",
+                      "0"
+                    ],
+                    "val_type": 2
+                  },
+                  "original_format": 0,
+                  "compileInfo": -7215311887330468200,
+                  "groups": 1,
+                  "offset_x": 0,
+                  "core_type_support": 1,
+                  "data_format": "NCHW",
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "no_search": false,
+                  "npucl_substore": "elementary_lib",
+                  "strides": {
+                    "i": [
+                      "1",
+                      "1"
+                    ],
+                    "val_type": 2
+                  },
+                  "relu_flag": false,
+                  "before_pad": {
+                    "val_type": 2
+                  },
+                  "has_bias_value": true
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      96,
+                      5,
+                      375
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 360032
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      96,
+                      1,
+                      375
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 72032
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.0003662109375
+        }
+      }
+    },
+    {
+      "variant": "Add",
+      "axis": "both input heights H; N=1,C=16,W=128",
+      "low": 128,
+      "high": 129,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 32.11666666666667,
+          "median_us": 32.0,
+          "min_us": 31.0,
+          "max_us": 34.0,
+          "stddev_us": 0.5799904213768439,
+          "pass_all": false,
+          "runs": 3,
+          "value": 128,
+          "config": {
+            "op": "Add",
+            "params": {
+              "dtype": "float16",
+              "seed": 20262525,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    16,
+                    128,
+                    128
+                  ]
+                },
+                {
+                  "name": "W",
+                  "shape": [
+                    1,
+                    16,
+                    128,
+                    128
+                  ]
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/Add/lower/run1/statistics.json",
+            "evidence/Add/lower/run2/statistics.json",
+            "evidence/Add/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_Add(Eltwise)",
+          "onnx": "results/Add/Add_f16_in0-1x16x128x128_in1-1x16x128x128_out-1x16x128x128_4499d8f64a6d.onnx",
+          "omc": "results/Add/Add_f16_in0-1x16x128x128_in1-1x16x128x128_out-1x16x128x128_4499d8f64a6d.omc",
+          "onnx_sha256": "e5a3fb7ace2c0e71fcb0b6feab9df80c3990e5165153c0307b8f1652d7f63e18",
+          "omc_sha256": "ad17ed09799b71d6a9f7b345b76396f3b9be05e0934cab6f62eee1a01292bb1c",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  16,
+                  128,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "W",
+                "shape": [
+                  1,
+                  16,
+                  128,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  16,
+                  128,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [],
+            "node_types": {
+              "Add": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Eltwise": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Add",
+                "type": "Eltwise",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      128,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      128,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      128,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "alpha": 1.0,
+                  "format": 0,
+                  "block_dim": 1,
+                  "mode": 1,
+                  "version": 6,
+                  "npu_type": 0,
+                  "inferred_format": 0,
+                  "npucl_substore": "elementary_lib",
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "beta": 0.0,
+                  "core_type_support": 1
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      128,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 524320
+                  }
+                ]
+              },
+              {
+                "name": "W",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      128,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 524320
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      16,
+                      128,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 524320
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 32.5,
+          "median_us": 32.0,
+          "min_us": 32.0,
+          "max_us": 34.0,
+          "stddev_us": 0.5916079783099616,
+          "pass_all": true,
+          "runs": 3,
+          "value": 129,
+          "config": {
+            "op": "Add",
+            "params": {
+              "dtype": "float16",
+              "seed": 20262525,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    16,
+                    129,
+                    128
+                  ]
+                },
+                {
+                  "name": "W",
+                  "shape": [
+                    1,
+                    16,
+                    129,
+                    128
+                  ]
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/Add/upper/run1/statistics.json",
+            "evidence/Add/upper/run2/statistics.json",
+            "evidence/Add/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_Add(Eltwise)",
+          "onnx": "results/Add/Add_f16_in0-1x16x129x128_in1-1x16x129x128_out-1x16x129x128_a721d22a9181.onnx",
+          "omc": "results/Add/Add_f16_in0-1x16x129x128_in1-1x16x129x128_out-1x16x129x128_a721d22a9181.omc",
+          "onnx_sha256": "3afeca8f6fbc2430b5a8a8387396723d426d8a9f609121819eff893c67ddb0d6",
+          "omc_sha256": "387466eb6b1cd4b365ba915c907d039fe8600500517dc1e5ccce611025790362",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  16,
+                  129,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "W",
+                "shape": [
+                  1,
+                  16,
+                  129,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  16,
+                  129,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [],
+            "node_types": {
+              "Add": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Eltwise": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Add",
+                "type": "Eltwise",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      129,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      129,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      129,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "alpha": 1.0,
+                  "npu_type": 0,
+                  "block_dim": 1,
+                  "core_type_support": 1,
+                  "format": 0,
+                  "beta": 0.0,
+                  "inferred_format": 0,
+                  "mode": 1,
+                  "npucl_substore": "elementary_lib",
+                  "version": 6,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      false
+                    ],
+                    "val_type": 4
+                  }
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      129,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 528416
+                  }
+                ]
+              },
+              {
+                "name": "W",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      129,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 528416
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      16,
+                      129,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 528416
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0
+        }
+      }
+    },
+    {
+      "variant": "Mul",
+      "axis": "both input last dimensions L; shapes=[1,256,L], core ND",
+      "low": 991,
+      "high": 992,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 32.65,
+          "median_us": 32.0,
+          "min_us": 31.0,
+          "max_us": 50.0,
+          "stddev_us": 2.4550967394381833,
+          "pass_all": false,
+          "runs": 3,
+          "value": 991,
+          "config": {
+            "op": "Mul",
+            "params": {
+              "dtype": "float16",
+              "seed": 20261522,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    256,
+                    991
+                  ]
+                },
+                {
+                  "name": "W",
+                  "shape": [
+                    1,
+                    256,
+                    991
+                  ]
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/Mul/lower/run1/statistics.json",
+            "evidence/Mul/lower/run2/statistics.json",
+            "evidence/Mul/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y(Mul)",
+          "onnx": "results/Mul/Mul_f16_in0-1x256x991_in1-1x256x991_out-1x256x991_6abbdfb721e5.onnx",
+          "omc": "results/Mul/Mul_f16_in0-1x256x991_in1-1x256x991_out-1x256x991_6abbdfb721e5.omc",
+          "onnx_sha256": "07e7bd390387b055066b58f24cf725fe7327816e19eadb2a405e9969afab7235",
+          "omc_sha256": "909bd3dfa20035d3de0b69702c17dce30cc8a1abd7bb20135830abe12c8decc7",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  256,
+                  991
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "W",
+                "shape": [
+                  1,
+                  256,
+                  991
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  256,
+                  991
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [],
+            "node_types": {
+              "Mul": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Mul": 1
+            },
+            "nodes": [
+              {
+                "name": "Y",
+                "type": "Mul",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      991
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      991
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      991
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "version": 6,
+                  "transformer_nd": true,
+                  "format": 0,
+                  "core_type_support": 1,
+                  "npu_type": 0,
+                  "inferred_format": 0,
+                  "npucl_substore": "elementary_lib",
+                  "broacast_real_dim_cnt": 3,
+                  "block_dim": 1
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      991
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 507424
+                  }
+                ]
+              },
+              {
+                "name": "W",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      991
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 507424
+                  }
+                ]
+              },
+              {
+                "name": "NetOutput",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      991
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 507424
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 36.36666666666667,
+          "median_us": 33.0,
+          "min_us": 32.0,
+          "max_us": 102.0,
+          "stddev_us": 12.789275020717772,
+          "pass_all": true,
+          "runs": 3,
+          "value": 992,
+          "config": {
+            "op": "Mul",
+            "params": {
+              "dtype": "float16",
+              "seed": 20261522,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    256,
+                    992
+                  ]
+                },
+                {
+                  "name": "W",
+                  "shape": [
+                    1,
+                    256,
+                    992
+                  ]
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/Mul/upper/run1/statistics.json",
+            "evidence/Mul/upper/run2/statistics.json",
+            "evidence/Mul/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y(Mul)",
+          "onnx": "results/Mul/Mul_f16_in0-1x256x992_in1-1x256x992_out-1x256x992_54082bec64dc.onnx",
+          "omc": "results/Mul/Mul_f16_in0-1x256x992_in1-1x256x992_out-1x256x992_54082bec64dc.omc",
+          "onnx_sha256": "a1fda7dcef2c41ceb1472d7e67cfc9118749a2b53053f56816f99f4528c6a676",
+          "omc_sha256": "f14920e3aced331936f3d587c97e1a2055743c490872cebd9f090fc1254d46ec",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  256,
+                  992
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "W",
+                "shape": [
+                  1,
+                  256,
+                  992
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  256,
+                  992
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [],
+            "node_types": {
+              "Mul": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Mul": 1
+            },
+            "nodes": [
+              {
+                "name": "Y",
+                "type": "Mul",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      992
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      992
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      992
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "block_dim": 1,
+                  "npu_type": 0,
+                  "transformer_nd": true,
+                  "version": 6,
+                  "inferred_format": 0,
+                  "npucl_substore": "elementary_lib",
+                  "core_type_support": 1,
+                  "broacast_real_dim_cnt": 3,
+                  "format": 0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      992
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 507936
+                  }
+                ]
+              },
+              {
+                "name": "W",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      992
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 507936
+                  }
+                ]
+              },
+              {
+                "name": "NetOutput",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      256,
+                      992
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 507936
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0
+        }
+      }
+    },
+    {
+      "variant": "Activation",
+      "axis": "input height H; N=1,C=16,W=128; Sigmoid",
+      "low": 154,
+      "high": 155,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 32.016666666666666,
+          "median_us": 32.0,
+          "min_us": 31.0,
+          "max_us": 33.0,
+          "stddev_us": 0.49972214501883166,
+          "pass_all": false,
+          "runs": 3,
+          "value": 154,
+          "config": {
+            "op": "Activation",
+            "params": {
+              "dtype": "float16",
+              "seed": 20261629,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    16,
+                    154,
+                    128
+                  ]
+                }
+              ],
+              "activation": "Sigmoid"
+            }
+          },
+          "profiles": [
+            "evidence/Activation/lower/run1/statistics.json",
+            "evidence/Activation/lower/run2/statistics.json",
+            "evidence/Activation/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_Sigmoid(Activation)",
+          "onnx": "results/Activation/Activation_f16_in0-1x16x154x128_out-1x16x154x128_Sigmoid_fd565a2dd675.onnx",
+          "omc": "results/Activation/Activation_f16_in0-1x16x154x128_out-1x16x154x128_Sigmoid_fd565a2dd675.omc",
+          "onnx_sha256": "c88d7fa5413da9d74c55a5943d08f738ecc29f444e2a28f569aa0aaf04540124",
+          "omc_sha256": "ff3184992452a880482c57f420d1bed01a2e49f67f33aa21977117b8510ae019",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  16,
+                  154,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  16,
+                  154,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [],
+            "node_types": {
+              "Sigmoid": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Activation": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Sigmoid",
+                "type": "Activation",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      154,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      154,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "is_input_const": {
+                    "b": [
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "version": 6,
+                  "npucl_substore": "elementary_lib",
+                  "alpha": 1.0,
+                  "coef": 0.0,
+                  "core_type_support": 1,
+                  "format": 0,
+                  "negative_slope": 0.0,
+                  "block_dim": 1,
+                  "beta": 0.0,
+                  "npu_type": 0,
+                  "mode": 0,
+                  "inferred_format": 0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      154,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 630816
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      16,
+                      154,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 630816
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.000732421875
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 32.4,
+          "median_us": 32.0,
+          "min_us": 32.0,
+          "max_us": 34.0,
+          "stddev_us": 0.5830951894845301,
+          "pass_all": true,
+          "runs": 3,
+          "value": 155,
+          "config": {
+            "op": "Activation",
+            "params": {
+              "dtype": "float16",
+              "seed": 20261629,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    16,
+                    155,
+                    128
+                  ]
+                }
+              ],
+              "activation": "Sigmoid"
+            }
+          },
+          "profiles": [
+            "evidence/Activation/upper/run1/statistics.json",
+            "evidence/Activation/upper/run2/statistics.json",
+            "evidence/Activation/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_Sigmoid(Activation)",
+          "onnx": "results/Activation/Activation_f16_in0-1x16x155x128_out-1x16x155x128_Sigmoid_2d361e60dfea.onnx",
+          "omc": "results/Activation/Activation_f16_in0-1x16x155x128_out-1x16x155x128_Sigmoid_2d361e60dfea.omc",
+          "onnx_sha256": "827135d5124a7f9c93547512abcabf7c577ea349d08d32b5ce731ca0d92f7550",
+          "omc_sha256": "6138ccacad695409de7311421b6d00d7693a44fb442fc60c94510167c118c477",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  16,
+                  155,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  16,
+                  155,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [],
+            "node_types": {
+              "Sigmoid": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Activation": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Sigmoid",
+                "type": "Activation",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      155,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      155,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "alpha": 1.0,
+                  "mode": 0,
+                  "is_input_const": {
+                    "b": [
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "block_dim": 1,
+                  "npu_type": 0,
+                  "npucl_substore": "elementary_lib",
+                  "format": 0,
+                  "core_type_support": 1,
+                  "beta": 0.0,
+                  "inferred_format": 0,
+                  "coef": 0.0,
+                  "version": 6,
+                  "negative_slope": 0.0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      155,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 634912
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      16,
+                      155,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 634912
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.000732421875
+        }
+      }
+    },
+    {
+      "variant": "PRelu",
+      "axis": "input height H; N=1,C=64,W=128",
+      "low": 47,
+      "high": 48,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 32.03333333333333,
+          "median_us": 32.0,
+          "min_us": 31.0,
+          "max_us": 35.0,
+          "stddev_us": 0.6315765107165472,
+          "pass_all": false,
+          "runs": 3,
+          "value": 47,
+          "config": {
+            "op": "PRelu",
+            "params": {
+              "dtype": "float16",
+              "seed": 20263501,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    64,
+                    47,
+                    128
+                  ]
+                },
+                {
+                  "name": "slope",
+                  "shape": [
+                    64,
+                    1,
+                    1
+                  ],
+                  "init": {
+                    "kind": "fill",
+                    "value": 0.25
+                  }
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/PRelu/lower/run1/statistics.json",
+            "evidence/PRelu/lower/run2/statistics.json",
+            "evidence/PRelu/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_PRelu(PRelu)",
+          "onnx": "results/PRelu/PRelu_f16_in0-1x64x47x128_w1-64x1x1_out-1x64x47x128_b861f3b2dafc.onnx",
+          "omc": "results/PRelu/PRelu_f16_in0-1x64x47x128_w1-64x1x1_out-1x64x47x128_b861f3b2dafc.omc",
+          "onnx_sha256": "fb79441ee7f7fb029d1fe0c31dc582d3c8958e241f2a3f83127e544dee779b31",
+          "omc_sha256": "dc3cd4a19b91e4da32c26e93ea839fded19cb56b1fec61938685334d2c50417a",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  64,
+                  47,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  64,
+                  47,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "slope",
+                "shape": [
+                  64,
+                  1,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "PRelu": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "PRelu": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_PRelu",
+                "type": "PRelu",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      64,
+                      47,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        64,
+                        1,
+                        1
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "NC1HWC0"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      64,
+                      47,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "block_dim": 1,
+                  "broacast_real_dim_cnt": 4,
+                  "npucl_substore": "elementary_lib",
+                  "version": 6,
+                  "core_type_support": 1,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "data_format": "NCHW",
+                  "format": 0,
+                  "inferred_format": 0,
+                  "npu_type": 0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      64,
+                      47,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 770080
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      64,
+                      47,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 770080
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 44.983333333333334,
+          "median_us": 33.0,
+          "min_us": 32.0,
+          "max_us": 510.0,
+          "stddev_us": 62.48746318707102,
+          "pass_all": true,
+          "runs": 3,
+          "value": 48,
+          "config": {
+            "op": "PRelu",
+            "params": {
+              "dtype": "float16",
+              "seed": 20263501,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    64,
+                    48,
+                    128
+                  ]
+                },
+                {
+                  "name": "slope",
+                  "shape": [
+                    64,
+                    1,
+                    1
+                  ],
+                  "init": {
+                    "kind": "fill",
+                    "value": 0.25
+                  }
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/PRelu/upper/run1/statistics.json",
+            "evidence/PRelu/upper/run2/statistics.json",
+            "evidence/PRelu/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_PRelu(PRelu)",
+          "onnx": "results/PRelu/PRelu_f16_in0-1x64x48x128_w1-64x1x1_out-1x64x48x128_518a2170b412.onnx",
+          "omc": "results/PRelu/PRelu_f16_in0-1x64x48x128_w1-64x1x1_out-1x64x48x128_518a2170b412.omc",
+          "onnx_sha256": "94c1408bd1a11beabe4f29388c909483a487cf9d5f5e17c776291002e5ce561e",
+          "omc_sha256": "c1d2121fea2c122d42f5eb98945cee1d84d296b0035aa76cb1364a2c48a32a07",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  64,
+                  48,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  64,
+                  48,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "slope",
+                "shape": [
+                  64,
+                  1,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "PRelu": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "PRelu": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_PRelu",
+                "type": "PRelu",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      64,
+                      48,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        64,
+                        1,
+                        1
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "NC1HWC0"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      64,
+                      48,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "core_type_support": 1,
+                  "data_format": "NCHW",
+                  "block_dim": 1,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "version": 6,
+                  "broacast_real_dim_cnt": 4,
+                  "format": 0,
+                  "inferred_format": 0,
+                  "npucl_substore": "elementary_lib",
+                  "npu_type": 0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      64,
+                      48,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 786464
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      64,
+                      48,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 786464
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0
+        }
+      }
+    },
+    {
+      "variant": "ReduceSum",
+      "axis": "input middle dimension L; shape=[4,L,1],axes=[0]",
+      "low": 36993,
+      "high": 36994,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 32.18333333333333,
+          "median_us": 32.0,
+          "min_us": 31.0,
+          "max_us": 33.0,
+          "stddev_us": 0.42784992176644787,
+          "pass_all": false,
+          "runs": 3,
+          "value": 36993,
+          "config": {
+            "op": "ReduceSum",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264623,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    4,
+                    36993,
+                    1
+                  ]
+                }
+              ],
+              "attributes": {
+                "axes": [
+                  0
+                ],
+                "keepdims": 1,
+                "noop_with_empty_axes": 1
+              }
+            }
+          },
+          "profiles": [
+            "evidence/ReduceSum/lower/run1/statistics.json",
+            "evidence/ReduceSum/lower/run2/statistics.json",
+            "evidence/ReduceSum/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_ReduceSum(ReduceSum)",
+          "onnx": "results/ReduceSum/ReduceSum_f16_in0-4x36993x1_out-1x36993x1_axes-0_keepdims-1_noop_with_empty_axes-1_ca8880f864f4.onnx",
+          "omc": "results/ReduceSum/ReduceSum_f16_in0-4x36993x1_out-1x36993x1_axes-0_keepdims-1_noop_with_empty_axes-1_ca8880f864f4.omc",
+          "onnx_sha256": "57c559577a5b623f4c60c659464a25551d3b66ddb938a3f73bda46e257f5f991",
+          "omc_sha256": "71d00d54a7da07f5ca5aef46f63d242b258cbbaf56a348eee940ade8f153a3e5",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  4,
+                  36993,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  36993,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "__g_axes",
+                "shape": [
+                  1
+                ],
+                "dtype": "INT64"
+              }
+            ],
+            "node_types": {
+              "ReduceSum": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "ReduceSum": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_ReduceSum",
+                "type": "ReduceSum",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      4,
+                      36993,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_INT32",
+                    "layout": "ND",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1
+                      ],
+                      "dtype": "DT_INT32",
+                      "layout": "NCHW"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      36993,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "axis": {
+                    "i": [
+                      "1"
+                    ],
+                    "val_type": 2
+                  },
+                  "keep_dims": true,
+                  "version": 6,
+                  "Tidx": 3,
+                  "format": 0,
+                  "npu_type": 0,
+                  "noop_with_empty_axes": true,
+                  "beta": 0.0,
+                  "alpha": 1.0,
+                  "block_dim": 1,
+                  "npucl_substore": "elementary_lib",
+                  "inferred_format": 0,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "core_type_support": 1
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      4,
+                      36993,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 296000
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      36993,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 74048
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.00048828125
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 32.266666666666666,
+          "median_us": 32.0,
+          "min_us": 32.0,
+          "max_us": 33.0,
+          "stddev_us": 0.4422166387140533,
+          "pass_all": true,
+          "runs": 3,
+          "value": 36994,
+          "config": {
+            "op": "ReduceSum",
+            "params": {
+              "dtype": "float16",
+              "seed": 20264623,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    4,
+                    36994,
+                    1
+                  ]
+                }
+              ],
+              "attributes": {
+                "axes": [
+                  0
+                ],
+                "keepdims": 1,
+                "noop_with_empty_axes": 1
+              }
+            }
+          },
+          "profiles": [
+            "evidence/ReduceSum/upper/run1/statistics.json",
+            "evidence/ReduceSum/upper/run2/statistics.json",
+            "evidence/ReduceSum/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_ReduceSum(ReduceSum)",
+          "onnx": "results/ReduceSum/ReduceSum_f16_in0-4x36994x1_out-1x36994x1_axes-0_keepdims-1_noop_with_empty_axes-1_eb0b4cb16cc1.onnx",
+          "omc": "results/ReduceSum/ReduceSum_f16_in0-4x36994x1_out-1x36994x1_axes-0_keepdims-1_noop_with_empty_axes-1_eb0b4cb16cc1.omc",
+          "onnx_sha256": "7ee6d67a3838d95fd6de15e225df6fbda62a0b914ca6129b6927fc69c96853d4",
+          "omc_sha256": "09c108214ecfd874cee0f2af59b30bbfe2e7e7dad34e95214c99fd8078730292",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  4,
+                  36994,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  36994,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "__g_axes",
+                "shape": [
+                  1
+                ],
+                "dtype": "INT64"
+              }
+            ],
+            "node_types": {
+              "ReduceSum": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "ReduceSum": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_ReduceSum",
+                "type": "ReduceSum",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      4,
+                      36994,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_INT32",
+                    "layout": "ND",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1
+                      ],
+                      "dtype": "DT_INT32",
+                      "layout": "NCHW"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      36994,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "core_type_support": 1,
+                  "npucl_substore": "elementary_lib",
+                  "npu_type": 0,
+                  "beta": 0.0,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "block_dim": 1,
+                  "inferred_format": 0,
+                  "axis": {
+                    "i": [
+                      "1"
+                    ],
+                    "val_type": 2
+                  },
+                  "format": 0,
+                  "version": 6,
+                  "keep_dims": true,
+                  "alpha": 1.0,
+                  "Tidx": 3,
+                  "noop_with_empty_axes": true
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      4,
+                      36994,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 296000
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      36994,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 74048
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.00048828125
+        }
+      }
+    },
+    {
+      "variant": "LayerNorm",
+      "axis": "rows N; shape=[N,64],axis=1, core ND",
+      "low": 135,
+      "high": 136,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 32.25,
+          "median_us": 32.0,
+          "min_us": 31.0,
+          "max_us": 34.0,
+          "stddev_us": 0.6224949798994366,
+          "pass_all": false,
+          "runs": 3,
+          "value": 135,
+          "config": {
+            "op": "LayerNorm",
+            "params": {
+              "dtype": "float16",
+              "seed": 20263366,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    135,
+                    64
+                  ]
+                },
+                {
+                  "name": "scale",
+                  "shape": [
+                    1,
+                    64
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "mean": 1.0,
+                    "std": 0.02
+                  }
+                },
+                {
+                  "name": "bias",
+                  "shape": [
+                    1,
+                    64
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                }
+              ],
+              "attributes": {
+                "axis": 1,
+                "epsilon": 9.999999747378752e-06
+              },
+              "implementation": "native",
+              "accumulation_dtype": "float32",
+              "opset": 17
+            }
+          },
+          "profiles": [
+            "evidence/LayerNorm/lower/run1/statistics.json",
+            "evidence/LayerNorm/lower/run2/statistics.json",
+            "evidence/LayerNorm/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y(LayerNorm)",
+          "onnx": "results/LayerNorm/LayerNorm_f16_in0-135x64_w1-1x64_w2-1x64_out-135x64_axis-1_epsilon-1e-05_fe4d5db76e0e.onnx",
+          "omc": "results/LayerNorm/LayerNorm_f16_in0-135x64_w1-1x64_w2-1x64_out-135x64_axis-1_epsilon-1e-05_fe4d5db76e0e.omc",
+          "onnx_sha256": "08135d5bcf382e2cf77dbf94a9fa5f3a32715c20559291375a486e26f0532029",
+          "omc_sha256": "54bf638911afbd8f08bc9d2a2aeb50e7e19361ca8899a9acb66c3c4d94308e57",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  135,
+                  64
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  135,
+                  64
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "scale",
+                "shape": [
+                  1,
+                  64
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "bias",
+                "shape": [
+                  1,
+                  64
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "LayerNormalization": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "LayerNorm": 1
+            },
+            "nodes": [
+              {
+                "name": "Y",
+                "type": "LayerNorm",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      135,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        64
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "ND"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        64
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "ND"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      135,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "no_search": false,
+                  "format": 0,
+                  "npucl_substore": "elementary_lib",
+                  "block_dim": 1,
+                  "norm_type": "LayerNorm",
+                  "transformer_nd": true,
+                  "begin_params_axis": 1,
+                  "epsilon": 9.999999747378752e-06,
+                  "version": 5,
+                  "core_type_support": 1,
+                  "inferred_format": 0,
+                  "npu_type": 0,
+                  "end_norm_axis": 1,
+                  "begin_norm_axis": 1
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      135,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 17312
+                  }
+                ]
+              },
+              {
+                "name": "NetOutput",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      135,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 17312
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.009765625
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 32.483333333333334,
+          "median_us": 32.0,
+          "min_us": 32.0,
+          "max_us": 37.0,
+          "stddev_us": 1.0081611423224408,
+          "pass_all": true,
+          "runs": 3,
+          "value": 136,
+          "config": {
+            "op": "LayerNorm",
+            "params": {
+              "dtype": "float16",
+              "seed": 20263366,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    136,
+                    64
+                  ]
+                },
+                {
+                  "name": "scale",
+                  "shape": [
+                    1,
+                    64
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "mean": 1.0,
+                    "std": 0.02
+                  }
+                },
+                {
+                  "name": "bias",
+                  "shape": [
+                    1,
+                    64
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.02
+                  }
+                }
+              ],
+              "attributes": {
+                "axis": 1,
+                "epsilon": 9.999999747378752e-06
+              },
+              "implementation": "native",
+              "accumulation_dtype": "float32",
+              "opset": 17
+            }
+          },
+          "profiles": [
+            "evidence/LayerNorm/upper/run1/statistics.json",
+            "evidence/LayerNorm/upper/run2/statistics.json",
+            "evidence/LayerNorm/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y(LayerNorm)",
+          "onnx": "results/LayerNorm/LayerNorm_f16_in0-136x64_w1-1x64_w2-1x64_out-136x64_axis-1_epsilon-1e-05_ba34b87a67fd.onnx",
+          "omc": "results/LayerNorm/LayerNorm_f16_in0-136x64_w1-1x64_w2-1x64_out-136x64_axis-1_epsilon-1e-05_ba34b87a67fd.omc",
+          "onnx_sha256": "dd8ac98d0bef1ebf7008f21269792a89a75261ef0fb156323f66d9180447ac4c",
+          "omc_sha256": "53d3f31d2570cd0ebcb8318e997f98a670d177291fdc3c1b2b10778efe8ea68a",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  136,
+                  64
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  136,
+                  64
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "scale",
+                "shape": [
+                  1,
+                  64
+                ],
+                "dtype": "FLOAT16"
+              },
+              {
+                "name": "bias",
+                "shape": [
+                  1,
+                  64
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "LayerNormalization": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "LayerNorm": 1
+            },
+            "nodes": [
+              {
+                "name": "Y",
+                "type": "LayerNorm",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      136,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        64
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "ND"
+                    }
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        64
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "ND"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      136,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "ND"
+                  }
+                ],
+                "attributes": {
+                  "npucl_substore": "elementary_lib",
+                  "core_type_support": 1,
+                  "begin_params_axis": 1,
+                  "inferred_format": 0,
+                  "format": 0,
+                  "begin_norm_axis": 1,
+                  "no_search": false,
+                  "norm_type": "LayerNorm",
+                  "npu_type": 0,
+                  "version": 5,
+                  "block_dim": 1,
+                  "transformer_nd": true,
+                  "end_norm_axis": 1,
+                  "epsilon": 9.999999747378752e-06
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      136,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 17440
+                  }
+                ]
+              },
+              {
+                "name": "NetOutput",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      136,
+                      64
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NCHW",
+                    "buffer_bytes": 17440
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0.009765625
+        }
+      }
+    },
+    {
+      "variant": "Softmax",
+      "axis": "input channels C; shape=[1,C,64,1],axis=2",
+      "low": 2160,
+      "high": 2161,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 31.816666666666666,
+          "median_us": 32.0,
+          "min_us": 31.0,
+          "max_us": 33.0,
+          "stddev_us": 0.42784992176644787,
+          "pass_all": false,
+          "runs": 3,
+          "value": 2160,
+          "config": {
+            "op": "Softmax",
+            "params": {
+              "dtype": "float16",
+              "seed": 20261111,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    2160,
+                    64,
+                    1
+                  ]
+                }
+              ],
+              "attributes": {
+                "axis": 2
+              }
+            }
+          },
+          "profiles": [
+            "evidence/Softmax/lower/run1/statistics.json",
+            "evidence/Softmax/lower/run2/statistics.json",
+            "evidence/Softmax/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_Softmax(Softmax)",
+          "onnx": "results/Softmax/Softmax_f16_in0-1x2160x64x1_out-1x2160x64x1_axis-2_7f1e81e84325.onnx",
+          "omc": "results/Softmax/Softmax_f16_in0-1x2160x64x1_out-1x2160x64x1_axis-2_7f1e81e84325.omc",
+          "onnx_sha256": "70bd2f9e5071a5e5eee7147269762fbcfd8fcda75aa390d8a60d41c415fc97a7",
+          "omc_sha256": "4f433fdf768815bdef8f4417b273c3769f1d50b28c71d594760312b308458546",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  2160,
+                  64,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  2160,
+                  64,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [],
+            "node_types": {
+              "Softmax": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Softmax": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Softmax",
+                "type": "Softmax",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      2160,
+                      64,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      2160,
+                      64,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "npu_type": 0,
+                  "npucl_substore": "elementary_lib",
+                  "is_input_const": {
+                    "b": [
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "format": 0,
+                  "core_type_support": 1,
+                  "axis": 2,
+                  "algo": 1,
+                  "inferred_format": 0,
+                  "version": 6,
+                  "block_dim": 1
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      2160,
+                      64,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 276512
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      2160,
+                      64,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 276512
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 7.62939453125e-05
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 32.6,
+          "median_us": 32.0,
+          "min_us": 32.0,
+          "max_us": 47.0,
+          "stddev_us": 2.477902338672773,
+          "pass_all": true,
+          "runs": 3,
+          "value": 2161,
+          "config": {
+            "op": "Softmax",
+            "params": {
+              "dtype": "float16",
+              "seed": 20261111,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    2161,
+                    64,
+                    1
+                  ]
+                }
+              ],
+              "attributes": {
+                "axis": 2
+              }
+            }
+          },
+          "profiles": [
+            "evidence/Softmax/upper/run1/statistics.json",
+            "evidence/Softmax/upper/run2/statistics.json",
+            "evidence/Softmax/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_Softmax(Softmax)",
+          "onnx": "results/Softmax/Softmax_f16_in0-1x2161x64x1_out-1x2161x64x1_axis-2_923d7cf784bf.onnx",
+          "omc": "results/Softmax/Softmax_f16_in0-1x2161x64x1_out-1x2161x64x1_axis-2_923d7cf784bf.omc",
+          "onnx_sha256": "f89529fcd887ab2420f6122609f5bb94de0dfa4f9147439e99309172eb5146ec",
+          "omc_sha256": "1e0a3cbfdad512393caacedd21a68ba8eded5dd63a168a449a1826c971ced66a",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  2161,
+                  64,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  2161,
+                  64,
+                  1
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [],
+            "node_types": {
+              "Softmax": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Softmax": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Softmax",
+                "type": "Softmax",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      2161,
+                      64,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      2161,
+                      64,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "version": 6,
+                  "format": 0,
+                  "axis": 2,
+                  "core_type_support": 1,
+                  "inferred_format": 0,
+                  "is_input_const": {
+                    "b": [
+                      false
+                    ],
+                    "val_type": 4
+                  },
+                  "block_dim": 1,
+                  "npucl_substore": "elementary_lib",
+                  "npu_type": 0,
+                  "algo": 1
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      2161,
+                      64,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 278560
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      2161,
+                      64,
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 278560
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 7.62939453125e-05
+        }
+      }
+    },
+    {
+      "variant": "AddConst",
+      "axis": "input/constant heights H; X dynamic,W constant; shapes=[1,16,H,128]",
+      "low": 124,
+      "high": 125,
+      "endpoints": {
+        "lower": {
+          "samples": 60,
+          "mean_us": 34.18333333333333,
+          "median_us": 33.0,
+          "min_us": 31.0,
+          "max_us": 90.0,
+          "stddev_us": 7.792072181960899,
+          "pass_all": false,
+          "runs": 3,
+          "value": 124,
+          "config": {
+            "op": "Add",
+            "params": {
+              "dtype": "float16",
+              "seed": 20262525,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    16,
+                    124,
+                    128
+                  ]
+                },
+                {
+                  "name": "W",
+                  "shape": [
+                    1,
+                    16,
+                    124,
+                    128
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.1
+                  }
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/AddConst/lower/run1/statistics.json",
+            "evidence/AddConst/lower/run2/statistics.json",
+            "evidence/AddConst/lower/run3/statistics.json"
+          ],
+          "actual_type": "Y_Add(Add)",
+          "onnx": "results/Add/Add_f16_in0-1x16x124x128_w1-1x16x124x128_out-1x16x124x128_8187a9f728b5.onnx",
+          "omc": "results/Add/Add_f16_in0-1x16x124x128_w1-1x16x124x128_out-1x16x124x128_8187a9f728b5.omc",
+          "onnx_sha256": "a06bd08700cfb1273993a034dce6a45ee200bf83aa9c4a5e06df9fb25b561558",
+          "omc_sha256": "65c5a6afc737a788a16296c0c91d54a9cee3f1d173642e7a3d33fb412d07a63f",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  16,
+                  124,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  16,
+                  124,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "W",
+                "shape": [
+                  1,
+                  16,
+                  124,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "Add": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Add": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Add",
+                "type": "Add",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      124,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        16,
+                        124,
+                        128
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "NC1HWC0"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      124,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "version": 6,
+                  "broacast_real_dim_cnt": 4,
+                  "format": 0,
+                  "npucl_substore": "elementary_lib",
+                  "block_dim": 1,
+                  "npu_type": 0,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "core_type_support": 1,
+                  "inferred_format": 0
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      124,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 507936
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      16,
+                      124,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 507936
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0
+        },
+        "upper": {
+          "samples": 60,
+          "mean_us": 36.75,
+          "median_us": 34.0,
+          "min_us": 32.0,
+          "max_us": 102.0,
+          "stddev_us": 12.769266488983096,
+          "pass_all": true,
+          "runs": 3,
+          "value": 125,
+          "config": {
+            "op": "Add",
+            "params": {
+              "dtype": "float16",
+              "seed": 20262525,
+              "inputs": [
+                {
+                  "name": "X",
+                  "shape": [
+                    1,
+                    16,
+                    125,
+                    128
+                  ]
+                },
+                {
+                  "name": "W",
+                  "shape": [
+                    1,
+                    16,
+                    125,
+                    128
+                  ],
+                  "init": {
+                    "kind": "normal",
+                    "std": 0.1
+                  }
+                }
+              ]
+            }
+          },
+          "profiles": [
+            "evidence/AddConst/upper/run1/statistics.json",
+            "evidence/AddConst/upper/run2/statistics.json",
+            "evidence/AddConst/upper/run3/statistics.json"
+          ],
+          "actual_type": "Y_Add(Add)",
+          "onnx": "results/Add/Add_f16_in0-1x16x125x128_w1-1x16x125x128_out-1x16x125x128_00a2b3366d02.onnx",
+          "omc": "results/Add/Add_f16_in0-1x16x125x128_w1-1x16x125x128_out-1x16x125x128_00a2b3366d02.omc",
+          "onnx_sha256": "c7a0cf7c4ea6ecbf51b061b5b020c30f5fa40111430878d5f48bab134a63f879",
+          "omc_sha256": "e3c5dc9c18c361a67ec85cb9570a0c2ff842556b04a22b838baf4470abbe62dd",
+          "onnx_info": {
+            "inputs": [
+              {
+                "name": "X",
+                "shape": [
+                  1,
+                  16,
+                  125,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "Y",
+                "shape": [
+                  1,
+                  16,
+                  125,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "initializers": [
+              {
+                "name": "W",
+                "shape": [
+                  1,
+                  16,
+                  125,
+                  128
+                ],
+                "dtype": "FLOAT16"
+              }
+            ],
+            "node_types": {
+              "Add": 1
+            }
+          },
+          "actual_omc": {
+            "types": {
+              "Add": 1
+            },
+            "nodes": [
+              {
+                "name": "Y_Add",
+                "type": "Add",
+                "region": 1,
+                "inputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      125,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  },
+                  {
+                    "name": "",
+                    "shape": [
+                      1
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "constant_tensor": {
+                      "name": "",
+                      "shape": [
+                        1,
+                        16,
+                        125,
+                        128
+                      ],
+                      "dtype": "DT_FLOAT16",
+                      "layout": "NC1HWC0"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      125,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0"
+                  }
+                ],
+                "attributes": {
+                  "inferred_format": 0,
+                  "version": 6,
+                  "block_dim": 1,
+                  "npu_type": 0,
+                  "core_type_support": 1,
+                  "broacast_real_dim_cnt": 4,
+                  "is_input_const": {
+                    "b": [
+                      false,
+                      true
+                    ],
+                    "val_type": 4
+                  },
+                  "format": 0,
+                  "npucl_substore": "elementary_lib"
+                }
+              }
+            ],
+            "interfaces": [
+              {
+                "name": "X",
+                "kind": "Data",
+                "tensors": [
+                  {
+                    "name": "",
+                    "shape": [
+                      1,
+                      16,
+                      125,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 512032
+                  }
+                ]
+              },
+              {
+                "name": "Node_Output",
+                "kind": "NetOutput",
+                "tensors": [
+                  {
+                    "name": "Y",
+                    "shape": [
+                      1,
+                      16,
+                      125,
+                      128
+                    ],
+                    "dtype": "DT_FLOAT16",
+                    "layout": "NC1HWC0",
+                    "buffer_bytes": 512032
+                  }
+                ]
+              }
+            ],
+            "schema_sha256": "a7cd334beff74bfeb637b1886329a70122842667a257d84ba111c70991695679",
+            "warnings": [
+              "GraphOp regions remain separate; no cross-region port mapping is invented"
+            ]
+          },
+          "max_abs_error": 0
+        }
+      }
+    }
+  ],
+  "excluded": {
+    "ConvTranspose": "Bias is 4-D NC1HWC0; original requires 1-D ND; no valid boundary under this contract",
+    "CastT": "No independently measured NPU CastT op.csv time"
+  }
+}

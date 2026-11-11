@@ -1,0 +1,387 @@
+[
+  {
+    "op": "MatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264848,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            48,
+            6144
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "B",
+          "shape": [
+            6144,
+            2
+          ]
+        }
+      ],
+      "constant_left_rewrite": true
+    }
+  },
+  {
+    "op": "GemmD",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264128,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            128,
+            288
+          ]
+        },
+        {
+          "name": "B",
+          "shape": [
+            288,
+            516
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "C",
+          "shape": [
+            516
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ],
+      "attributes": {
+        "transA": 0,
+        "transB": 0,
+        "alpha": 1.0,
+        "beta": 1.0
+      }
+    }
+  },
+  {
+    "op": "BatchMatMul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264026,
+      "inputs": [
+        {
+          "name": "A",
+          "shape": [
+            2,
+            2,
+            256
+          ]
+        },
+        {
+          "name": "B",
+          "shape": [
+            2,
+            256,
+            256
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ]
+    }
+  },
+  {
+    "op": "Convolution",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264171,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            96,
+            5,
+            374
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            96,
+            96,
+            5,
+            1
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        },
+        {
+          "name": "B",
+          "shape": [
+            96
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ],
+      "attributes": {
+        "kernel_shape": [
+          5,
+          1
+        ],
+        "strides": [
+          1,
+          1
+        ],
+        "dilations": [
+          1,
+          1
+        ],
+        "group": 1,
+        "pads": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  {
+    "op": "Add",
+    "params": {
+      "dtype": "float16",
+      "seed": 20262525,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            16,
+            128,
+            128
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            1,
+            16,
+            128,
+            128
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "op": "Mul",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261522,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            256,
+            991
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            1,
+            256,
+            991
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "op": "Activation",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261629,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            16,
+            154,
+            128
+          ]
+        }
+      ],
+      "activation": "Sigmoid"
+    }
+  },
+  {
+    "op": "PRelu",
+    "params": {
+      "dtype": "float16",
+      "seed": 20263501,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            64,
+            47,
+            128
+          ]
+        },
+        {
+          "name": "slope",
+          "shape": [
+            64,
+            1,
+            1
+          ],
+          "init": {
+            "kind": "fill",
+            "value": 0.25
+          }
+        }
+      ]
+    }
+  },
+  {
+    "op": "ReduceSum",
+    "params": {
+      "dtype": "float16",
+      "seed": 20264623,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            4,
+            36993,
+            1
+          ]
+        }
+      ],
+      "attributes": {
+        "axes": [
+          0
+        ],
+        "keepdims": 1,
+        "noop_with_empty_axes": 1
+      }
+    }
+  },
+  {
+    "op": "LayerNorm",
+    "params": {
+      "dtype": "float16",
+      "seed": 20263366,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            135,
+            64
+          ]
+        },
+        {
+          "name": "scale",
+          "shape": [
+            1,
+            64
+          ],
+          "init": {
+            "kind": "normal",
+            "mean": 1.0,
+            "std": 0.02
+          }
+        },
+        {
+          "name": "bias",
+          "shape": [
+            1,
+            64
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.02
+          }
+        }
+      ],
+      "attributes": {
+        "axis": 1,
+        "epsilon": 9.999999747378752e-06
+      },
+      "implementation": "native",
+      "accumulation_dtype": "float32",
+      "opset": 17
+    }
+  },
+  {
+    "op": "Softmax",
+    "params": {
+      "dtype": "float16",
+      "seed": 20261111,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            2160,
+            64,
+            1
+          ]
+        }
+      ],
+      "attributes": {
+        "axis": 2
+      }
+    }
+  },
+  {
+    "op": "Add",
+    "params": {
+      "dtype": "float16",
+      "seed": 20262525,
+      "inputs": [
+        {
+          "name": "X",
+          "shape": [
+            1,
+            16,
+            124,
+            128
+          ]
+        },
+        {
+          "name": "W",
+          "shape": [
+            1,
+            16,
+            124,
+            128
+          ],
+          "init": {
+            "kind": "normal",
+            "std": 0.1
+          }
+        }
+      ]
+    }
+  }
+]
